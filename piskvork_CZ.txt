@@ -1,0 +1,137 @@
+Instalace
+---------
+Zip archiv rozbalte nìkam na disk. Pak si vytvoøte zástupce na ploše nebo v nabídce Start.
+
+Odinstalace
+-----------
+V menu Soubor zvolte Odstranit nastavení. Tím se smae z registru sloka HKEY_CURRENT_USER\Software\Petr Lastovicka\piskvorky. Potom program smate z disku.
+
+Pravidla hry
+------------
+Vyhrává ten, kdo vedle sebe umístí nejménì pìt svojich symbolù ve vodorovném, svislém nebo diagonálním smìru.
+
+Ovládání
+--------
+Hru zaèíná ten, kdo prohrál pøedchozí hru. Zmìnit se to dá stiskem tlaèítka Nová hra (F2). Na stavovém øádku je u zaèínajícího hráèe zobrazena hvìzdièka.
+Na konci hry stisknìte pravé tlaèítko myši, aby se plocha vyèistila a vy jste mohli hrát dál. Bìhem hry se pøi stisku pravého tlaèítka myši zvırazní poslední tah soupeøe. 
+Dobu pøemıšlení lze mìnit klávesami +, -, 0 a 9, nebo ji lze zadat pøímo v sekundách (menu Hráèi/Nastavení).
+Poèítaè si celı prùbìh hry pamatuje, a proto se mùete vracet zpìt o libovolnı poèet tahù. Na konci hry si mùete hru znovu pøehrát, staèí stisknout Home a pak klávesou PageDown krokovat po jednotlivıch tazích. Mùete si také rozehranou nebo dohranou partii uloit na disk. Po otevøení souboru mùete pokraèovat ve høe nebo pouít funkce zpìt a vpøed. Kdy je pøi otevírání souboru stisknuto Ctrl, pak se nezmìní obtínost a hráèi.
+Kliknutí pravım tlaèítkem myši na jméno hráèe na stavovém øádku pøepne mezi Èlovìk / Poèítaè. Dvojklik na jméno hráèe zobrazí okno pro vıbìr EXE souboru.
+
+Další umìlé inteligence (AI)
+----------------------------
+Na http://gomocup.wz.cz/ lze najít a stáhnout nìkolik dalších AI od rùznıch autorù. Vìtšina z nich ale má nìjaká omezení:
+1) Hrací plocha musí bıt ètvercová. Nìkteré AI umìjí hrát jen na ploše 20x20.
+2) Dobu pøemıšlení lze nastavit s pøesností jen na celé sekundy. Nìkteré AI dokonce vùbec neumìjí nastavit dobu pøemıšlení. Nìkteré AI si kontrolují pouze èas na jeden tah, ale ne èas celé partie.
+3) Vìtšina AI neumí kontinuální hru ani monost pøesnì pìt v øadì vyhrává.
+
+Monosti
+--------
+- Šíøka,vıška: rozmìry hrací plochy. Pøi jejich zmìnì zaène nová hra ! 
+- Automatické zahájení partie: pøi zaškrtnutí této monosti je na zaèátku kadé hry automaticky vygenerováno nìkolik tahù. Je to dobré k tomu, aby hra nebyla vdy stejná. Kdy zaèíná AI, pak obvykle volí vdy stejné zahájení. Touto volbou mu lze vnutit jiná zahájení.
+- Náhodnì otáèet zahájení: zahájení je náhodnì posunuto a otoèeno nebo zrcadleno.
+- pìt nebo více vyhrává/pøesnì pìt vyhrává: kolik svıch symbolù musí hráè umístit do øady, aby vyhrál. Pøi turnaji vdy platí první pravidlo (šest a více v øadì je také vıhra).
+- jednotlivé hry / kontinuální hra: Kdy zaškrtnete jednotlivé hry, pak kadá hra skonèí, jakmile jeden z hráèù vyhraje. Kontinuální hra znamená, e lze pokraèovat ve høe tak dlouho, dokud se nezaplní celá hrací plocha. Pøi turnaji se vdy hrají jednotlivé hry.
+- Doba zvıraznìní tahu: jak dlouho je zvıraznìn poslední tah. Pokud vás to pøi høe rozptyluje, pak zadejte 0.
+- Zvukové oznámení: na konci tahu poèítaèe se pøehraje zvuk gomoku.wav. Tento soubor mùete nahradit jinım wav souborem.
+- Zobrazovat souøadnice: zobrazení èísel okolo hrací plochy.
+- Souøadnice èíslovat od 1: jestli má první políèko souøadnice [1,1] nebo [0,0]. Má to vliv na logovací okno a èísla podél hrací plochy. Nemá to vliv na ukládané soubory a souøadnice posílané do AI.
+- Èíslo tahu dìlit dvìma: platí pro èíslo tahu na stavovém øádku.
+- Ukládat vrácené tahy: pokud vrátíte tahy zpìt a hned potom uloíte pozici do souboru, uloí se všechny tahy vèetnì vrácenıch
+- Kontrolovat èasovı limit: Zobrazí zprávu, kdy hráè pøemıšlí moc dlouho. Pøi turnaji je èas kontrolován i v pøípadì, e tuto monost nezaškrtnete.
+- Tolerance: O kolik mùe AI pøemıšlet déle ne je èasovı limit. Tato hodnota musí bıt alespoò 100ms.
+- Pamì: maximální velikost pamìti, kterou zabírá AI. Vìtšina AI (vèetnì pbrain-pela) tuto hodnotu ignorují.
+- Pozastavit soupeøovu AI: Zabrání tomu, aby AI pøemıšlelo v dobì, kdy není na tahu, a uíralo tak èas procesoru druhému hráèi. Je to potøeba hlavnì pro turnaj. Tato monost se ignoruje pøi høe proti èlovìku a také pokud AI pouívá souborovı protokol (exe nezaèíná na pbrain-).
+- Ladit AI: Pozastavování AI se bude provádìt tak, e se manaer k AI pøipojí jako debugger. Jestlie tuto monost vypnete, pak manaer bude hledat vıpoèetní vlákna AI mezi všemi spuštìnımi aplikacemi, co kadı tah o pár milisekund zpomalí.
+- Posílat info evaluate x,y: pouívá se pro ladìní AI. Tento pøíkaz se posílá pøi pohybu myši, ale jen kdy je na tahu èlovìk.
+- Ignorovat chyby: Kdy tuto monost vypnete, pak se pøi chybì AI kromì hlášky od manaeru zobrazí také hláška od operaèního systému, kde je zobrazena adresa chyby a tlaèítko pro spuštìní debuggeru. Pøi síovém turnaji je tato monost vdy zapnuta.  
+- Priorita procesu: Ovlivòuje rychlost jinıch spuštìnıch programù bìhem pøemıšlení AI. 
+- Logovací okno: co všechno se má vypisovat do logovacího okna. Pøíkazy message a debug jsou uiteèné pro programátory k ladìní jejich AI (pouze pro AI s prefixem pbrain-).
+- Zapisovat obsah roury do souboru: pouívá se pro ladìní AI. Všechny pøíkazy zapsané nebo pøeètené z roury se ukládají do souboru s pøíponou log, kterı je ve stejné sloce jako AI. V pøípadì ZIP je log ve sloce TEMP\psqXXX\unzX. Pøi turnaji je tato monost vdy vypnuta.
+- Sloka pro data: AI si do této sloky mùe ukládat soubory, které obsahují zkušenosti získané bìhem hry. Vìtšina AI tuto monost zatím nevyuívá.
+
+Turnaj
+------
+- Hráèi: Na kadı øádek editaèního obdélníka napište název exe nebo zip souboru, nebo je vyberte tlaèítkem Pøidat.
+- Ukládat partie: Partie se budou ukládat do zvolené sloky. Soubory _result.txt, _table.html, state.tur se do dané sloky ukládají vdy.
+- Ukládat zprávy od AI: Pøíkazy message se budou ukládat do souboru messages.txt.
+- Gomotur formát (*.rec): Partie se budou ukládat ve formátu, kterı pouívá program Gomotur. Velikost hrací plochy musí bıt 20 x 20.
+- Jen prohrané: Budou se ukládat jen ty partie, které první hráè v seznamu prohrál.
+- Pøíkaz, kterı se spustí po kadé partii/na konci turnaje: Externí EXE nebo BAT program. Mùe mít i parametry. Pracovním adresáøem je sloka, kam se ukládají vısledky partií.
+- Poèet opakování/Poèet partií: Máte-li n hráèù, k opakování, p partií, pak pøi zaškrtnutí kadı s kadım se odehraje k*p*n*(n-1)/2 zápasù. Pøi zaškrtnutí první proti všem ostatním je poèet zápasù jen k*p*(n-1). AI se zmìní vdy po p partiích. Pøi turnaji po síti je skupina p po sobì jdoucích partií pøiøazena stejnému klientovi.
+- Opakování pøi remíze: Maximální poèet opakování partie, která skonèila nerozhodnì. 
+- Pauza: Èekání na konci kadé partie.
+- Tah: Maximální povolená doba pøemıšlení nad jedním tahem. Zadává se v sekundách s pøesností na tøi desetinná místa.
+- Partie: Maximální povolená celková doba pøemıšlení bìhem partie. Mìøí se zvláš pro kadého hráèe. Nulová hodnota znamená neomezenì. 
+- Tolerance: O kolik mùe AI pøemıšlet déle ne je èasovı limit. Tato hodnota musí bıt alespoò 100ms.
+- Pamì: Maximální velikost pamìti, kterou zabírá AI. Kontroluje se na konci kadého tahu a pøi jejím pøekroèení je partie ukonèena.
+- Automatické zahájení partie: Automatické vygenerování nìkolika tahù na zaèátku kadé partie. Kadá dvojice AI dostane stejná zahájení. Poèet rùznıch zahájení závisí na poètu partií a poètu opakování. 
+- Náhodnì otáèet zahájení: Zahájení je náhodnì posunuto a otoèeno nebo zrcadleno.
+
+Rozmìry hrací plochy a povolení pozastavení soupeøova AI se nastavují v dialogovém oknì Monosti.
+Tlaèítkem Pokraèovat se ze souboru state.tur obnoví stav døíve pøerušeného turnaje. Ze souboru se naètou názvy hráèù, èas na tah, èas na partii, pamì, automatické zahájení, rozmìry hrací plochy. Ostatní údaje je tøeba zadat pøed stiskem tlaèítka Pokraèovat. Je také moné pokraèovat v u dokonèeném turnaji, pokud zvìtšíte poèet opakování.
+Turnaj lze kdykoli pøerušit stiskem Esc. Ve vısledcích turnaje je poèet vıher a proher rozdìlen na tøi sèítance: 1) hráè zaèínal; 2) hráè nezaèínal; 3) chyba nebo pøekroèen èasovı limit. V oknì vısledkù se tlaèítkem Tabulka zobrazí html tabulka, kde jsou vısledky pro jednotlivé dvojice hráèù. 
+
+Turnaj po síti
+--------------
+Turnaj lze odehrát pomocí nìkolika poèítaèù. Na všech by mìl bıt stejnì rychlı procesor. Jeden poèítaè slouí jako server, ostatní jsou klienti. Nejdøíve na serveru spuste turnaj. Po spuštìní se do logu napíše název poèítaèe a server èeká na klienty. Klienty je moné pøipojovat nebo odpojovat kdykoli v pøùbìhu turnaje. Klienti se pøipojují pøíkazem z menu Hra/Pøipojit se. Kromì jména serveru a portu musíte zadat také sloku, do které se budou stahovat AI ze serveru. Pokud u na klientu AI existují, pak se jen zkontroluje, jestli mají stejné CRC jako soubory na serveru. Jestlie se AI skládá z více souborù, pak musí bıt zpakováno do ZIP archivu. Po staení ze serveru si klient rozbalí ZIP soubor do doèasného adresáøe. Ze serveru se kromì AI posílají také informace o velikosti hrací plochy, èasové limity, tolerance, limit pamìti, automatické zahájení, povolení pozastavení soupeøova AI, maximální poèet opakování pøi remíze. Pokud jste pøi spuštìní turnaje zaškrtli "Ukládat partie do sloky", pak klient po skonèení partie posílá záznam o všech provedenıch tazích, jinak pošle jen vısledek partie a údaje o èasech a vyuité pamìti. Po skonèení turnaje zùstávají klienti pøipojeni a èekají na další turnaj. Dokud je klient nebo server pøipojen, je vìtšina poloek z menu nepøístupná. Pokud se klient spustí s parametrem -tmppsq, generuje prùbìnì po kadém tahu psq soubor do sloky /tmp, kterou si vytvoøí v adresáøi pro stahování AI.
+
+Hra dvou hráèù pøes internet
+----------------------------
+Hra se spustí z menu "Hra/Pøipojit se". Hráèi se musejí pøedem nìjak domluvit (napø. pomocí SMS nebo ICQ), kdy spolu budou hrát. Oba musejí znát název nebo IP adresu druhého poèítaèe. Nìkteré funkce jsou pøi høe zakázány (vpøed, otevøít soubor, prohodit hráèe, automatické zahájení). Èas není omezen. Hráèi mohou mezi sebou komunikovat pomocí "Hra/Poslat zprávu". Dialogové okno pro posílání zpráv se automaticky aktivuje po stisku klávesy.
+
+Dávkové spouštìní
+-----------------
+Hru dvou AI lze spustit z pøíkazové øádky. První parametr je -p, druhı a tøetí parametr jsou názvy AI, napøíklad piskvork -p brain1.exe brain2.exe. Návratová hodnota urèuje, kdo vyhrál (1=první AI, 2=druhé AI, 3=remíza, 0=chyba). 
+
+Spouštìní s parametrem
+----------------------
+ <soubor> 
+    Otevøe psq soubor
+ -p <ai1> <ai2>
+    Hra ai1 proti ai2 (viz dávkové spuštìní)
+ -tmppsq
+    Generování prùbìnıch psq souborù pøi turnaji. To je vhodné pro online pøenos turnaje.
+ -a <maska>
+    Nastavení vyuití jader procesoru. Pokud se pouští dva klienti na vícejádrovém procesoru, je vhodné jednoho spustit piskvork.exe -a 1 a druhého piskvork.exe -a 2. Pak si nemohou, co se tıèe vyuití CPU, konkurovat.
+ -rule 0/1 
+    Pravidlo pìt nebo více vyhrává / pøesnì pìt vyhrává.
+ -timematch <sekund>
+    Èas na zápas.
+ -timeturn <milisekund>
+    Èas na tah.
+ -memory <MB>
+    Maximální vyuití pamìti pro AI.
+ -opening <index>
+    Poøadí zahájení v souboru openings.txt (první zahájení má èíslo 0). -1 znamená ádné zahájení. Kdy parametr -opening není uveden, aktuální èíslo zahájení se ukládá a naèítá z registru.
+ -outfile <soubor>
+    Soubor, do kterého se ukládá hra.
+ -outfileformat   
+    Formát souboru -outfile. 1=psq, 2=rec
+ -logmsg <soubor>
+    Soubor, do nìho se ukládají zprávy od obou AI.
+ -logpipe <sloka>
+    Do které sloky se loguje veškerá komunikace mezi manaerem a AI (pokud AI pouívá novı protokol). Pro kadé AI se vytvoøí samostatnı soubor pbrain-name.exe.log
+
+Kompilace (Microsoft Visual Studio)
+-----------------------------------
+- Vytvoøte novı prázdnı Visual C++ projekt a pøidejte všechny zdrojové soubory.
+- Do Project properties -> Linker -> "Command line" pøipište wsock32.lib Version.Lib comctl32.lib winmm.lib
+- V C/C++ -> Precompiled Headers -> "Precompiled Header File" zadejte hdr.h. První poloku "Precompiled Header" nastavte na "Use (/Yu)". Potom v Solution Exploreru kliknìte na soubor lang.cpp a v Properties zmìòte "Precompiled Header" na "Create (/Yc)".
+- V Project properties pøepnìte na Configuration Release. Pak nastavte v C++ -> Code Generation -> "Runtime Library" na /MT
+Ve Visual Studiu 2008/2010 strom vlastností zaèíná uzlem Configuration Properties, ve kterém se nacházejí vıše uvedená nastavení.
+
+Licence
+-------
+Na tento program (kromì sloek skelet a skelet_Delphi) se vztahuje licence "GNU General Public License". Zde jsou uvedeny jen nejdùleitìjší body. Celé její znìní (33KB, v angliètinì) lze stáhnout z autorovy webové stránky nebo http://opensource.org/licenses. 
+
+1) Program je zdarma. Je povoleno ho kopírovat nebo distribuovat na CD, tøeba spolu s jinımi programy. 
+2) Program si mùete pro vlastní potøebu upravit. Také mùete èásti zdrojového kódu pouít do svıch vlastních programù. V obou pøípadech musíte splnit následující poadavky:
+ a) Nesmíte zmìnit nebo odstranit tuto licenci.
+ b) Nesmíte smazat jméno pùvodního autora.
+ c) Zdokumentujete všechny provedené zmìny a u kadé zmìny uvedete datum.
+ d) Zdrojové kódy (vèetnì vašich úprav a rozšíøení) zdarma zveøejníte na internetu. 
+3) Program je bez záruky. 
+
+http://petr.lastovicka.sweb.cz
+http://gomocup.wz.cz

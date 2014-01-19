@@ -1,0 +1,141 @@
+Installation
+------------
+Extract files from the ZIP archive. Then you may create a shortcut in the Start menu or on the Desktop.
+
+Uninstallation
+--------------
+Run the program and choose "Delete settings" from the File menu. It will delete registry key HKEY_CURRENT_USER\Software\Petr Lastovicka\piskvorky. Then you can remove files from the disk.
+
+Game rules
+----------
+Players try to make five or more symbols in a horizontal, vertical or diagonal line.
+
+Usage
+-----
+Use the left mouse button to make your moves.
+The right mouse button has 2 functions:
+1) During a game: highlights the last move
+2) At the end: clears the board and starts a new game
+
+Thinking time can be set in a Players\Settings dialog box. It can also be changed by keys +, -, 0 to 9.
+You can undo moves. When a game is finished, you can replay it - press the Home key and then repeat pressing the PageDown key. 
+A game can be saved to a file at any time. You can open the file later and continue. Hold down a Ctrl key while opening a file if you don't want the time limit and players to be changed.
+Right-click on the player's name on the statusbar to switch between Human / Computer. Double-click on the player's name to show dialog box to open AI.
+
+More artificial inteligences (AI)
+---------------------------------
+Many AI from other authors can be downloaded from http://gomocup.wz.cz/. Most of them have some restrictions:
+1) Board width must be equal to board height. Some AI only support size 20x20.
+2) Thinking time precision is usually 1 second. Some AI cannot adjust the time at all. 
+3) Most AI don't support continuous game or exactly five in a row option.
+
+Options
+-------
+- Width, height: size of the board. A new game is started when these values are changed!
+- Automatic opening moves: the game manager automatically makes three or five moves at the beginning of each game. It is especially useful for tournaments with repeat count greater than one, because it guarantees that all games will not be the same.
+- Openings are randomly rotated: Opening moves coordinates are randomly shifted and rotated or mirrored.
+- five or more stones win / exactly five stones win: How many symbols in a line are required for a win. The first rule is always used during a tournament.
+- single game / continuous game: If single game is checked, a game over when one player wins. If continuous game is checked, you can play until the whole board is full and make many fives in a row. Continuous game is not supported during a tournament.
+- Hilight duration: how long is hilighted last move. You can set it to zero if it bothers you.
+- Sound notifications: the sound gomoku.wav is played after every AI move. You can replace this file by another wav file.
+- Show coordinates: show numbers along the board.
+- Coordinates start from 1: whether the top left square is [0,0] or [1,1]. It is used for board numbers and the log window. It does not impact saved files and coordinates which are sent to AI.
+- Divide move number by two: number of moves on the statusbar is divided by 2.
+- Save undo moves: all moves will be saved to a file if you save position just after undo.
+- Check timeout: display a message box if a player is thinking too long. Time is always checked during tournaments.
+- Tolerance: how much can be thinking time longer than the time limit. This value must be greater than time which is needed to paint a square and print moves number.
+- Memory: maximal memory for AI. Most AI ignore this value.
+- Suspend opponent's brain: prevents AI to think while it's not its turn. It is not recommended when you don't play tournaments.
+- Send info evaluate x,y: it is used for debugging your AI. This command is sent when the mouse is moving, but only when it's human's turn.
+- Ignore errors from AI: If you disable this option and AI makes error, then a system error message will be displayed in addition to an error message from the manager. The system message box contains a button to launch a debugger. This option is always enabled during a network tournament.  
+- Logging: what messages are written to the log window. Debug and message commands are useful only for AI developers.
+- Log pipe protocol to a file: writes to a file all commands which are sent or received from AI. The file has log extension and is in the same folder as AI. If AI is ZIP archive, the log file is in TEMP\psqXXX\unzX. This option is disabled during a tournament.
+- AI data folder: AI can save persistent data to this folder, for example some knowledge database. Most AI don't use this option yet.
+
+
+Tournament
+----------
+- Players: You can write file names to the edit box or you can use button Add to browse for files.
+- Save boards: If you check this option, all result boards will be saved to the selected folder. Files _result.txt, _table.html and state.tur are always saved to that folder.
+- Save messages: Message commands from AI are saved to the file messages.txt.
+- Use Gomotur format (*.rec): Positions will be saved in the format that is used by the Gomotur application. Board size must be 20 x 20.
+- Only losses: Only those games will be saved which the first player lose.
+- Command to execute after each game or when a tournament finished: An external EXE or BAT program. The command can have parameters. Its working directory is the folder where results are saved.
+- Repeat count/Games count: Number of games will be k*p*n*(n-1)/2, where n is number of AI, k is repeat count and p is games count. But if you check option 'The first AI against others', then the number of games will be only k*p*(n-1). Every sequence of p games is assigned to one AI pair and is played on one client.
+- Max. tie repeats: Maximal number of repeating games which have no winner.
+- Pause: Delay between games.
+- Turn: Time for one turn. There can be up to three digits after a decimal point.
+- Match: Maximal total time for one player in one game. Zero value means unlimited.
+- Tolerance: How can be thinking time longer than the time limit. This value must be greater than 100ms.
+- Memory: Maximal memory for AI. It is checked after every move. 
+- Automatic opening moves: The game manager automatically makes several moves at the beginning of a game. Each pair of AI gets the same openings. Number of different openings depends on the game count and repeat count.
+- Openings are randomly rotated: Opening moves coordinates are randomly shifted and rotated or mirrored. It is not recommended for official tournaments.
+
+Size of the board and option 'Suspend opponent's pbrain' can be set in the Options dialog box.
+Button Continue is used to reload the tournament state from a file state.tur. The file contains information about players, time for a turn, time for a match, memory limit, automatic openings, size of the board. Other settings can be changed before the button Continue is pressed. It is possible to continue already finished tournament if the repeat count is increased.
+The tournament can be canceled by Esc key. Numbers of wins and losses are printed as sums of 3 numbers: 1) the player started a game; 2) the opponent started a game; 3) timeout. Button "Table" in the result window is used to display a html table where are results for all AI pairs. 
+
+Network tournament
+------------------
+A tournament can be distributed to many computers. One computer is a server. Others are clients. The tournament is started at the server. Name of the server is written to the log window and the server waits for clients. You can connect them or disconnect at any time during the tournament. Menu item Game/Connect is used to connect a client to the server. You must choose a folder where AIs will be saved. AIs are downloaded from the server unless they already exist on a client and have the same CRC as files on the server. AI has to be packed to a ZIP archive if it consists of more than one file. The ZIP file is unpacked to a temporary folder on a client. Clients receive from the server infomation about a board size, time and memory limits, tolerance, automatic opening moves, option to suspend opponent's pbrain, maximal number of repeats when a result is a tie. If you have checked "Save games to folder", then clients send records of all moves, otherwise they send only game result, time and memory usage. At the end of a tournament, all clients remain connected and wait for the next tournament. Most menu commands are disabled when a computer is connected. If client is executed with -tmppsq parameter, it generates psq files continuously to folder /tmp which is created in folder for downloading AI.
+
+Network game
+------------
+Players must somehow arrange when they will play. Then they choose the menu command "Game\Connect". They have to know each other's computer name or IP address. Game time is not limited. Some menu commands are disabled (redo, open file, swap players, automatic opening). The menu command "Game\Send message" can be used to chat. The dialog window is automatically activated when you press a key.
+
+Batch execution
+---------------
+A game between two AI can be started from the command line. The first argument is -p, the second and third arguments are AI names, for example piskvork -p brain1.exe brain2.exe. The result code determines who has won: 1=the first AI, 2=the second AI, 3=draw, 0=error). 
+
+Command line parameters
+-----------------------
+ <filename>
+    Asociation - opens a psq file.
+ -p <ai1> <ai2>
+    Run match ai1 against ai2
+ -tmppsq
+    Generate psq files continuously into tmp subfolder. It is suitable for online tournament broadcast.
+ -a <mask>
+    Set CPU affinity. If there are 2 piskvork on a computer with dualcore procesor, it is suitable to execute the first piskvork.exe -a 1 and the second  piskvork.exe -a 2. There can be no CPU concurrency then. 
+ -rule 0/1 
+    More then five in row win/exactly five in row win.
+ -timematch <seconds>
+    Time for match in seconds.
+ -timeturn <milliseconds>
+    Time for one turn in seconds.
+ -memory <MB>
+    Maximal memory usage of one AI in bytes.
+ -opening <index>
+    Index of opening in the opening file (0 is the first opening). -1 is no openings. If the opening parametr is not specified, it loads from registry.
+ -outfile <filename>
+    Filename for saving the game.
+ -outfileformat   
+    File format of -outfile path. 1=psq, 2=rec
+ -logmsg <filename>
+    Filename for saving messages from both AI.
+ -logpipe <directory>
+    Enables logging the pipe. Two files (for each AI) will be created in directory with name pbrain-name.exe.log
+    
+Compilation (Microsoft Visual Studio)
+-------------------------------------
+- Create empty project and add all source files.
+- Go to Project properties -> Linker -> Command line and add wsock32.lib Version.Lib comctl32.lib winmm.lib
+- Go to Project properties -> C/C++ -> Precompiled Headers. Set "Precompiled Header File" to hdr.h. Set "Precompiled Header" to "Use (/Yu)". Then select lang.cpp file inside the Solution Explorer, open properties and change "Precompiled Header" to "Create (/Yc)".
+- Go to Project properties, switch to Configuration Release. Then go to C++ -> Code Generation -> Runtime Library and switch to /MT
+In Visual Studio 2008/2010 the property tree starts with node Configuration Properties where you can find all mentioned settings.
+
+
+License
+-------
+This program (except folders skelet and skelet_Delphi) is distributed under the terms of "GNU General Public License". You can get it from the author's web page or from http://opensource.org/licenses. Here is only a short abstract of this license:
+
+1) The Program is free. You may distribute it in any medium. There can be other programs (free or commercial) on the same medium.
+2) You may modify the Program and you may incorporate parts of the Program into your programs. In both cases, you may distribute modified or derived versions only if you also meet all of these conditions:
+  a) You must not remove or alter this license.
+  b) You must not delete the original author's name.
+  c) You write documentation of all changes and the date of any change.
+  d) You will make your derived source code available via FTP or HTTP.
+3) The Program is provided without warranty. 
+
+http://petr.lastovicka.sweb.cz
+http://gomocup.wz.cz

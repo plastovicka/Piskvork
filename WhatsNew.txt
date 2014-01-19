@@ -1,0 +1,154 @@
+8.5. (31 July 2011)
+new command line arguments, see piskvork.txt
+sound notifications (can be enabled in options)
+"exactly five stones wins" radio button in the Tournament window
+"Save undo moves" option. The behaviour of saving moves is different compared to the previous versions.
+the rule and opening CRC is written in the result window and in the result file
+AI's errors are written to the standard error during batch executions
+menu item Help->Download another AI
+minimal board size is 5
+added new skin
+Fixed bug: toolbar could not be customized on Windows Vista/7
+Fixed bug: read write race condition in -tmppsq mode
+Fixed bug: deadlock at the end of match that has been started from the command line
+
+8.4 (13 April 2009)
+possibility of setting CPU core affinity by command line parameter -a <mask>
+continuous generating of psq files in tournament must be switched on by parameter -tmppsq
+
+8.3 (28 April 2008)
+option "Openings are randomly rotated"
+file openings.txt contains first moves (it is not compatible with old openings files which assumed the first move in the board center)
+Game/"Tournament from this opening"
+game is saved after every move into tmp subfolder under a tournament folder
+game error code is saved at the end of a psq file (only during tournament on a local computer)
+fixed redrawing bugs on multicore pc
+
+8.2 (25 May 2006)
+log window and tournament result window are resizeable
+total number of openings in the tournament result
+option to ignore error messages from AI
+
+8.1 (13 April 2006)
+Fixed bug: bad AI initialization if "Debug pbrains" was enabled
+Added css style to tournament results
+
+8.0 (25 March 2006)
+option continuous game
+keyboard shortcuts and toolbar are configurable
+Undo and New game function during the internet game 
+"Send message" dialog window is activated when a key is pressed and remains active after sending message
+Clear button in log window, 
+ option not to clear log after every game
+message from msg.dat is displayed even if tah.dat is erroneous
+command-line argument -p for a batch execution
+
+7.9 (19 December 2005)
+option to select folder where AI can store its data files
+
+7.8 (23 November 2005)
+time precision is 1 millisecond
+double-click on player's name on the statusbar to show window to open AI 
+
+7.7 (26 June 2005)
+Undo uses a command TAKEBACK
+initialization of AI is not included in time for a turn
+
+7.6 (3 June 2005)
+option to set game rule to "exactly five in a row win"
+file info.dat for AI which communicate via old protocol
+
+7.5 (3 May 2005)
+network game between two human players
+automatic openings are read from file openings.txt
+all pipe commands can be logged to a file
+
+7.3 (21 April 2005)
+messages from AI which uses files protocol
+RESTART is sent to AI instead of terminating it (but not during a tournament)
+RECTSTART is used instead of START if the board is not square
+CRC of ZIP or EXE files in a tournament result
+
+7.2 (16 April 2005)
+messages are saved to a text file during a tournament
+Tournament\Games count
+time for a turn is in seconds, but it can be a floating point number
+a tournament folder is created automatically if it does not exist
+results are sorted by points, ratio, mutual match
+
+7.1 (10 April 2005)
+repeating game when it was a tie
+html table of tournament
+tournament result is saved to a text file
+number of games played and number of moves per match in the result
+tournament is saved to a file so that aborted tournament can be resumed
+memory limit is checked during tournament
+external commands can be executed after each game or at the end of a tournament
+
+7.0 (5 April 2005)
+network tournament 
+AI is restarted when it is unfairly terminated by the other AI
+setting AI process priority
+tournament result is not modal window and can be shown by menu Game/Result
+each application instance has its own temporary directory
+
+6.7 (28 March 2005)
+tournament option to save only games when the first player lost
+tournament results: maximal thinking time, wins/losses divided to started/not started
+moves counter can start from 0 or 1
+"Add" button in the tournament dialog can be used to select more exe files
+command line parameter can be a PSQ file name
+
+6.6 (13 March 2005)
+automatic openings
+toolbar
+remaining times are displayed as lines under time numbers
+
+6.5 (10 March 2005)
+option to suspend pbrain when it isn't its turn
+
+6.4 (7 March 2005)
+measurement of memory during tournament
+log window
+
+6.3 (5 March 2005)
+save to Gomotur format
+
+6.2 (20 January 2005)
+show coordinates around the board
+option to index coordinates from 1
+there is time information in saved positions 
+all games of a tournament can be recorded
+tournament result is sorted
+tournament can be aborted by pressing Esc
+open position with Ctrl ignores players information
+AI working directory is TEMP
+menu command Go to move
+Undo works even if the computer thinks
+    
+6.0 (15 October 2004)
+artificial intelligence moved to pbrain-pela.EXE
+flip commands in the menu Skin
+tournament
+timeout check
+
+5.4 (14 April 2003)
+time measurement
+
+5.2 (22 October 2002)
+support for more languages
+text color and winning line color added to skins
+
+4.3 (10 July 2002)
+skins
+
+4.2 (12 March 2002)
+commands Open, Save, Swap symbols
+algorithm is faster
+
+3.0 (10 September 2001)
+Windows version
+alfabeta depth search
+
+1.0 (2000)
+version for DOS in Pascal

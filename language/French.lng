@@ -1,0 +1,332 @@
+13=piskvork.txt
+26=Quoi de neuf.txt
+1=OK
+2=Annuler
+
+; Menu
+450=&Fichier
+451=Langue
+452=&Jeu
+453=&Mouvements
+454=&Joueurs
+455=&Skin
+456=&Aide
+
+106=&Ouvrir...
+107=&Sauvegarde...
+230=&Raccourcis clavier...
+105=&Supprimer préfrences
+103=&Exit
+
+101=&Nouveau jeu
+204=&Reset score
+108=&Pause
+209=&Continue
+220=&Tournoi...
+225=Tournoi &depuis cette partie
+224=Résultats
+223=Connecter...
+222=&Déconnecter
+227=Envoyer message
+104=&Options...
+
+210=&Défaire 2x
+211=&Refaire 2x
+201=Défaire
+202=Refaire
+205=&Commencer
+208=&Fin
+212=&Aller au mouvement...
+203=&Montrer dernier mouvement
+221=&Log window
+
+402=&Un joueur
+401=&deux joueurs
+403=&Demo
+206=Changer de joueur
+404=&Plus difficile
+405=&Plus facile
+406=&Préférences...
+
+302=&Suivant
+303=&Précédent
+301=&Ouvrir...
+304=&Raffraichir
+305=Coup &horizontal
+306=Coup &vertical
+307=Coup &diagonal
+207=Changer de symbols
+309=Montrer la barre des tâches
+310=&Personnaliser la barre des tâches
+
+120=&Readme
+250=&Quoi de neuf
+122=&Télécharger une autre AI
+121=&A propos...
+
+
+; Dialog boxes
+
+12=Options
+511=&Largeur:
+512=&Hauteur:
+545=&Mouvememnt d'ouverture automatique
+568=&Les ouvertures sont aléatoirement tournés
+555=cinq pièces ou plus gagnent
+556=exactement cinq pièces gagnent
+559=jeu simple
+560=jeu en continu
+513=surligner la durée:
+536=ms
+510=&Montrer les coordonnées
+518=&Les coordonées débutent à 1
+516=Nombre de mouvement de fossé par deux
+546=Nombre de mouvements débute à 1
+515=Vérifier le temps mort pour l'ordi
+517=Vérifier le temps mort pour l'humain
+514=&Tolérance:
+535=ms
+519=&Mémoire:
+544=suspendre le pbrain de l'adversaire
+658=Debugguer pbrains
+547=Priorité de processus:
+543=Logging
+540=commandes de message
+541=debugguer les commandes
+542=changer les coordonées et le temps
+509=nettoyer après chaque partie
+549=&Journal de protocole de conduite à un fichier
+557=AI &dossier data:
+548=Envoyer INFO evaluation x,y
+659=Ignorer erreurs de l'AI
+670=Savuvegarder les mouvements annulés
+671=Sons de notification
+672=Règles
+673=Temps mort
+674=Intelligence artificielle
+
+11=A propos
+503=Version
+504=Piskvorky
+
+14=PJoueurs
+520=Joueur 1
+522=Ordi
+523=Humain
+200=. . .
+526=&Tour:
+533=s
+528=&Combinaison:
+531=s
+521=Joueur 2
+524=Ordi
+525=Humain
+530=Les deux joueurs ont la même limite de temps
+527=Tour:
+534=s
+529=Combinaison:
+532=s
+
+15=Tournoi
+569=Continue
+563=&Joueurs  (EXE or ZIP files):
+564=Ajouter
+565=Sauvegarder tableau
+567=&Savegarder messages
+572=&Gomotur format (*.rec)
+573=Perdant seulement
+561=&Compte de répétition:
+562=Compte de jeu:
+577=Max. répétition de lien:
+574=Pause:
+570=Tournoi
+571=Le premier AI contre d'autres
+575=Ordi local
+576=Réseau
+592=port TCP/IP:
+578=Commande à exécuter après chaque partie:
+579=Command à exécuter lorsqu'un tournoi se termine:
+
+16=Résultats tournoi
+606=Table
+566=&Copier dans le presse-papiers
+
+17=Aller au mouvement
+580=Mouvement numéro:
+
+19=Client
+597=connecter à un tournoi d'AI
+598=Jouer avec d'autres humains sur internet
+591=&Server:
+590=&Télécharger AI dans le dossier:
+
+23=Déconnecter
+595=&server
+596=&Numéro client
+
+18=Journal
+4=Fermer
+8=nettoyer
+
+24=Envoyer un message à l'autre joueur
+9=Envoyer
+
+25=Raccourcis clavier
+698=Commande:
+699=Touche:
+
+
+; process priority
+690=inoccupé
+691=en dessous de la normale
+692=normal
+693=au dessus de la normal
+694=élevé
+
+; Toolbar tooltips
+1000=Nouveau jeu
+1001=Ouvrir une position
+1002=Sauvegarder une position
+1003=Options
+1004=Préférences joueurs
+1005=Tournoi
+1006=Log window 
+1007=Tout défaire
+1008=Défaire 2x
+1009=Défaire
+1010=Refaire
+1011=Refaire 2x
+1012=Refaire all
+1013=Ouvrir skin
+1014=Prochain skin
+1015=Précédent skin
+1016=Raffraichir
+1017=Reset score
+1018=Continue
+1019=Pause
+1020=Changer joueur
+1021=Connecter
+1022=Déconnecter
+
+; Window title
+20=Piskvork
+21=Piskvork - client
+22=Piskvork - server
+
+; Status bar
+550=Mouvement %d
+553=Score %d:%d
+554=Internet
+552=Humain
+
+; File filters
+801=Positions sauvegardées (*.psq)\0*.psq\0Gomotur record (*.rec)\0*.rec\0All files\0*.*\0
+500=Skins (*.bmp)\0*.bmp\0
+802=Intelligence artificielle (*.exe,*.zip)\0*.exe;*.com;*.bat;*.zip\0
+814=Etat du tournoi (*.tur)\0*.tur\0
+
+; Keyboard modifiers
+97=Ctrl+
+98=Shift+
+99=Alt+
+
+
+558=Dossier pour les fichier data AI
+736=Veux-tu supprimer tes préférences ?
+810=Veux-tu abandonner le tournoi ?
+
+; Network game
+655=cinq dans une rangée exactement gagne
+654=cinq ou plus dans une rangée gagne
+657=partie continue
+656=partie simple
+872=Tu commences
+873=L'autre joueur commence
+869=Déconnecté
+868=Veux-tu jouer avec %s [%s] ?
+874=L'autre joueur joue déjà avec quelqu'un
+871=Connection établie. EN attente de réponse...
+870=L'autre joueur ne veut pas jouer avec toi !
+876=L'autre joueur veux défaire le dernier mouvement.\r\nEs-tu d'accord ?
+877=L'autre joueur veut démarrer une NOUVELLE partie.\r\nEs-tu d'accord ?
+878=Désolé, l'autre joueur n'accepte pas de défaire ton mouvement.
+879=Désolé, l'autre joueur n'accepte pas de commencer une nouvelle partie.
+866=En attente de l'autre joueur
+867=Ecoute terminée pour les requêtes d'internet
+880=Désolé, l'autre joueur a une ancienne version de Piskvork.exe
+881=Envoyer requête pour défaire...
+882=Envoyer requête pour nouvelle partie...
+
+; Network tournament
+850=Tournoi terminé
+815=Impossible de charger l'état du tournoi
+853=Déconnecté du serveur
+851=Réception %s
+852=Tournoi arrêté
+854=Transmit %s au Client %d, size=%u
+855=Partie démmarée: Joueurs %d x %d,  Client %d
+856=Partie terminée: Joueurs %d x %d, Client %d, mouvements=%d
+857=Client %d déconnecté
+858=Server démmaré
+859=Client %d connecté: %s
+860=Server terminé
+861=Impossible de lier au port %d
+862=Hostname: %s
+863=Server introuvable
+864=Impossible de se connecter au server
+
+; Tournament result
+607=Total
+608=Ratio
+609=Points
+610=illimité
+612=débute de %d, utilisé %d, disponible %d
+611=Non
+613=Oui
+600=Temps par tour: %d %s,   Temps par combinaison: %s\r\nTolerance: %d %s,   Mémoire: %d MB\r\nOpenings: %s\r\nRule: %s\r\nOpening CRC: %x\r\nGames played: %d
+601=\r\n\r\n%s\r\nwins: %d=%d+%d
+602=,   perdu: %d=%d+%d
+603=,  %d erreurs
+604=\r\ntime/turn: %d %s (max: %.1f s),  time/game: %d s\r\nmoves/game: %d,  CRC: %x
+605=,   memory: %.2f MB
+652=%s:  %d %s/turn
+653=\r\n%s wins\r\n
+651=\r\nIt's a draw!\r\n
+
+; Error messages
+816=Impossible de créer le dossier %s
+734=Erreur d'écriture fichier %s
+700=Impossible de créer bitmap pour skin
+701=Bitmap a mauvaise taille
+702=Imossible de lire fichier BMP
+735=Impossible d'écrire dans registre Windows
+739=Fichier %s introuvable
+819=Les messages ne peuvent être envoyer qu'entre joueurs sur internet
+875=Erreur dans %s, ligne %d
+817=%s: Temps mort
+803=Temps dépassé !\r\n\n%s
+730=Impossible d'ouvrir fichier %s
+800=Mauvaises coordonées
+731=format de fichier %s inconnu
+733=Impossible de créer fichier %s
+754=Erreur de lecture fichier %s
+820=Erreur dans le masque d'affinité des préférences! (error %d)
+
+; AI error messages
+806=Impossible de créer le process (error %d)
+865=Extraction %s
+811=Impossible d'ouvrir unzip
+812=Impossible d'extraire fichier de  %s
+808=%s ne répond pas OK au démmarrage command\r\n%s
+818=%s Est sorti inopinément!
+804=%s n'a pas retourné les coordonnées x,y\r\n%s
+805=%s n'a pas créé le fichier %s
+809=%s n'a pas retourné les coordonés x,y
+813=%s alloué %u kB de mémoire
+807=%s retourne un mouvement non valide [%d,%d]
+
+; Errors in .LNG file
+755=Erreur dans %s\nLine %d
+756=Erreur dans %s\nMessage nombre %d est trop gros
+757=Erreur dans %s\nDuplicated nombre %d
+753=Le fichier %s est trop long

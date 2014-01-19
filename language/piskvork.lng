@@ -1,0 +1,332 @@
+13=piskvork.txt
+26=WhatsNew.txt
+1=OK
+2=Cancel
+
+; Menu
+450=&File
+451=Language
+452=&Game
+453=&Move
+454=&Players
+455=&Skin
+456=&Help
+
+106=&Open...
+107=&Save...
+230=&Keyboard shortcuts...
+105=&Delete settings
+103=&Exit
+
+101=&New game
+204=&Reset score
+108=&Pause
+209=&Continue
+220=&Tournament...
+225=Tournament &from this opening
+224=Re&sult
+223=Conn&ect...
+222=&Disconnect
+227=Send &message
+104=&Options...
+
+210=&Undo 2x
+211=&Redo 2x
+201=U&ndo
+202=Re&do
+205=&Beginning
+208=&End
+212=&Go to move...
+203=&Show last move
+221=&Log window
+
+402=&One player
+401=&Two players
+403=&Demo
+206=S&wap players
+404=&Harder
+405=&Easier
+406=&Settings...
+
+302=&Next
+303=&Previous
+301=&Open...
+304=&Refresh
+305=Flip &horizontally
+306=Flip &vertically
+307=Flip &diagonally
+207=&Swap symbols
+309=Show &toolbar
+310=&Customize toolbar
+
+120=&Readme
+250=&What's new
+122=&Download another AI
+121=&About...
+
+
+; Dialog boxes
+
+12=Options
+511=&Width:
+512=&Height:
+545=&Automatic opening moves
+568=&Openings are randomly rotated
+555=five or mo&re stones win
+556=e&xactly five stones win
+559=singl&e game
+560=c&ontinuous game
+513=H&ilight duration :
+536=ms
+510=&Show coordinates
+518=&Coordinates start from 1
+516=Divide move number by two
+546=Move number starts &from 1
+515=Chec&k timeout for computer
+517=Check timeout for h&uman
+514=&Tolerance:
+535=ms
+519=&Memory:
+544=Suspend opponent's &pbrain
+658=Debug pbrains
+547=Process priority:
+543=Logging
+540=messa&ge commands
+541=de&bug commands
+542=mo&ves coordinates and time
+509=clear after ever&y game
+549=&Log pipe protocol to a file
+557=AI &data folder:
+548=Send INFO evaluate x,y
+659=Ignore errors from AI
+670=Save undo moves
+671=Sound &notifications
+672=Rules
+673=Timeouts
+674=Artificial intelligence
+
+11=About
+503=Version
+504=Piskvorky
+
+14=Players
+520=Player 1
+522=Computer
+523=Human
+200=. . .
+526=&Turn:
+533=s
+528=&Match:
+531=s
+521=Player 2
+524=Computer
+525=Human
+530=Both players have the &same time limits
+527=T&urn:
+534=s
+529=M&atch:
+532=s
+
+15=Tournament
+569=Continue
+563=&Players  (EXE or ZIP files):
+564=A&dd
+565=Save &boards
+567=&Save messages
+572=&Gomotur format (*.rec)
+573=Onl&y losses
+561=&Repeat count:
+562=Games cou&nt:
+577=Max. t&ie repeats:
+574=Paus&e:
+570=To&urnament
+571=The &first AI against others
+575=&Local computer
+576=Networ&k
+592=TCP/IP  p&ort:
+578=Command to e&xecute after each game:
+579=Command to execute &when a tournament finished:
+
+16=Tournament result
+606=&Table
+566=&Copy to clipboard
+
+17=Go to move
+580=Move number:
+
+19=Client
+597=Connect to an AIs &tournament
+598=Play with another &human over the internet
+591=&Server:
+590=&Download AI to folder:
+
+23=Disconnect
+595=&server
+596=&client number
+
+18=Log
+4=Close
+8=Clear
+
+24=Send message to the other player
+9=Send
+
+25=Keyboard shortcuts
+698=Command:
+699=Key:
+
+
+; process priority
+690=idle
+691=below normal
+692=normal
+693=above normal
+694=high
+
+; Toolbar tooltips
+1000=New game
+1001=Open position
+1002=Save position
+1003=Options
+1004=Players settings
+1005=Tournament
+1006=Log window 
+1007=Undo all
+1008=Undo 2x
+1009=Undo
+1010=Redo
+1011=Redo 2x
+1012=Redo all
+1013=Open skin
+1014=Next skin
+1015=Previous skin
+1016=Refresh
+1017=Reset score
+1018=Continue
+1019=Pause
+1020=Swap players
+1021=Connect
+1022=Disconnect
+
+; Window title
+20=Piskvork
+21=Piskvork - client
+22=Piskvork - server
+
+; Status bar
+550=Move %d
+553=Score %d:%d
+554=Internet
+552=Human
+
+; File filters
+801=Saved positions (*.psq)\0*.psq\0Gomotur record (*.rec)\0*.rec\0All files\0*.*\0
+500=Skins (*.bmp)\0*.bmp\0
+802=Artifical inteligence (*.exe,*.zip)\0*.exe;*.com;*.bat;*.zip\0
+814=Tournament state (*.tur)\0*.tur\0
+
+; Keyboard modifiers
+97=Ctrl+
+98=Shift+
+99=Alt+
+
+
+558=Folder for AI data files
+736=Do you want to delete your settings ?
+810=Do you want to abort the tournament ?
+
+; Network game
+655=Exactly five in a row win
+654=Five or more in a row win
+657=Continuous game
+656=Single game
+872=You begin
+873=The other player begins
+869=Disconnected
+868=Do you want to play with %s [%s] ?
+874=The other player is already playing with someone else
+871=Connection established. Waiting for response...
+870=The other player doesn't want to play with you !
+876=The other player wants to UNDO the last move.\r\nDo you agree ?
+877=The other player wants to start a NEW game.\r\nDo you agree ?
+878=Sorry, the other player does not allow to UNDO your move.
+879=Sorry, the other player does not allow to start a NEW game.
+866=Waiting for the other player
+867=Finished listening for requests from the internet
+880=Sorry, the other player has older version of Piskvork.exe
+881=Sending undo request...
+882=Sending a new game request...
+
+; Network tournament
+850=Tournament finished
+815=Cannot load a tournament state
+853=Disconnected from server
+851=Receiving %s
+852=Tournament aborted
+854=Transmit %s to Client %d, size=%u
+855=Game started: players %d x %d,  Client %d
+856=Game finished: players %d x %d, Client %d, moves=%d
+857=Client %d disconnected
+858=Server started
+859=Client %d connected: %s
+860=Server terminated
+861=Cannot bind to port %d
+862=Hostname: %s
+863=Server not found
+864=Cannot connect to server
+
+; Tournament result
+607=Total
+608=Ratio
+609=Points
+610=unlimited
+612=start from %d, used %d, available %d
+611=No
+613=Yes
+600=Time for turn: %d %s,   Time for match: %s\r\nTolerance: %d %s,   Memory: %d MB\r\nOpenings: %s\r\nRule: %s\r\nOpening CRC: %x\r\nGames played: %d
+601=\r\n\r\n%s\r\nwins: %d=%d+%d
+602=,   losses: %d=%d+%d
+603=,  %d errors
+604=\r\ntime/turn: %d %s (max: %.1f s),  time/game: %d s\r\nmoves/game: %d,  CRC: %x
+605=,   memory: %.2f MB
+652=%s:  %d %s/turn
+653=\r\n%s wins\r\n
+651=\r\nIt's a draw!\r\n
+
+; Error messages
+816=Cannot create folder %s
+734=Write error, file %s
+700=Cannot create bitmap for skin
+701=Bitmap has wrong size
+702=Can't read BMP file
+735=Cannot write to Windows registry
+739=File %s not found
+819=Messages can be sent only between two players over the internet
+875=Error in %s, line %d
+817=%s: Timeout
+803=Time out !\r\n\n%s
+730=Cannot open file %s
+800=Wrong coordinates
+731=Unknown format of file %s
+733=Cannot create file %s
+754=Error reading file %s
+820=Error setting affinity mask! (error %d)
+
+; AI error messages
+806=Can't create process (error %d)
+865=Extracting %s
+811=Can't run unzip
+812=Cannot extract files from %s
+808=%s did not answer OK to the START command\r\n%s
+818=%s has exited unexpectedly !
+804=%s has not returned coordinates x,y\r\n%s
+805=%s has not created file %s
+809=%s has not returned coordinates x,y
+813=%s allocated %u kB of memory
+807=%s returned invalid move [%d,%d]
+
+; Errors in .LNG file
+755=Error in %s\nLine %d
+756=Error in %s\nMessage number %d is too big
+757=Error in %s\nDuplicated number %d
+753=File %s is too long
