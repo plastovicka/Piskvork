@@ -1,0 +1,156 @@
+8.5. (31.7.2011)
+nové parametry pøíkazové øádky, viz piskvork_CZ.txt
+zvukové oznámení (lze povolit v monostech)
+pøepínaè "pøesnì pìt vyhrává" v oknì Turnaj
+monost "Ukládat vrácené tahy", normálnì je vypnuto, co je jiné ne v pøedchozích verzích
+ve vısledcích turnaje je navíc pravidlo a CRC zahájení
+v dávkovém spouštìní jsou chyby AI zapisovány na standardní chybovı vıstup
+v menu Nápovìda je odkaz "Stáhnout další AI"
+nejmenší velikost hrací plochy je 5x5
+pøidán novı vzhled (skin)
+opraveno: panel nástrojù nešel upravovat ve Windows Vista/7
+opraveno: parametr -tmppsq zpùsoboval chyby pøístupu k souboru z více procesù
+opraveno: zatuhnutí na konci hry, pokud byla spuštìna z pøíkazového øádku
+
+8.4 (13.4.2009)
+monost nastavení vyuití jader procesoru parametrem -a <maska>
+generování prùbìnıch psq souborù pøi turnaji se zapíná parametrem -tmppsq
+
+8.3 (28.4.2008)
+monost "Náhodnì otáèet zahájení"
+soubor openings.txt obsahuje také první tahy (není kompatibilní s pøedchozími verzemi, které pøedpokládaly, e první tah byl vdy uprostøed hrací plochy)
+Hra/"Turnaj s tímto zahájením"
+pøi turnaji je hra ukládána po kadém tahu do podsloky tmp ve sloce turnaje 
+na konec psq souboru se ukládá chybovı kód dùvodu ukonèení partie (má vıznam jen pøi turnaji na lokálním poèítaèi)
+opraveny chyby pøekreslování pøi vícenásobném spuštìní aplikace na poèítaèi s vícejádrovım procesorem
+
+8.2 (25.5.2006)
+lze zmìnit velikost logovacího okna a okna s vısledky turnaje
+ve vısledcích turnaje je celkovı poèet zahájení
+monost ignorovat chybové hlášky od AI
+ 
+8.1 (13.3.2006)
+opraveno: chybná inicializace AI, kdy bylo povoleno "Ladit pbrain"
+pøidán css styl k vısledkùm turnaje
+
+8.0 (25.3.2006)
+monost kontinuální hry
+klávesové zkratky a panel nástrojù lze upravit
+pøi høe pøes internet fungují tlaèítka Zpìt a Nová hra,
+ pøi stisku klávesy se aktivuje dialogové okno se zprávou,
+ po odeslání zprávy okno zùstane aktivní
+tlaèítko Vymazat v logovacím oknì, 
+ monost vypnout automatické mazání logovacího okna
+zpráva ze souboru msg.dat se zobrazí, i kdy je tah.dat chybnı
+dávkové spouštìní s parametrem -p
+
+7.9 (19.12.2005)
+monost zvolit sloku, kam AI ukládá svoje data
+
+7.8 (23.11.2005)
+èas se mìøí s pøesností na milisekundy
+dvojklik na jméno hráèe na stavovém øádku zobrazí okno pro otevøení AI
+
+7.7 (26.6.2005)
+pøi Zpìt se posílá pøíkaz TAKEBACK
+doba inicializace AI se nezapoèítává do èasu na tah
+
+7.6 (3.6.2005)
+monost hrát podle pravidla "pøesnì pìt v øadì vyhrává"
+soubor info.dat pro AI, které komunikuje starım protokolem
+
+7.5 (3.5.2005)
+hra dvou lidí pøes internet
+automatická zahájení se naèítají ze souboru openings.txt
+monost ukládat do souboru pøíkazy mezi manaerem a pbrainem
+
+7.3 (21.4.2005)
+zprávy od AI, které komunikuje souborovım protokolem
+AI se neukonèuje, ale pošle se mu pøíkaz RESTART (ale ne bìhem turnaje)
+pøi obdélníkové ploše se místo pøíkazu START posílá RECTSTART
+ve vısledku turnaje je u kadého AI napsáno CRC
+
+7.2 (16.4.2005)
+pøi turnaji se zprávy ukládají do souboru messages.txt
+turnaj\Poèet partií
+èas na tah se zadává v sekundách (ale nemusí bıt celé èíslo)
+pokud sloka pro ukládání vısledkù ještì neexistuje, tak se vytvoøí
+vısledky jsou setøídìny podle poètu bodù, pomìru, vzájemného zápasu
+
+7.1 (10.4.2005)
+opakování partie pøi remíze
+html tabulka (pøi turnaji kadı s kadım)
+vısledek turnaje se ukládá do textového souboru
+ve vısledku je celkovı poèet her a poèty tahù/partii
+ukládá se stav turnaje, aby se po pøerušení mohlo pokraèovat
+pøi turnaji pøekroèení pamìového limitu znamená prohru
+spouštìní externího pøíkazu po kadé høe nebo na konci turnaje
+
+7.0 (5.4.2005)
+turnaj distribuovanı na více poèítaèù
+AI je znovu spuštìno, pokud ho druhé AI zabije
+nastavení priority AI procesu
+vısledek turnaje je nemodální okno a lze zobrazit z menu Hra/Vısledek
+kadá instance aplikace si vytvoøí svùj doèasnı adresáø
+
+6.7 (28.3.2005)
+monost pøi turnaji ukládat jen ty partie, kdy 1.hráè prohrál
+ve vısledku turnaje je max. doba pøemıšlení a vıhry/prohry rozdìleny na zaèínal/nezaèínal
+monost èíslovat tahy od 0 nebo od 1
+pøed turnajem lze tlaèítkem "Pøidat" najednou vybrat více EXE souborù
+pøi spouštìní z pøíkazové øádky lze zadat parametr PSQ soubor
+
+6.6 (13.3.2005)
+automatické zahájení
+panel nástrojù
+u èasù se zobrazují èáry udávající zbıvající èas
+
+6.5 (10.3.2005)
+monost pozastavovat pbrain, kterı není na øadì
+
+6.4 (7.3.2005)
+mìøení pouité pamìti pøi turnaji
+logovací okno
+
+6.3 (5.3.2005)
+ukládání do formátu Gomotur
+
+6.2 (20.1.2005)
+zobrazení èísel podél hrací plochy
+monost indexovat souøadnice od 1
+pøi ukládání partie se do souboru zapíše také èas
+automatické ukládání všech partií turnaje
+vısledek turnaje je setøídìn
+turnaj lze pøerušit stiskem Esc
+bìhem turnaje lze mezivısledky zobrazit stiskem F12
+pøi otevírání partie s Ctrl se ignorují informace o hráèích
+AI mají jako pracovní adresáø nastaven TEMP
+pøíkaz jít na tah z danım èíslem
+zpìt funguje i bìhem pøemıšlení poèítaèe
+
+6.0 (15.10.2004)
+umìlá inteligence pøesunuta do pbrain-pela.EXE
+pøevrácení horizontálnì/vertikálnì/diagonálnì
+kontrola èasu
+turnaj
+
+5.4 (14.4.2003)
+mìøení èasu
+
+5.2 (22.10.2002)
+podpora více jazykù
+BMP vzhledu obsahuje barvu písma a vıherní èáry
+
+4.3 (10.7.2002)
+lze mìnit vzhled
+
+4.2 (12.3.2002)
+funkce Otevøít,Uloit,Prohodit symboly
+zrychlen algoritmus
+
+3.0 (10.9.2001)
+verze pro Windows v C++
+pøemıšlení do hloubky - více obtíností
+
+1.0 (2000)
+verze pro DOS v Pascalu
