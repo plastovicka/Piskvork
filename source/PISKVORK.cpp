@@ -191,8 +191,8 @@ ACCEL accel[Maccel];
 ACCEL dlgKey;
 HANDLE thread, pipeThread;
 HMODULE psapi;
-COLORREF colors[3];
-CRITICAL_SECTION timerLock;
+COLORREF colors[3]; //background, text, winning line
+CRITICAL_SECTION timerLock, drawLock;
 SIZE szScore, szCoord, szMove, szName[2], szTimeGame[2], szTimeMove[2];
 
 TmemInfo getMemInfo;
@@ -318,6 +318,8 @@ void vprint(int x, int y, SIZE *sz, char *format, va_list va)
 	int n;
 
 	n = vsprintf(buf, format, va);
+	
+	EnterCriticalSection(&drawLock);
 	SetTextAlign(dc, TA_CENTER);
 	if(sz){
 		rc.left= x-(sz->cx>>1);
@@ -329,6 +331,7 @@ void vprint(int x, int y, SIZE *sz, char *format, va_list va)
 		}
 	}
 	ExtTextOut(dc, x, y, sz ? ETO_OPAQUE : 0, &rc, buf, n, 0);
+	LeaveCriticalSection(&drawLock);
 }
 
 void print(int x, SIZE *sz, char *format, ...)
@@ -796,6 +799,7 @@ void printTime(int pl)
 	int W;
 	static const int X1[2]={60, 940}, X2[2]={45, 955};
 
+	EnterCriticalSection(&drawLock);
 	//prepare pens
 	pen0= CreatePen(PS_SOLID, 0, colors[0]);
 	pen1= CreatePen(PS_SOLID, 0, colors[1]);
@@ -826,7 +830,7 @@ void printTime(int pl)
 			x=0;
 		}
 		SelectObject(dc, pen0);
-		line(x0+x, y, x0+W, y);
+		if(x<W) line(x0+x, y, x0+W, y);
 	}
 	//game time
 	t/=1000;
@@ -846,13 +850,14 @@ void printTime(int pl)
 				x=0;
 			}
 			SelectObject(dc, pen0);
-			line(x0+x, y, x0+W, y);
+			if(x<W) line(x0+x, y, x0+W, y);
 		}
 	}
 	//delete pens
 	SelectObject(dc, oldP);
 	DeleteObject(pen1);
 	DeleteObject(pen0);
+	LeaveCriticalSection(&drawLock);
 }
 
 bool getWinLine(Psquare p, Psquare &p2)
@@ -2591,9 +2596,11 @@ LRESULT CALLBACK MainWndProc(HWND hWnd, UINT mesg, WPARAM wP, LPARAM lP)
 			break;
 
 		case WM_PAINT:
+			EnterCriticalSection(&drawLock);
 			BeginPaint(hWnd, &ps);
 			repaint(&ps.rcPaint);
 			EndPaint(hWnd, &ps);
+			LeaveCriticalSection(&drawLock);
 			break;
 
 		case WM_NOTIFY:
@@ -2859,6 +2866,7 @@ int pascal WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR, int cmdShow)
 		WS_OVERLAPPEDWINDOW-WS_THICKFRAME-WS_MAXIMIZEBOX, mainPos.x, mainPos.y,
 		0, 0, NULL, NULL, hInstance, NULL);
 	if(!hWin) return 12;
+	InitializeCriticalSection(&drawLock);
 	dc= GetDC(hWin);
 	//create toolbar
 	int n=sizeA(tbb);
@@ -2942,6 +2950,7 @@ int pascal WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR, int cmdShow)
 	delete[] board;
 	delete[] turTable;
 	delete[] turCells;
+	DeleteCriticalSection(&drawLock);
 	DeleteCriticalSection(&netLock);
 	DeleteCriticalSection(&threadsLock);
 	DeleteCriticalSection(&timerLock);
