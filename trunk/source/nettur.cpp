@@ -667,11 +667,11 @@ DWORD WINAPI serverLoop(void *param)
 	TturCell *ce;
 	SOCKET sock_c;
 	TturPlayer *tt[2], *rr[2], *t, *r;
-	int i, c, len, len1, m, id[2];
+	int i, c, len, len1, m, id[2], movesOld;
 	DWORD w, fileSize;
 	HANDLE h;
 	TgameSettings *b;
-	Psquare p, B;
+	Psquare p, B, lastMoveOld;
 	u_long u;
 	char *s, *A, *q, *M;
 	signed char *o1, *o2;
@@ -814,6 +814,8 @@ DWORD WINAPI serverLoop(void *param)
 		}
 		//save position
 		if(A){
+			lastMoveOld=lastMove;
+			movesOld=moves;
 			B=new Tsquare[m];
 			q=A;
 			p=B;
@@ -843,7 +845,8 @@ DWORD WINAPI serverLoop(void *param)
 			saveRec(-1, false);
 			players[0].turPlayerId=id[0];
 			players[1].turPlayerId=id[1];
-			lastMove=0;
+			lastMove=lastMoveOld;
+			moves=movesOld;
 			delete[] B;
 			delete[] A;
 		}
