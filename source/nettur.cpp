@@ -364,6 +364,7 @@ void TturSettings::use()
 	::autoBegin=autoBegin;
 	turRule=rule;
 	turGamesCounter=gameCount;
+	amin(turRepeat, repeat);
 	turCurRepeat=turRepeat-repeat;
 	turMatchRepeat= matchRepeat ? matchRepeat : 2;
 	openingRandomShiftT=openingRandomShift;
