@@ -331,6 +331,7 @@ void vprint(int x, int y, SIZE *sz, char *format, va_list va)
 		}
 	}
 	ExtTextOut(dc, x, y, sz ? ETO_OPAQUE : 0, &rc, buf, n, 0);
+	GdiFlush();
 	LeaveCriticalSection(&drawLock);
 }
 
@@ -857,6 +858,7 @@ void printTime(int pl)
 	SelectObject(dc, oldP);
 	DeleteObject(pen1);
 	DeleteObject(pen0);
+	GdiFlush();
 	LeaveCriticalSection(&drawLock);
 }
 
