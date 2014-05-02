@@ -153,12 +153,23 @@ void setPriority(HANDLE process)
 
 int Tplayer::createProcess(bool pipe, STARTUPINFO &si)
 {
+	//add quotes
+	char *exe=brain2;
+	char buf[sizeof(TfileName)+2];
+	if(exe[0]!='"'){
+		buf[0]='"';
+		size_t len = strlen(brain2);
+		memcpy(buf+1, exe, len);
+		buf[len+1]='"';
+		exe=buf;
+	}
+	//start process
 	si.cb=sizeof(STARTUPINFO);
 	si.wShowWindow = SW_HIDE;
 	si.dwFlags |= STARTF_USESHOWWINDOW | STARTF_FORCEOFFFEEDBACK;
 	PROCESS_INFORMATION pi;
 	UINT m= SetErrorMode((ignoreErrors || isClient) ? SEM_FAILCRITICALERRORS|SEM_NOGPFAULTERRORBOX : 0);
-	if(!CreateProcess(0, brain2, 0, 0, pipe ? TRUE : FALSE,
+	if(!CreateProcess(0, exe, 0, 0, pipe ? TRUE : FALSE,
 		0, 0, tempDir, &si, &pi)){
 		errMsg(lng(806, "Can't create process (error %d)"), GetLastError());
 		return 1;
