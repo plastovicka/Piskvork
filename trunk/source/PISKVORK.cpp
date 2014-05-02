@@ -1680,11 +1680,11 @@ BOOL CALLBACK clientProc(HWND hWnd, UINT msg, WPARAM wP, LPARAM)
 					EnableWindow(GetDlgItem(hWnd, 103), e);
 					break;
 				case IDOK:
-					if(!checkDir(hWnd, 103)) break;
+					whoConnect= getRadioButton(hWnd, 597, 598);
+					if(whoConnect==0 && !checkDir(hWnd, 103)) break;
 					GetDlgItemText(hWnd, 101, servername, sizeof(servername));
 					port= GetDlgItemInt(hWnd, 110, NULL, FALSE);
 					GetDlgItemText(hWnd, 103, AIfolder, sizeof(AIfolder));
-					whoConnect= getRadioButton(hWnd, 597, 598);
 					if(whoConnect ? netGameStart() : clientStart()){
 						SetFocus(GetDlgItem(hWnd, 101));
 						break;
