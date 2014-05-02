@@ -2197,7 +2197,7 @@ LRESULT CALLBACK MainWndProc(HWND hWnd, UINT mesg, WPARAM wP, LPARAM lP)
 					DialogBox(inst, "ABOUT", hWnd, (DLGPROC)AboutProc);
 					break;
 				case 122: //Download another AI	
-					ShellExecute(NULL, "open", "http://gomocup.wz.cz/gomoku/download.php?source=piskvork", NULL, NULL, SW_SHOWNORMAL);
+					ShellExecute(NULL, "open", "http://gomocup.org/download/", NULL, NULL, SW_SHOWNORMAL);
 					break;
 				case 310:
 					SendMessage(toolbar, TB_CUSTOMIZE, 0, 0);
