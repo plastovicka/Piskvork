@@ -32,10 +32,14 @@ void initOpeningTab(char *filename)
 	signed char buf2[256], *o;
 	TfileName fn;
 
+	char* filename0 = filename;
 	if(!filename) filename=fnOpenings;
 	getExeDir(fn, filename);
 	f=fopen(fn, "rt");
-	if(!f) return;
+	if(!f){
+		if(filename0 && autoBegin) msglng(730, "Cannot open file %s", filename); //show error only if it's tournament
+		return;
+	}
 	//find out number of lines
 	for(n=0;; n++){
 		if(!fgets(buf1, sizeof(buf1), f)) break;
@@ -872,8 +876,9 @@ int turTestCRC()
 
 void turStart(char* openingFileName)
 {
+	if(!openingFileName) openingFileName=fnOpenings;
 	initOpeningTab(openingFileName);
-	calcCRC(openingFileName ? openingFileName : fnOpenings, openingCRC);
+	calcCRC(openingFileName, openingCRC);
 	if(turStart1()) return;
 	EnterCriticalSection(&netLock);
 	if(!getNplayers() && !turCRC()){
