@@ -1,3 +1,13 @@
+8.6 (2.5.2014)
+varování pokud pøi turnaji nelze otevøít soubor openings.txt
+hláška "Nenalezen soubor" místo "Nepodaøilo se spustit proces (chyba 2)"
+webové stránky pøesunuty z gomocup.wz.cz na gomocup.org
+opraveno: skore nebylo aktualizováno bìhem kontinuální hry
+opraveno: grafické chyby pøi síovém turnaji
+opraveno: sloka pro staené soubory byla vyadována pøi høe dvou lidí pøes internet
+opraveno: nešlo spustit AI proces, pokud v názvu souboru byla mezera
+opraveno: chyba pøi kliknutí do okna serveru po skonèení síového turnaje
+
 8.5. (31.7.2011)
 nové parametry pøíkazové øádky, viz piskvork_CZ.txt
 zvukové oznámení (lze povolit v monostech)

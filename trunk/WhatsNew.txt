@@ -1,4 +1,14 @@
-8.5. (31 July 2011)
+8.6 (2 May 2014)
+warning is shown if tournament is started and file openings.txt can't be opened
+message "File not found" instead of "Can't create process (error 2)"
+download page moved from gomocup.wz.cz to gomocup.org
+Fixed bug: score was not updated during continuous game
+Fixed bug: drawing issues during network tournament
+Fixed bug: folder for AI was required for human network game
+Fixed bug: could not start AI process if there was space in file name
+Fixed bug: crash if right-click into server window after network tournament finished
+
+8.5 (31 July 2011)
 new command line arguments, see piskvork.txt
 sound notifications (can be enabled in options)
 "exactly five stones wins" radio button in the Tournament window
@@ -22,7 +32,7 @@ file openings.txt contains first moves (it is not compatible with old openings f
 Game/"Tournament from this opening"
 game is saved after every move into tmp subfolder under a tournament folder
 game error code is saved at the end of a psq file (only during tournament on a local computer)
-fixed redrawing bugs on multicore pc
+fixed redrawing bugs on multi-core pc
 
 8.2 (25 May 2006)
 log window and tournament result window are resizeable
@@ -48,7 +58,7 @@ option to select folder where AI can store its data files
 
 7.8 (23 November 2005)
 time precision is 1 millisecond
-double-click on player's name on the statusbar to show window to open AI 
+double-click on player's name on the status bar to show window to open AI 
 
 7.7 (26 June 2005)
 Undo uses a command TAKEBACK
