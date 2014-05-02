@@ -171,7 +171,9 @@ int Tplayer::createProcess(bool pipe, STARTUPINFO &si)
 	UINT m= SetErrorMode((ignoreErrors || isClient) ? SEM_FAILCRITICALERRORS|SEM_NOGPFAULTERRORBOX : 0);
 	if(!CreateProcess(0, exe, 0, 0, pipe ? TRUE : FALSE,
 		0, 0, tempDir, &si, &pi)){
-		errMsg(lng(806, "Can't create process (error %d)"), GetLastError());
+		DWORD err= GetLastError();
+		if(err==ERROR_FILE_NOT_FOUND) errMsg(lng(739, "File not found: %s"), brain2);
+		else errMsg(lng(806, "Can't create process (error %d)"), err);
 		return 1;
 	}
 	SetErrorMode(m);
