@@ -1,0 +1,330 @@
+1=OK
+2=Cancel·lar
+
+; Menu
+450=&Fitxer
+451=Llenguatge
+452=&Joc
+453=&Moure
+454=&jugadors
+455=&Skin
+456=&Ajuda
+
+106=&Obrir...
+107=&Guardar...
+230=&dreceres de teclat ...
+105=&Esborrar configuració
+103=&Sortir
+
+101=&Nou Joc
+204=&Esborrar puntuació
+108=&Pausa
+209=&Continuar
+220=&Torneig...
+225=Torneig &des d'aquest obertura
+224=Re&sultat
+223=Conn&ectar...
+222=&DesConnectarar
+227=Enviar &missatge
+104=&Opcions...
+
+210=&Desfer 2x
+211=&Refer 2x
+201=D&esfer
+202=Re&fer
+205=&Començament
+208=&Final
+212=&Anar a moviment...
+203=&Mostrar últim moviment
+221=&finestra de logs
+
+402=&Un jugador
+401=&Dos jugadors
+403=&Demo
+206=I&ntercanviar jugadors
+404=&Més difícil
+405=&Més fàcil
+406=&configuració...
+
+302=&Proper
+303=&Anterior
+301=&Obrir...
+304=&Refrescar
+305=Capgirar &horitzontalment
+306=Capgirar &verticalment
+307=Capgirar &diagonalment
+207=&Intercanviar símbols
+309=Mostrar &barra d'eines
+310=&Personalitzar barra d'eines
+
+120=&Llegeix-me
+250=&Què h ha de nou
+122=&Descarregar un altre AI
+121=&Sobre...
+
+
+; caixes de Diàleg 
+
+12=Opcions
+511=&Ample:
+512=&Alt:
+545=&Moviments automàtics d'obertura
+568=&Obertures son aleatoriament rotades
+555=cinc o més pedres guanyen
+556=e&xactament 5 pedres guanyen
+559=Joc simpl&e
+560=Joc c&ontinu
+513=Remarcar durada :
+536=ms
+510=&Mostrar coordenades
+518=&coordenades començant desde 1
+516=Dividir el número de moviments per dos
+546=El número de moviments comença des &de 1
+515=Compro&var el temps d'inactivitat per a l'ordinador
+517=Comprovar temps d'inactivitat per h&umà
+514=&Tolerancia:
+535=ms
+519=&Memòria:
+544=Usupendre el cervell de l'o&ponent
+658=Debug cervells
+547=prioritat del process :
+543=Logging
+540=missat&ge Commandamentaments
+541=de&bug Commandamentaments
+542=coordenades i temps dels mo&viments
+509=netejar després de cada Joc
+549=&Log protocol de pipe a Fitxer
+557=carpetes de les dades d'AI:
+548=Enviar INFO evaluar x,y
+659=ignorar errors desde AI
+670=Guardar moviments de desfer
+671=Sons de les &notificacions
+672=Regles
+673=temps d'inactivitat
+674=Intel·ligència Artificial
+
+11=Sobre
+503=Versió
+504=Piskvorky
+
+14=jugadors
+520=jugador 1
+522=ordinador
+523=Humà
+200=. . .
+526=&Torn:
+533=s
+528=&Partida:
+531=s
+521=jugador 2
+524=ordinador
+525=Humà
+530=Ambdós jugador&s tenen els mateixos límits de temps
+527=T&orn:
+534=s
+529=P&artit:
+532=s
+
+15=Torneig
+569=Continuar
+563=&jugadors  (Fitxers EXE o ZIP ):
+564=A&fagir
+565=Guardar &taulers
+567=&Guardar missatges
+572=&Gomotur format (*.rec)
+573=Només pèrdues
+561=&Repetir comptador:
+562=Jocs co&mptador:
+577=Max. t&ie repeticions:
+574=Paus&a:
+570=To&rneig
+571=La primera AI contra els altres
+575=&ordinador Local
+576=&Xarxa
+592=p&ort TCP/IP:
+578=Commandament per a e&xecutar després de cada Joc:
+579=Commandament per a executar &quan el Torneig hagi acabat:
+
+16=resultat del Torneig 
+606=&Taula
+566=&Copiar al portapapers
+
+17=Anar a 
+580=Moviment número:
+
+19=Client
+597=Connectar a un &Torneig d'AIs 
+598=Jugar amb un altre &Humà a través d'internet
+591=&Servidor:
+590=&Descarregar AI a la carpeta:
+
+23=DesConnectar
+595=&Servidor
+596=&client número
+
+18=Log
+4=Tancar
+8=Netejar
+
+24=Enviar missatge a un altre jugador
+9=Enviar
+
+25=Teclat dreceres
+698=Commandament:
+699=Tecla:
+
+
+; prioritat del procés 
+690=baix
+691=Per sota del normal
+692=normal
+693=per sobre del normal
+694=alt
+
+; trucs de la barra d'eines 
+1000=Nou Joc
+1001=Obrir posició
+1002=Guardar posició
+1003=Opcions
+1004=jugadors configuració
+1005=Torneig
+1006=finstra de Log
+1007=Desfer tot
+1008=Desfer 2x
+1009=Desfer
+1010=Refer
+1011=Refer 2x
+1012=Refer tot
+1013=Obrir skin
+1014=Proper skin
+1015=Anterior skin
+1016=Refrescar
+1017=Esborrar puntuació
+1018=Continuar
+1019=Pausa
+1020=Intercanviar jugadors
+1021=Connectar
+1022=DisConnectar
+
+; titol de la finestra
+20=Piskvork
+21=Piskvork - client
+22=Piskvork - Servidor
+
+; barra d'estat
+550=Moure %d
+553=puntuació %d:%d
+554=Internet
+552=Humà
+
+; Fitxer filters
+801=posicions guardades (*.psq)\0*.psq\0Gomotur record (*.rec)\0*.rec\0Tots els Fitxers\0*.*\0
+500=Skins (*.bmp)\0*.bmp\0
+802=intel·ligencia Artifical  (*.exe,*.zip)\0*.exe;*.com;*.bat;*.zip\0
+814=Estat del Torneig (*.tur)\0*.tur\0
+
+; MOdificadors del Teclat
+97=Ctrl+
+98=Shift+
+99=Alt+
+
+
+558=carpeta per als fitxers de dades d'AI
+736=Vols Esborrar la teva configuració ?
+810=Vols abortar el Torneig ?
+
+; Joc en xarxa
+655=Exactament cinc en una fila guanyen
+654=cinc or more en una fila guanyen
+657=Joc continu
+656=Joc simple
+872=Tu comences
+873=L'altre jugador comença
+869=DesConnecta de la red
+868=Vols jugar amb %s [%s] ?
+874=L'altre jugador encara esta jugant amb algú altre
+871=Connexió establerta. Esperant una resposta...
+870=L'altre jugador no vol jugar amb tu!
+876=L'altre jugador vol Desfer l'últim moviment.\r\nHi estas d'acord ?
+877=L'altre jugador vol començant un Joc nou.\r\nHi estas d'acord ?
+878=Ho sento, L'altre jugador no et permet Desfer el teu moviment.
+879=Ho sento, L'altre jugador no et permet començar un Joc nou.
+866=Esperant a l'altre jugador
+867=S'ha acabat l'escolta per a respostes des d'internet
+880=Ho sento, L'altre jugador té una versió més antiga de Piskvork.exe
+881=Enviant peticióde Desfer ...
+882=Enviant petició de Joc nou ...
+
+; Torneig en xarxa
+850=Torneig finished
+815=No es pot carregar un estat de Torneig 
+853=DesConnectat del Servidor
+851=Rebent %s
+852=Torneig abortat
+854=Trametre %s al Client %d, tamany=%u
+855=Joc començat: jugadors %d x %d,  Client %d
+856=Joc acabat: jugadors %d x %d, Client %d, Moviments=%d
+857=Client %d desConnectatred
+858=Servidor començat
+859=Client %d Connectat: %s
+860=El Servidor ha acabat
+861=No es pot connectar al port %d
+862=Hostname: %s
+863=Servidor no trobat
+864=No es pot Connectar al Servidor
+
+; Torneig resultat
+607=Total
+608=Ratio
+609=Punts
+610=il·limitat
+612=començant desde %d, usat %d, disponible %d
+611=No
+613=Si
+600=Temps per torn: %d %s,   Temps for partit: %s\r\nTolerance: %d %s,   Memòria: %d MB\r\nObertures: %s\r\nRegla: %s\r\nObrint CRC: %x\r\nJocs jugats: %d
+601=\r\n\r\n%s\r\nvictòries: %d=%d+%d
+602=,   derrotes: %d=%d+%d
+603=,  %d errors
+604=\r\nTemps/torn: %d %s (max: %.1f s),  Temps/Joc: %d s\r\nMoviments/Joc: %d,  CRC: %x
+605=,   Memòria: %.2f MB
+652=%s:  %d %s/torn
+653=\r\n%s victòries\r\n
+651=\r\nÉs un empat!\r\n
+
+; missatges d'Error
+816=No es pot crear la carpeta %s
+734=error d'Escriptura , Fitxer %s
+700=No es pot crear bitmap per l'skin
+701=El Bitmap té un tamany erroni
+702=No és pot llegir el Fitxer BMP 
+735=No es pot escriure al registre de Windows
+739=Fitxer %s no s'ha trobat
+819=els missatges només es poden enviar entre dos jugadors per internet
+875=Error a %s, linia %d
+817=%s: temps d'inactivitat
+803=s'ha esgotat el temps !\r\n\n%s
+730=No es pot Obrir el Fitxer %s
+800=coordenades equivocades
+731=format desconegut del Fitxer %s
+733=No es pot crear el Fitxer %s
+754=Error llegint el Fitxer %s
+820=Error establint la màscara d'afinitat! (error %d)
+
+; missatges d'error AI  
+806=No es pot crear el procés (error %d)
+865=Extraient %s
+811=No es pot descomprimir
+812=No es pot extreure els Fitxers desde %s
+808=%s no has contestat OK al Commandament del començar\r\n%s
+818=%s has Sortit inesperadament !
+804=%s no ha retornat coordenades x,y\r\n%s
+805=%s no ha creat el Fitxer %s
+809=%s no ha retornat coordenades x,y
+813=%s assignats %u kB de Memòria
+807=%s retornat moviment invàlid [%d,%d]
+
+; Errors en el fitxer .LNG
+755=Error a la %s\nLinia %d
+756=Error al %s\nmissatge número %d és massa gran
+757=Error a %s\número duplicat %d
+753=Fitxer %s és massa llarg
