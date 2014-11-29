@@ -181,7 +181,7 @@ BEGIN
     CONTROL         "&continuous game",560,"Button",BS_AUTORADIOBUTTON,11,
                     112,137,10
     GROUPBOX        "",IDC_STATIC,4,127,148,136,WS_GROUP
-    CTEXT           "H&ilight duration :",513,7,138,73,8
+    CTEXT           "Highlight durat&ion :",513,7,138,73,8
     EDITTEXT        108,84,136,30,14,ES_NUMBER
     LTEXT           "ms",536,119,138,22,8
     CONTROL         "Sound &notifications",671,"Button",BS_AUTOCHECKBOX | 
@@ -242,7 +242,7 @@ STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "About"
 FONT 10, "MS Shell Dlg"
 BEGIN
-    CTEXT           "(C) 2000-2011  Petr Lastovicka",501,4,50,104,10
+    CTEXT           "(C) 2000-2014  Petr Lastovicka",501,4,50,104,10
     CTEXT           "Version",503,35,24,28,9
     CTEXT           "Piskvorky",504,36,6,40,9
     ICON            1,-1,12,20,20,20
@@ -493,7 +493,7 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 8,6,0,0
+ FILEVERSION 8,6,1,0
  PRODUCTVERSION 0,0,0,0
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
@@ -512,7 +512,7 @@ BEGIN
             VALUE "Comments", "\0"
             VALUE "CompanyName", " \0"
             VALUE "FileDescription", "Piškvorky\0"
-            VALUE "FileVersion", "8, 6, 0, 0\0"
+            VALUE "FileVersion", "8, 6, 1, 0\0"
             VALUE "InternalName", "\0"
             VALUE "LegalCopyright", "© 2000 - 2014  Petr Laštovièka\0"
             VALUE "LegalTrademarks", "\0"
