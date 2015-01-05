@@ -5,6 +5,7 @@
  modify it under the terms of the GNU General Public License.
 */  
 #include "lang.h"
+#include "taskbarprogress.h"
 
 #define myAI "pbrain-pela"
 #define fnHtmlTable "_table.html"

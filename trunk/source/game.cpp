@@ -1,5 +1,5 @@
 /*
-(C) 2000-2014  Petr Lastovicka
+(C) 2000-2015  Petr Lastovicka
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License.
@@ -207,6 +207,7 @@ void Tplayer::checkTimeOut(int currentTime)
 			turTable[turPlayerId].timeouts++;
 			turTable[p->turPlayerId].winsE++;
 			getCell(turPlayerId, p->turPlayerId)->error++;
+			win7TaskbarProgress.SetProgressState(hWin, TBPF_ERROR);
 			turAddTime();
 		}
 		else{
@@ -893,6 +894,9 @@ void turStart(char* openingFileName)
 		TfileName fn;
 		getMsgFn(fn);
 		DeleteFile(fn);
+
+		win7TaskbarProgress.SetProgressState(hWin, TBPF_NORMAL);
+		win7TaskbarProgress.SetProgressValue(hWin, 0, 100);
 	}
 	LeaveCriticalSection(&netLock);
 	if(!isServer) turLocalNext();

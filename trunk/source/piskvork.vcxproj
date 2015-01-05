@@ -186,6 +186,7 @@
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
+    <ClCompile Include="taskbarprogress.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Piskvork.rc">
@@ -197,6 +198,7 @@
     <ClInclude Include="hdr.h" />
     <ClInclude Include="lang.h" />
     <ClInclude Include="piskvork.h" />
+    <ClInclude Include="taskbarprogress.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="PISKVORK.ICO" />
