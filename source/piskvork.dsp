@@ -43,7 +43,7 @@ RSC=rc.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /YX /FD /c
-# ADD CPP /nologo /MD /W4 /GX /O1 /D "NDEBUG" /D "WIN32" /D "_WINDOWS" /D "_MBCS" /D "HAVE_UNZIP" /YX"windows.h" /FD /c
+# ADD CPP /nologo /MD /W4 /GX /O1 /D "NDEBUG" /D "WIN32" /D "_WINDOWS" /D "_MBCS" /D "HAVE_UNZIP" /Yu"hdr.h" /FD /c
 # ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD BASE RSC /l 0x405 /d "NDEBUG"
@@ -73,7 +73,7 @@ PreLink_Cmds=c:\_petr\cw\hotkeyp\hotkeyp.exe -close window Piskvork.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /YX /FD /GZ /c
-# ADD CPP /nologo /MDd /W4 /Gm /GX /ZI /Od /D "_DEBUG" /D "DEBUG" /D "WIN32" /D "_WINDOWS" /D "_MBCS" /Fr /YX"windows.h" /FD /GZ /c
+# ADD CPP /nologo /MDd /W4 /Gm /GX /ZI /Od /D "_DEBUG" /D "DEBUG" /D "WIN32" /D "_WINDOWS" /D "_MBCS" /Fr /Yu"hdr.h" /FD /GZ /c
 # ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "_DEBUG" /mktyplib203 /win32
 # ADD BASE RSC /l 0x405 /d "_DEBUG"
@@ -109,7 +109,7 @@ SOURCE=.\game.cpp
 
 !ELSEIF  "$(CFG)" == "piskvork - Win32 Debug"
 
-# ADD CPP /Yu"windows.h"
+# ADD CPP /Yu
 
 !ENDIF 
 
@@ -124,7 +124,7 @@ SOURCE=.\lang.cpp
 
 !ELSEIF  "$(CFG)" == "piskvork - Win32 Debug"
 
-# ADD CPP /Yc"windows.h"
+# ADD CPP /Yc"hdr.h"
 
 !ENDIF 
 
@@ -139,7 +139,7 @@ SOURCE=.\netgame.cpp
 
 !ELSEIF  "$(CFG)" == "piskvork - Win32 Debug"
 
-# ADD CPP /Yu"windows.h"
+# ADD CPP /Yu
 
 !ENDIF 
 
@@ -154,8 +154,6 @@ SOURCE=.\nettur.cpp
 
 !ELSEIF  "$(CFG)" == "piskvork - Win32 Debug"
 
-# ADD CPP /Yu"windows.h"
-
 !ENDIF 
 
 # End Source File
@@ -168,8 +166,6 @@ SOURCE=.\PISKVORK.cpp
 # ADD CPP /Yu"hdr.h"
 
 !ELSEIF  "$(CFG)" == "piskvork - Win32 Debug"
-
-# ADD CPP /Yu"windows.h"
 
 !ENDIF 
 
@@ -188,7 +184,20 @@ SOURCE=.\protocol.cpp
 
 !ELSEIF  "$(CFG)" == "piskvork - Win32 Debug"
 
-# ADD CPP /Yu"windows.h"
+# ADD CPP /Yu
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=.\taskbarprogress.cpp
+
+!IF  "$(CFG)" == "piskvork - Win32 Release"
+
+# ADD CPP /Yu
+
+!ELSEIF  "$(CFG)" == "piskvork - Win32 Debug"
 
 !ENDIF 
 
@@ -208,6 +217,10 @@ SOURCE=.\lang.h
 # Begin Source File
 
 SOURCE=.\piskvork.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\taskbarprogress.h
 # End Source File
 # End Group
 # Begin Group "Resource Files"

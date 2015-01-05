@@ -1,5 +1,5 @@
 /*
-	(C) 2005-2014  Petr Lastovicka
+	(C) 2005-2015  Petr Lastovicka
 
 	This program is free software; you can redistribute it and/or
 	modify it under the terms of the GNU General Public License.
@@ -304,6 +304,9 @@ bool turNext(Tclient *client)
 				}
 			}
 		}
+		win7TaskbarProgress.SetProgressState(hWin, TBPF_NORMAL);
+		win7TaskbarProgress.SetProgressValue(hWin, turGamesCounter, turGamesTotal);
+
 		if(!result && !stillActive){
 			wrLog(lng(850, "Tournament finished"));
 			show(resultDlg);
@@ -311,6 +314,7 @@ bool turNext(Tclient *client)
 			killBrains();
 			opening=turOpening + turMatchRepeat*turRepeat/2;
 			executeCmd(cmdTurEnd);
+			win7TaskbarProgress.SetProgressState(hWin, TBPF_NOPROGRESS);
 		}
 		client->opening= turOpening + (client->repeatCount*turMatchRepeat + client->gameCount)/2;
 		players[0].isComp=players[1].isComp=1;
@@ -967,6 +971,7 @@ void turAbort()
 	EnterCriticalSection(&netLock);
 	if(turNplayers) wrLog(lng(852, "Tournament aborted"));
 	turNplayers=0;
+	win7TaskbarProgress.SetProgressState(hWin, TBPF_NOPROGRESS);
 	LeaveCriticalSection(&netLock);
 	for(int i=0; i<Mplayer; i++){
 		killClient(i);

@@ -1,5 +1,5 @@
 /*
-(C) 2004-2014  Petr Lastovicka
+(C) 2004-2015  Petr Lastovicka
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License.
@@ -81,6 +81,7 @@ void errMsg(char *text, ...)
 			turTable[i1=players[player].turPlayerId].errors++;
 			turTable[i2=players[1-player].turPlayerId].winsE++;
 			getCell(i1, i2)->error++;
+			win7TaskbarProgress.SetProgressState(hWin, TBPF_ERROR);
 			turAddTime();
 		}
 		vwrMessage(text, va);
