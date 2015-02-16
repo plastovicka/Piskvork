@@ -2820,6 +2820,11 @@ int pascal WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR, int cmdShow)
 	MSG mesg;
 	OSVERSIONINFO v;
 
+	//DPIAware
+	typedef BOOL(WINAPI *TGetProcAddress)();
+	TGetProcAddress getProcAddress = (TGetProcAddress) GetProcAddress(GetModuleHandle("user32"), "SetProcessDPIAware");
+	if(getProcAddress) getProcAddress();
+
 	v.dwOSVersionInfoSize= sizeof(OSVERSIONINFO);
 	GetVersionEx(&v);
 	isWin9X= v.dwPlatformId==VER_PLATFORM_WIN32_WINDOWS;
