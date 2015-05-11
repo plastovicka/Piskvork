@@ -12,7 +12,8 @@
 #define EVAL_RAND1 20  //randomness
 #define EVAL_RAND2 30  //maximal randomness for low evaluation
 #define AHEAD_DEPTH 4  //depth search to find good total evaluation
-#define AHEAD_IRRELEVANCE 3
+#define AHEAD_IRRELEVANCE1 12
+#define AHEAD_IRRELEVANCE2 3
 #define NUM_GOOD0 100
 #define NUM_GOOD1 30
 #define OFFENSIVE 1   
@@ -507,13 +508,38 @@ int lookAhead(int player1)
 	p=goodMoves[3][player2];
 	if(!p && dpth<AHEAD_DEPTH) p=findMax();
 	if(!p){
-		y= sum[0]-sum[1];
+		if(info_timeout_turn < 100)
+		{
+			y= sum[0]-sum[1];
+		}
+		else{
+			//evaluate entire board
+			y = 0;
+			for(Psquare q = boardb; q < boardk; q++)
+			{
+				if(q->z || q->h[0].pv == q->h[1].pv) continue;
+
+				int count[4];
+				count[0]=count[1]=count[2]=0; //empty, our, opponent
+
+				//count of symbols on 5x5 square
+				Psquare q2 = q - 2*height2 - 2;
+				for(int i=0; i < 5; q2+=height2, i++)
+					for(int j=0; j<5; j++)
+						count[q2[j].z]++;
+
+				//thank Farmer Lu for this formula
+				y += (q->h[0].pv - q->h[1].pv) * (count[0] + (count[1] - count[2])/2 - 1);
+			}
+			y /= AHEAD_IRRELEVANCE1;
+		}
+
 		for(i=2; i>0; i--){
 			for(p=goodMoves[i][0]; p; p=p->h[0].nxt) y+=NUM_GOOD0;
 			for(p=goodMoves[i][1]; p; p=p->h[1].nxt) y-=NUM_GOOD1;
 		}
 		if(player1) y=-y;
-		return int(y/AHEAD_IRRELEVANCE);
+		return int(y/AHEAD_IRRELEVANCE2);
 	}
 	dpth++;
 	p->z=player1+1;
@@ -622,7 +648,7 @@ void getBestEval()
 	int Nresults=0;
 
 	bestMove=0;
-	if(moves>9){
+	if(moves>4){
 		m=-0x7ffffffe;
 		for(p=boardb; p<boardk; p++){
 			if(!p->z && (p->h[0].pv>10 || p->h[1].pv>10)){

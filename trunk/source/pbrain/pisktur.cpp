@@ -13,7 +13,7 @@
 #define MATCH_SPARE 7      //how much is time spared for the rest of game
 #define TIMEOUT_PREVENT 3  //how much is alfabeta slower when the depth is increased
 
-const char *infotext="author=\"Petr Lastovicka\", version=\"7.5\", country=\"Czech Republic\",  www=\"http://petr.lastovicka.sweb.cz\"";
+const char *infotext="author=\"Petr Lastovicka\", version=\"7.6\", country=\"Czech Republic\",  www=\"http://petr.lastovicka.sweb.cz\"";
 
 
 void brain_init()
