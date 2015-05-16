@@ -277,6 +277,8 @@
 880=Druhý hráè používá starou verzi piskvork.exe !
 881=Posílám žádost na vrácení tahu zpìt...
 882=Posílám žádost na novou hru...
+883=Port: %d
+884=Na serveru je spuštìna jiná verze Piskvork než na klientovi
 
 1101=Nová hra
 1106=Otevøít pozici

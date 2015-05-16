@@ -1,5 +1,7 @@
-8.6.2
 prùbìh turnaje na ikonì na hlavním panelu Windows 7
+pøi spuštìní síového turnaje se do logovacího okna napíše èíslo portu
+okno není roztaené a rozmazané na monitorech z vysokım DPI
+opraveno: pravidlo "pìt nebo více vyhrává / pøesnì pìt vyhrává" pøi síovém turnaji
 
 8.6 (2.5.2014)
 varování pokud pøi turnaji nelze otevøít soubor openings.txt
