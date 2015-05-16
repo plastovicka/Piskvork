@@ -274,6 +274,8 @@
 862=Hostname: %s
 863=Server not found
 864=Cannot connect to server
+883=Port: %d
+884=Server is running different version of Piskvork than client
 
 ; Tournament result
 607=Total

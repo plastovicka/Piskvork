@@ -22,6 +22,7 @@ struct TgameSettings {
 	char sendMoves;
 	char tieRepeat;
 	char messages;
+	char exactFive;
 	char openingData[1];
 	void fill();
 	void use();
@@ -337,6 +338,7 @@ void TgameSettings::use()
 	debugAI=(suspend>>1)&1;
 	turTieRepeat=tieRepeat;
 	turLogMsg=messages;
+	::exactFive=exactFive;
 }
 
 void TgameSettings::fill()
@@ -351,6 +353,7 @@ void TgameSettings::fill()
 	sendMoves=(char)turRecord;
 	tieRepeat=(char)turTieRepeat;
 	messages=(char)turLogMsg;
+	exactFive=(char)::exactFive;
 	openingData[0]=0;
 }
 
@@ -587,11 +590,12 @@ lstart:
 		}
 		//receive game settings
 		c=rd1();
-		if(c<8 || c==231) break;
-		len=c;
-		memset(buf, 0, sizeof(TgameSettings));
-		width=height=20;
-		tolerance=1000;
+		len=rd1();
+		if(c!=1 || len!=sizeof(TgameSettings)){
+			wrLog(lng(884, "Server is running different version of Piskvork than client"));
+			show(logDlg);
+			break;
+		}
 		if(rd(buf, len)<0) goto lend;
 		b=(TgameSettings*)buf;
 		j=b->openingData[0];
@@ -721,9 +725,11 @@ DWORD WINAPI serverLoop(void *param)
 			CloseHandle(h);
 			if(c!=118) goto lend;
 		}
+		//older versions did not check TgameSettings length properly, this byte will disconnect them
+		buf[0]=1; //must be less than 8
 		//send game settings
-		b=(TgameSettings*)(buf+1);
-		buf[0]=sizeof(TgameSettings);
+		b=(TgameSettings*)(buf+2);
+		buf[1]=sizeof(TgameSettings);
 		b->fill();
 		//send opening
 		if(autoBegin || autoBeginForce){
@@ -749,7 +755,7 @@ DWORD WINAPI serverLoop(void *param)
 				*++o2 = (signed char)(y0+y);
 			}
 		}
-		wr(sock_c, buf, 1+sizeof(TgameSettings)+2*b->openingData[0]);
+		wr(sock_c, buf, 2+sizeof(TgameSettings)+2*b->openingData[0]);
 		wrLog(lng(855, "Game started: players %d x %d,  Client %d"),
 			client->player[0], client->player[1], clientId);
 		//wait
@@ -1036,6 +1042,7 @@ int startListen()
 					if(!gethostname(host, sizeof(host))){
 						wrLog(lng(862, "Hostname: %s"), host);
 					}
+					wrLog(lng(883, "Port: %d"), port);
 					show(logDlg);
 					return 0;
 				}

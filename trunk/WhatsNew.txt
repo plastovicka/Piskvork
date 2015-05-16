@@ -1,3 +1,8 @@
+tournament progress on taskbar icon on Windows 7 or later
+port number is written into log window when network tournament starts
+window is not scaled and blurred on high DPI monitors
+Fixed bug: rule "five or more stones win / exactly five stones win" in network tournament
+
 8.6 (2 May 2014)
 warning is shown if tournament is started and file openings.txt can't be opened
 message "File not found" instead of "Can't create process (error 2)"
