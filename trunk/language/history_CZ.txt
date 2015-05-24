@@ -1,6 +1,8 @@
+8.7 (24.5.2015)
 prùbìh turnaje na ikonì na hlavním panelu Windows 7
 pøi spuštìní síového turnaje se do logovacího okna napíše èíslo portu
 okno není roztaené a rozmazané na monitorech z vysokım DPI
+zoptimalizován pbrain-pela
 opraveno: pravidlo "pìt nebo více vyhrává / pøesnì pìt vyhrává" pøi síovém turnaji
 
 8.6 (2.5.2014)
