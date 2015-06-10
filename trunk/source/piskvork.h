@@ -234,7 +234,7 @@ void killBrains();
 int stopThinking();
 void finishGame(int errCode);
 void turAddTime();
-void saveRec(int errCode, bool includeUndoMoves);
+void saveRec(int errCode, bool _includeUndoMoves);
 void saveRecTmp(int errCode);
 void wrGameResult();
 void sendInfoEval();
@@ -244,7 +244,7 @@ bool redo();
 bool undo();
 void setLevel(int l,int h);
 void switchPlayer(int h1, int h2);
-void savePsq(char *fn, int format, int errCode, bool includeUndoMoves);
+void savePsq(char *fn, int format, int errCode, bool _includeUndoMoves);
 void openPsq(char *fn);
 DWORD getTickCount();
 

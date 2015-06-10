@@ -243,21 +243,21 @@ DWORD WINAPI pipeThreadLoop(void *param)
 {
 	DEBUG_EVENT e;
 	ThreadItem *t;
-	Tplayer *player= (Tplayer*)param;
+	Tplayer *Player= (Tplayer*)param;
 	DWORD cont;
 	bool done=false;
 
 	//create brain's process
-	player->startPipeAI();
+	Player->startPipeAI();
 	ResetEvent(start2Event);
 	SetEvent(startEvent);
 	//wait until brain sends OK
 	//(DebugActiveProcess must not be called immediately after CreateProcess)
-	if(WaitForInputIdle(player->process, 5000)==WAIT_FAILED) Sleep(800); else Sleep(200);
+	if(WaitForInputIdle(Player->process, 5000)==WAIT_FAILED) Sleep(800); else Sleep(200);
 	WaitForSingleObject(start2Event, INFINITE);
-	if(player->notRunning()) return 1;
+	if(Player->notRunning()) return 1;
 
-	if(!DebugActiveProcess(player->processId)) return 2;
+	if(!DebugActiveProcess(Player->processId)) return 2;
 	do{
 		if(!WaitForDebugEvent(&e, INFINITE)) return 3;
 		cont=DBG_CONTINUE;
@@ -274,17 +274,17 @@ DWORD WINAPI pipeThreadLoop(void *param)
 				t=new ThreadItem;
 				t->h= e.u.CreateProcessInfo.hThread;
 				t->id= e.dwThreadId;
-				player->threads.append(t);
+				Player->threads.append(t);
 				break;
 			case CREATE_THREAD_DEBUG_EVENT:
 				t=new ThreadItem;
 				t->h= e.u.CreateThread.hThread;
 				t->id= e.dwThreadId;
-				player->threads.append(t);
+				Player->threads.append(t);
 				break;
 			case EXIT_THREAD_DEBUG_EVENT:
 			{
-				fort(player->threads){
+				fort(Player->threads){
 					if(item->id==e.dwThreadId){
 						if(isWin9X) CloseHandle(item->h);
 						delete item;
@@ -294,8 +294,8 @@ DWORD WINAPI pipeThreadLoop(void *param)
 				break;
 			}
 			case EXIT_PROCESS_DEBUG_EVENT:
-				while(player->threads.nxt!=&player->threads){
-					ThreadItem *item= player->threads.nxt;
+				while(Player->threads.nxt!=&Player->threads){
+					ThreadItem *item= Player->threads.nxt;
 					if(isWin9X) CloseHandle(item->h);
 					delete item;
 				}

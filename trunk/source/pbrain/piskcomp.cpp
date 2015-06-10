@@ -151,10 +151,10 @@ Psquare Square(int x, int y) //indexed from zero
 }
 //-------------------------------------------------------------------
 struct PR2 { short h[2]; };
-PR2 K[262144];       //evaluation for all combinations of 9 squares
-static int comb[10]; //current combination
-static PR2 *ind;     //write position in array K
-static int n[4];     //number of empty fields, stones and borders
+PR2 K[262144];         //evaluation for all combinations of 9 squares
+static int comb[10];   //current combination
+static PR2 *genOutput; //write position in array K
+static int genCount[4];//number of empty fields, stones and borders
 //-------------------------------------------------------------------
 void gen2(int *pos)
 {
@@ -166,7 +166,7 @@ void gen2(int *pos)
 	if(pos==comb+9){
 		a1=a2=0;
 		if(comb[4]==0){ //the middle square must be empty
-			n[1]=::n[1]; n[2]=::n[2]; n[3]=::n[3];
+			n[1]=genCount[1]; n[2]=genCount[2]; n[3]=genCount[3];
 			six[0]=six[1]=false;
 			pb=comb;
 			pe=pb+4;
@@ -204,9 +204,9 @@ void gen2(int *pos)
 			}
 		}
 		//store computed evaluation to the array
-		ind->h[0]= short(six[0] ? 0 : a1);
-		ind->h[1]= short(six[1] ? 0 : a2);
-		ind++;
+		genOutput->h[0]= short(six[0] ? 0 : a1);
+		genOutput->h[1]= short(six[1] ? 0 : a2);
+		genOutput++;
 	}
 	else{
 		//generate last five squares of combination
@@ -226,16 +226,16 @@ void gen1(int *pos)
 	else{
 		for(int z=0; z<4; z++){
 			*pos=z;
-			n[z]++;
+			genCount[z]++;
 			gen1(pos+1);
-			n[z]--;
+			genCount[z]--;
 		}
 	}
 }
 
 void gen()
 {
-	ind=K;
+	genOutput=K;
 	gen1(comb);
 }
 //-------------------------------------------------------------------
@@ -501,7 +501,7 @@ Psquare findMax()
 int lookAhead(int player1)
 {
 	Psquare p;
-	int y, i;
+	int y;
 
 	if(goodMoves[3][player1]) return 700;
 	int player2=1-player1;
@@ -534,7 +534,7 @@ int lookAhead(int player1)
 			y /= AHEAD_IRRELEVANCE1;
 		}
 
-		for(i=2; i>0; i--){
+		for(int i=2; i>0; i--){
 			for(p=goodMoves[i][0]; p; p=p->h[0].nxt) y+=NUM_GOOD0;
 			for(p=goodMoves[i][1]; p; p=p->h[1].nxt) y-=NUM_GOOD1;
 		}
@@ -555,10 +555,10 @@ int lookAhead(int player1)
 
 DWORD seed= GetTickCount();
 
-unsigned rnd(unsigned n)
+unsigned rnd(unsigned maxValue)
 {
 	seed=seed*367413989+174680251;
-	return (unsigned)(UInt32x32To64(n, seed)>>32);
+	return (unsigned)(UInt32x32To64(maxValue, seed)>>32);
 }
 
 void databaseMove()
@@ -644,10 +644,10 @@ void firstMove()
 void getBestEval()
 {
 	int i, r, m, d, a, b;
-	Psquare p, bestMove;
+	Psquare p, _bestMove;
 	int Nresults=0;
 
-	bestMove=0;
+	_bestMove=0;
 	if(moves>4){
 		m=-0x7ffffffe;
 		for(p=boardb; p<boardk; p++){
@@ -662,17 +662,17 @@ void getBestEval()
 				evaluate(p);
 				if(r>m){
 					m=r;
-					bestMove=p;
+					_bestMove=p;
 					Nresults=1;
 				}
 				else if(r>m-EVAL_RAND1){
 					Nresults++;
-					if(!rnd(Nresults)) bestMove=p;
+					if(!rnd(Nresults)) _bestMove=p;
 				}
 			}
 		}
 	}
-	if(!bestMove){
+	if(!_bestMove){
 		m=-0x7fffff;
 		for(p=boardb; p<boardk; p++){
 			if(!p->z){
@@ -687,13 +687,13 @@ void getBestEval()
 			if(!p->z){
 				if(getEval(p) >= m-d){
 					Nresults++;
-					if(!rnd(Nresults)) bestMove=p;
+					if(!rnd(Nresults)) _bestMove=p;
 				}
 			}
 		}
 	}
-	doMove(bestMove);
-	highestEval=bestMove;
+	doMove(_bestMove);
+	highestEval=_bestMove;
 
 	if(lastMove){
 		p=lastMove;

@@ -71,14 +71,14 @@ static void parse_3int_chk(const char *param, int *x, int *y, int *z)
 		*x>=width || *y>=height) *z=0;
 }
 
-/** return pointer to word after cmd if input starts with cmd, otherwise return NULL */
-static const char *get_cmd_param(const char *cmd, const char *input)
+/** return pointer to word after command if input starts with command, otherwise return NULL */
+static const char *get_cmd_param(const char *command, const char *input)
 {
 	int n1, n2;
-	n1=strlen(cmd);
+	n1=strlen(command);
 	n2=strlen(input);
-	if(n1>n2 || _strnicmp(cmd, input, n1)) return NULL; /* it is not cmd */
-	input+=strlen(cmd);
+	if(n1>n2 || _strnicmp(command, input, n1)) return NULL; /* it is not command */
+	input+=strlen(command);
 	while(isspace(input[0])) input++;
 	return input;
 }
