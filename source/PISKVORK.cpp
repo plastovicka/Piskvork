@@ -2538,12 +2538,12 @@ LRESULT CALLBACK MainWndProc(HWND hWnd, UINT mesg, WPARAM wP, LPARAM lP)
 					brainOfn.hwndOwner= hWnd;
 					brainOfn.Flags= OFN_FILEMUSTEXIST|OFN_HIDEREADONLY|OFN_READONLY;
 					if(GetOpenFileName(&brainOfn)){
-						Tplayer *p= &players[i];
-						if(_stricmp(p->brain, brainOfn.lpstrFile) || !p->isComp){
+						Tplayer *pl= &players[i];
+						if(_stricmp(pl->brain, brainOfn.lpstrFile) || !pl->isComp){
 							killBrains();
-							strcpy(p->brain, brainOfn.lpstrFile);
-							p->brainChanged();
-							if(!p->isComp) p->isComp=1;
+							strcpy(pl->brain, brainOfn.lpstrFile);
+							pl->brainChanged();
+							if(!pl->isComp) pl->isComp=1;
 							printLevel();
 							resume();
 						}

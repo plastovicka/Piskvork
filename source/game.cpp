@@ -306,7 +306,7 @@ void wrNames(FILE *f, int h)
 	fprintf(f, "%s\n%s\n", s1, s2);
 }
 
-void savePsq(char *fn, int format, int errCode, bool includeUndoMoves)
+void savePsq(char *fn, int format, int errCode, bool _includeUndoMoves)
 {
 	Psquare p;
 	FILE *f;
@@ -337,7 +337,7 @@ start:
 		d= format==1 ? 0 : 1;
 		for(int i = 0; p; p=p->pre, i++)
 		{
-			if(!includeUndoMoves && i >= moves)
+			if(!_includeUndoMoves && i >= moves)
 				break;
 			fprintf(f, "%d,%d,%d\n", p->x-d, p->y-d, p->time);
 		}
@@ -403,7 +403,7 @@ end:
 	CloseHandle(hIOMutex);
 }
 
-void saveRec(int errCode, bool includeUndoMoves)
+void saveRec(int errCode, bool _includeUndoMoves)
 {
 	TfileName buf;
 	char *s;
@@ -417,7 +417,7 @@ void saveRec(int errCode, bool includeUndoMoves)
 			(turFormat==2) ? "rec" : "psq");
 		if(GetFileAttributes(buf)==0xFFFFFFFF){
 			wrMessage("-> %s", buf);
-			savePsq(buf, turFormat, errCode, includeUndoMoves);
+			savePsq(buf, turFormat, errCode, _includeUndoMoves);
 			break;
 		}
 	}
@@ -659,7 +659,7 @@ void turResultInner(TfileName& fn)
 		if(e) s+=sprintf(s, "+%d", e);
 		if(t->errors) s+=sprintf(s, lng(603, ",  %d errors"), t->errors);
 		if(t->Nmoves){
-			int m= t->time/t->Nmoves;
+			m= t->time/t->Nmoves;
 			s+=sprintf(s, lng(604, "\r\ntime/turn: %d %s (max: %.1f s),  time/game: %d s\r\nmoves/game: %d,  CRC: %x"),
 				m>9000 ? m/1000 : m, getLngSec(m>9000),
 				double(t->maxTurnTime)/1000,

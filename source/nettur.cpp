@@ -457,7 +457,7 @@ int rdState()
 		fclose(f);
 	}
 	if(err){
-		for(int i=0; i<Mplayer; i++){
+		for(i=0; i<Mplayer; i++){
 			clients[i].player[0]=-1;
 		}
 		turNplayers=0;
@@ -733,24 +733,24 @@ DWORD WINAPI serverLoop(void *param)
 		b->fill();
 		//send opening
 		if(autoBegin || autoBeginForce){
-			int x0, y0, r, j, x, y;
+			int x0, y0, rot, j, x, y;
 			o1= getOpening(client->opening);
 			o2= (signed char*)b->openingData;
 			j= *o2 = *o1;
 			x0= width/2;
 			y0= height/2;
-			r= 0;
+			rot= 0;
 			if(openingRandomShiftT){
 				x0 += rnd(4)-2;
 				y0 += rnd(4)-2;
-				r = rnd(8);
+				rot = rnd(8);
 			}
 			for(; j>0; j--){
 				x= *++o1;
 				y= *++o1;
-				if(r&1) x=-x;
-				if(r&2) y=-y;
-				if(r&4) w=x, x=y, y=w;
+				if(rot&1) x=-x;
+				if(rot&2) y=-y;
+				if(rot&4) w=x, x=y, y=w;
 				*++o2 = (signed char)(x0+x);
 				*++o2 = (signed char)(y0+y);
 			}
