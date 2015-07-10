@@ -626,11 +626,25 @@ void firstMove()
 		doMove(Square(width/2+rnd(5)-2, height/2+rnd(5)-2));
 		return;
 	}
+	
 	if(moves==2){
-		Psquare p;
-		for(p=boardb; p->z!=1; p++);
-		doMove(nxtS(p, rnd(8)));
+		//find both symbols 
+		Psquare p, p1=0, p2=0;
+		int i, y1, y2;
+		for (p = boardb; p<boardk; p++) {
+			if (p->z == 1) p1 = p;
+			if (p->z == 2) p2 = p;
+		};
+		//evaluate
+		y1 = 5;  y2 = 0;
+		for (i = 0; i<8; i++) {
+			y1 += nxtS(p1, i)->h[0].pv;
+			y2 += nxtS(p2, i)->h[1].pv;
+		}
+		//random adjacent square
+		doMove(nxtS(y1 > y2 ? p1 : p2, rnd(8)));
 	}
+
 	databaseMove();
 	//already four in a line -> don't think
 	if(goodMoves[3][0] && (!info_continuous || !goodMoves[3][0]->h[0].nxt || !goodMoves[3][1])){

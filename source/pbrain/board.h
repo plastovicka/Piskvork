@@ -57,12 +57,12 @@ int getEval(Psquare p);
 void print(char *format, ...);
 void printXY(int x, int y, int w, char *format, ...);
 
-#define nxtQ(p,i) ((Psquare)(((char*)p)+(i*s)))
-#define prvQ(p,i) ((Psquare)(((char*)p)-(i*s)))
-#define nxtP(p,i) (p=(Psquare)(((char*)p)+(i*s)))
-#define prvP(p,i) (p=(Psquare)(((char*)p)-(i*s)))
-#define nxtS(p,s) ((Psquare)(((char*)p)+diroff[s]))
-#define nxtI(p,s,i) ((Psquare)(((char*)p)+diroff[((s)+(i))&7]))
+#define nxtQ(p,i) ((Psquare)(((char*)(p))+(i*s)))
+#define prvQ(p,i) ((Psquare)(((char*)(p))-(i*s)))
+#define nxtP(p,i) (p=(Psquare)(((char*)(p))+(i*s)))
+#define prvP(p,i) (p=(Psquare)(((char*)(p))-(i*s)))
+#define nxtS(p,s) ((Psquare)(((char*)(p))+diroff[s]))
+#define nxtI(p,s,i) ((Psquare)(((char*)(p))+diroff[((s)+(i))&7]))
 
 template <class T> inline void amin(T &x,int m){ if(x<m) x=m; }
 template <class T> inline void amax(T &x,int m){ if(x>m) x=m; }
