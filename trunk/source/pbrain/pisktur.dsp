@@ -100,7 +100,7 @@ SOURCE=.\pisktur.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=..\skelet\pisqpipe.cpp
+SOURCE=..\skelet_CPP\pisqpipe.cpp
 # End Source File
 # End Group
 # Begin Group "Header Files"
@@ -112,7 +112,7 @@ SOURCE=.\board.h
 # End Source File
 # Begin Source File
 
-SOURCE=..\skelet\pisqpipe.h
+SOURCE=..\skelet_CPP\pisqpipe.h
 # End Source File
 # End Group
 # Begin Group "Resource Files"

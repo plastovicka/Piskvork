@@ -5,7 +5,7 @@
  modify it under the terms of the GNU General Public License.
 */  
 
-#include "..\skelet\pisqpipe.h"
+#include "..\skelet_CPP\pisqpipe.h"
 
 const int //evaluation constants (very important)
  H10=2,  H11=6,   H12=10,

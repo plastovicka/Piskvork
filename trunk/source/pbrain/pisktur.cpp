@@ -76,7 +76,7 @@ void brain_block(int x, int y)
 bool doMove(Psquare p)
 {
 	if(p<boardb || p>=boardk || p->z) return false;
-	if(!terminate || !resultMove) resultMove=p;
+	if(!terminateAI || !resultMove) resultMove=p;
 	return true;
 }
 
@@ -127,10 +127,10 @@ void computer()
 		t0=GetTickCount();
 		computer1();
 		t1=GetTickCount();
-		if(terminate || t1+TIMEOUT_PREVENT*(t1-t0)>=stopTime()) break;
+		if(terminateAI || t1+TIMEOUT_PREVENT*(t1-t0)>=stopTime()) break;
 	}
 
-	if(terminate) depth-=2;
+	if(terminateAI) depth-=2;
 	pipeOut("DEBUG depth %d, nodes %d", depth, benchmark);
 #ifdef DEBUG
 	if(resulty>0) print("win");

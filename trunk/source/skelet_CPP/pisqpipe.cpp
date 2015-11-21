@@ -17,7 +17,7 @@ int info_max_memory=0; /* maximum memory in bytes, zero if unlimited */
 int info_game_type=1; /* 0:human opponent, 1:AI opponent, 2:tournament, 3:network tournament */
 int info_exact5=0; /* 0:five or more stones win, 1:exactly five stones win */
 int info_continuous=0; /* 0:single game, 1:continuous */
-int terminate; /* return from brain_turn when terminate>0 */
+int terminateAI; /* return from brain_turn when terminate>0 */
 unsigned start_time; /* tick count at the beginning of turn */
 char dataFolder[256]; /* folder for persistent files */
 
@@ -109,7 +109,7 @@ static DWORD WINAPI threadLoop(LPVOID)
 /** start thinking */
 static void turn()
 {
-	terminate=0;
+	terminateAI=0;
 	ResetEvent(event2);
 	SetEvent(event1);
 }
@@ -117,7 +117,7 @@ static void turn()
 /** stop thinking */
 static void stop()
 {
-	terminate=1;
+	terminateAI=1;
 	WaitForSingleObject(event2, INFINITE);
 }
 
