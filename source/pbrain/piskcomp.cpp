@@ -756,13 +756,13 @@ void computer1()
 			winMove[player1]=bestMove;
 			winMoveDepth[player1]=depth;
 #ifdef DEBUG
-			if(!terminate) resulty=y;
+			if(!terminateAI) resulty=y;
 #endif
 			if(!carefulAttack){
 				carefulAttack=true;
 			}
 			else{
-				terminate=3; //win
+				terminateAI=3; //win
 			}
 			return;
 		}
@@ -809,7 +809,7 @@ void computer1()
 			y=alfabeta(1, 0, player1, 0);
 		}
 #ifdef DEBUG
-		if(y<=0 && !terminate) resulty=y;
+		if(y<=0 && !terminateAI) resulty=y;
 #endif
 		if(!depthReached){
 			if(!carefulDefend) defendDone1=true;

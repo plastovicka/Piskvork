@@ -24,7 +24,7 @@
     <ClCompile Include="pisktur.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\skelet\pisqpipe.cpp">
+    <ClCompile Include="..\skelet_CPP\pisqpipe.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -32,7 +32,7 @@
     <ClInclude Include="board.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\skelet\pisqpipe.h">
+    <ClInclude Include="..\skelet_CPP\pisqpipe.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

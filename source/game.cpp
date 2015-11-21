@@ -1001,13 +1001,13 @@ void hardPause()
 {
 	softPause();
 	if(notSuspended()){
-		terminate++;
+		terminateAI++;
 		//the working thread is waiting in ReadFile and 
 		//  can be unblocked only by terminating the AI
 		players[player].stopAI();
 		//NOTE: the working thread can start AI again just before Suspend
 		while(notSuspended()) Sleep(50);
-		terminate--;
+		terminateAI--;
 	}
 }
 

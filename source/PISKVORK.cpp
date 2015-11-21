@@ -140,7 +140,7 @@ width=20,  //number of squares horizontally (without borders)
  turGamesTotal,  //total number of games in tournament
  turGamesCounter,//currently finished games in tournament
  gotoMove,       //number in goto move dialog box
- terminate,      //stopping AI
+ terminateAI,    //stopping AI
  saveLock,
  Naccel,
  lastTime[2],    //displayed game times (used to avoid flicker)

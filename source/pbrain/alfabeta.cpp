@@ -71,7 +71,7 @@ int alfabeta(int player1, Psquare *UcurMoves, int logWin, Psquare last1, Psquare
 	if(--cnt<0){
 		cnt=1000;
 		if(GetTickCount()>stopTime()){
-			terminate=2;
+			terminateAI=2;
 #ifdef DEBUG
 			printXY(55, 0, 100, "timeout");
 #endif
@@ -160,7 +160,7 @@ int alfabeta(int player1, Psquare *UcurMoves, int logWin, Psquare last1, Psquare
 		depthReached=true;
 		if(!mustAttack && !mustDefend) return 0;
 	}
-	else if(!terminate){
+	else if(!terminateAI){
 		//defend
 		if(pDefend){
 			//look around opponent's move

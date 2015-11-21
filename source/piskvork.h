@@ -142,7 +142,7 @@ struct PROCESS_MEMORY_COUNTERS {
 typedef BOOL (__stdcall *TmemInfo)(HANDLE,PROCESS_MEMORY_COUNTERS*,DWORD);
 
 //-----------------------------------------------------------------
-extern int player,moves,width,height,tolerance,maxMemory,turNplayers,logDebug,logMessage,suspendAI,debugAI,port,turCurRepeat,autoBegin,turRepeat,turRecord,turDelay,priority,terminate,turGamesCounter,turTieRepeat,turTieCounter,startMoves,errDelay,turOnlyLosses,turFormat,turGamesTotal,turOpening,invert,turNet,turRule,mx,my,height2,lastTurnTime[2],hardTimeOut,humanTimeOut,opening,logMoves,moveStart,coordStart,sameTime,turMatchRepeat,turLogMsg,infoEval,saveLock,debugPipe,exactFive,continuous,undoRequest,netGameVersion,ignoreErrors,openingRandomShift1,openingRandomShiftT,affinity, Nopening, includeUndoMoves, soundNotification,cmdlineGameOutFileFormat;
+extern int player,moves,width,height,tolerance,maxMemory,turNplayers,logDebug,logMessage,suspendAI,debugAI,port,turCurRepeat,autoBegin,turRepeat,turRecord,turDelay,priority,terminateAI,turGamesCounter,turTieRepeat,turTieCounter,startMoves,errDelay,turOnlyLosses,turFormat,turGamesTotal,turOpening,invert,turNet,turRule,mx,my,height2,lastTurnTime[2],hardTimeOut,humanTimeOut,opening,logMoves,moveStart,coordStart,sameTime,turMatchRepeat,turLogMsg,infoEval,saveLock,debugPipe,exactFive,continuous,undoRequest,netGameVersion,ignoreErrors,openingRandomShift1,openingRandomShiftT,affinity, Nopening, includeUndoMoves, soundNotification,cmdlineGameOutFileFormat;
 extern DWORD openingCRC;
 extern bool paused,finished,disableScore,isWin9X,isClient,isServer,isNetGame,isListening,turTimerAvail,levelChanged,cmdLineGame,autoBeginForce,tmpPsq;
 
