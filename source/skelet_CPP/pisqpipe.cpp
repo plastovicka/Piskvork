@@ -17,7 +17,7 @@ int info_max_memory=0; /* maximum memory in bytes, zero if unlimited */
 int info_game_type=1; /* 0:human opponent, 1:AI opponent, 2:tournament, 3:network tournament */
 int info_exact5=0; /* 0:five or more stones win, 1:exactly five stones win */
 int info_continuous=0; /* 0:single game, 1:continuous */
-int terminateAI; /* return from brain_turn when terminate>0 */
+int terminateAI; /* return from brain_turn when terminateAI>0 */
 unsigned start_time; /* tick count at the beginning of turn */
 char dataFolder[256]; /* folder for persistent files */
 
@@ -75,8 +75,8 @@ static void parse_3int_chk(const char *param, int *x, int *y, int *z)
 static const char *get_cmd_param(const char *command, const char *input)
 {
 	int n1, n2;
-	n1=strlen(command);
-	n2=strlen(input);
+	n1=(int)strlen(command);
+	n2=(int)strlen(input);
 	if(n1>n2 || _strnicmp(command, input, n1)) return NULL; /* it is not command */
 	input+=strlen(command);
 	while(isspace(input[0])) input++;
