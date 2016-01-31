@@ -169,6 +169,7 @@ hilited=0;      //hilited square
 
 bool
 isWin9X,      //1=Win95/98/ME, 0=WinNT/2K/XP
+ is64bit,
  disableScore, //to avoid adding score more than once
  levelChanged, //to not show timeout when time limit is decreased
  turTimerAvail=false, //waiting between tournament games
@@ -2819,11 +2820,20 @@ int pascal WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR, int cmdShow)
 	WNDCLASS wc;
 	MSG mesg;
 	OSVERSIONINFO v;
+	SYSTEM_INFO sysInfo;
 
 	//DPIAware
-	typedef BOOL(WINAPI *TGetProcAddress)();
-	TGetProcAddress getProcAddress = (TGetProcAddress) GetProcAddress(GetModuleHandle("user32"), "SetProcessDPIAware");
-	if(getProcAddress) getProcAddress();
+	typedef BOOL(WINAPI *TSetProcessDPIAware)();
+	TSetProcessDPIAware setProcessDPIAware = (TSetProcessDPIAware)GetProcAddress(GetModuleHandle("user32"), "SetProcessDPIAware");
+	if(setProcessDPIAware) setProcessDPIAware();
+
+	//64-bit
+	typedef void(WINAPI *TgetNativeSystemInfo)(LPSYSTEM_INFO);
+	TgetNativeSystemInfo getNativeSystemInfo = (TgetNativeSystemInfo)GetProcAddress(GetModuleHandle("kernel32"), "GetNativeSystemInfo");
+	if(getNativeSystemInfo){
+		getNativeSystemInfo(&sysInfo);
+		is64bit = sysInfo.wProcessorArchitecture == PROCESSOR_ARCHITECTURE_AMD64;
+	}
 
 	v.dwOSVersionInfoSize= sizeof(OSVERSIONINFO);
 	GetVersionEx(&v);

@@ -353,8 +353,15 @@ void TchooseExe::find(const char *path)
 				sprintf(buf, "%srenju.book", tempDir);
 				CopyFile(name, buf, FALSE);
 			}
+			//remove extension
 			s=strchr(name, 0)-4;
-			if(s>name && *s=='.') *s=0;
+			if(s > name && *s == '.') *s = 0;
+			//prefer 64 in file name on 64-bit OS
+			if(strstr(name,"64")){
+				if(is64bit) e+=170;
+				else e-=170;
+			}
+			//prefer exe which has same name as zip
 			if(!strcmp(name, zip)) e+=200;
 			else if(strstr(name, zip)) e+=50;
 			if(e>eval){
