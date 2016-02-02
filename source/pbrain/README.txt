@@ -16,4 +16,4 @@ How to create your own AI
 -------------------------
 Use files pisqpipe.cpp and pisqpipe.h that contain all neccessary communication between your AI and the game manager. Then implement functions brain_init, brain_restart, brain_turn, brain_my, brain_opponents, brain_block, brain_takeback, brain_end. Your EXE file must have a prefix pbrain-.
 The second possibility is to use obsolete file protocol which communicates through files Tah.dat, Plocha.dat, TimeOuts.dat, Info.dat, msg.dat.
-Visit http://gomocup.wz.cz where you will find more information about the protocol and tournament rules.
+Visit http://gomocup.org where you will find more information about the protocol and tournament rules.

@@ -15,4 +15,4 @@ Jak si vytvoøit svùj algoritmus
 -------------------------------
 Použijte soubory pisqpipe.cpp a pisqpipe.h, které obsahují veškerou komunikaci s manažerem hry. Naprogramovat musíte funkce brain_init, brain_restart, brain_turn, brain_my, brain_opponents, brain_block, brain_takeback, brain_end. Název vašeho EXE souboru musí zaèínat na pbrain-.
 Druhou možností je použít zastaralý souborový protokol, kde komunikace neprobíhá pøes rouru, ale pomocí souborù Tah.dat, Plocha.dat, TimeOuts.dat, Info.dat, msg.dat. 
-Další informace se dozvíte na http://gomocup.wz.cz
+Další informace se dozvíte na http://gomocup.org
