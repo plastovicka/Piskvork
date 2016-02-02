@@ -5,4 +5,4 @@ You have to create a project. The project type is Win32 Console Application. Add
 How to create your own AI
 -------------------------
 Replace file example.cpp with your own algorithm. Please don't change files pisqpipe.cpp and pisqpipe.h, because they contain communication between your AI and the game manager and they might be changed in future protocol versions. 
-More information about the protocol and tournament rules can be found at http://gomocup.wz.cz
+More information about the protocol and tournament rules can be found at http://gomocup.org
