@@ -74,6 +74,7 @@
 568=&Openings are randomly rotated
 555=five or mo&re stones win
 556=e&xactly five stones win
+557=ren&ju rule
 559=singl&e game
 560=c&ontinuous game
 513=Highlight durat&ion :
@@ -96,7 +97,7 @@
 542=mo&ves coordinates and time
 509=clear after ever&y game
 549=&Log pipe protocol to a file
-557=AI &data folder:
+957=AI &data folder:
 548=Send INFO evaluate x,y
 659=Ignore errors from AI
 670=Save undo moves
@@ -238,6 +239,7 @@
 ; Network game
 655=Exactly five in a row win
 654=Five or more in a row win
+660=Rule renju
 657=Continuous game
 656=Single game
 872=You begin

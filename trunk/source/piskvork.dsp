@@ -117,17 +117,7 @@ SOURCE=.\game.cpp
 # Begin Source File
 
 SOURCE=.\lang.cpp
-
-!IF  "$(CFG)" == "piskvork - Win32 Release"
-
 # ADD CPP /Yc"hdr.h"
-
-!ELSEIF  "$(CFG)" == "piskvork - Win32 Debug"
-
-# ADD CPP /Yc"hdr.h"
-
-!ENDIF 
-
 # End Source File
 # Begin Source File
 
@@ -188,6 +178,10 @@ SOURCE=.\protocol.cpp
 
 !ENDIF 
 
+# End Source File
+# Begin Source File
+
+SOURCE=.\renju.cpp
 # End Source File
 # Begin Source File
 

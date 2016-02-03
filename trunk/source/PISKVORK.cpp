@@ -1,8 +1,19 @@
 /*
-	(C) 2000-2015  Petr Lastovicka
+	(C) 2000-2016  Petr Lastovicka
+	(C) 2015  Tianyi Hao
 
-	This program is free software; you can redistribute it and/or
-	modify it under the terms of the GNU General Public License.
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	*/
 //-----------------------------------------------------------------
 #include "hdr.h"
@@ -98,8 +109,8 @@ width=20,  //number of squares horizontally (without borders)
  tolerance=1000, //how longer can AI think after timeout
  hardTimeOut=0,  //should we check timeout for AI
  humanTimeOut=0, //should we check timeout for human
- exactFive=0,    //0= five or more stones win, 1=exactly 5 win
- continuous=0,   //0= until someone wins, 1=until board is full
+ ruleFive=0,     //0=five or more stones win, 1=exactly 5 win, 2=renju
+ continuous=0,   //0=until someone wins, 1=until board is full
  priority=2,     //AI process priority
  autoBegin=0,    //automatic openings
  opening,        //index of the current opening
@@ -194,7 +205,7 @@ ACCEL accel[Maccel];
 ACCEL dlgKey;
 HANDLE thread, pipeThread;
 HMODULE psapi;
-COLORREF colors[3]; //background, text, winning line
+COLORREF colors[4]; //background, text, winning line, foul
 CRITICAL_SECTION timerLock, drawLock;
 SIZE szScore, szCoord, szMove, szName[2], szTimeGame[2], szTimeMove[2];
 
@@ -282,7 +293,7 @@ struct Treg { char *s; int *i; } regVal[]={
 	{"matchRepeat", &turMatchRepeat},
 	{"infoEvaluate", &infoEval},
 	{"logPipe", &debugPipe},
-	{"exactFive", &exactFive},
+	{"exactFive", &ruleFive},
 	{"continuous", &continuous},
 	{"clearLog", &clearLog},
 	{"ignoreErrors", &ignoreErrors},
@@ -770,7 +781,7 @@ void cancelHilite()
 void hiliteLast()
 {
 	cancelHilite();
-	if(moves && hiliteDelay && !lastMove->winLineDir){
+	if(moves && hiliteDelay && !lastMove->winLineDir && !lastMove->foul){
 		SetTimer(hWin, 10, hiliteDelay, NULL);
 		paintSquare(hilited=lastMove);
 	}
@@ -900,6 +911,18 @@ void printWinLine(Psquare p)
 	InvalidateRect(hWin, &rc, FALSE);
 }
 
+void printFoul(Psquare p)
+{
+	RECT rc;
+
+	if(!p->foul) return;
+	rc.left=X(p);
+	rc.top=Y(p);
+	rc.right=rc.left+bmW;
+	rc.bottom=rc.top+bmW;
+	InvalidateRect(hWin, &rc, FALSE);
+}
+
 void status()
 {
 	printMoves();
@@ -1002,6 +1025,13 @@ void repaint(RECT *clip)
 			getWinLine(p, p2);
 			penOld= SelectObject(dc, CreatePen(PS_SOLID, 3, colors[2]));
 			line(X(p) + bmW/2, Y(p) + bmW/2, X(p2) + bmW/2, Y(p2) + bmW/2);
+			DeleteObject(SelectObject(dc, penOld));
+		}
+		if(p->foul){
+			penOld= SelectObject(dc, CreatePen(PS_SOLID, 3, colors[3]));
+			int w1 = int(bmW * 0.1), w2 = int(bmW * 0.9);
+			line(X(p) + w1, Y(p) + w1, X(p) + w2, Y(p) + w2);
+			line(X(p) + w2, Y(p) + w1, X(p) + w1, Y(p) + w2);
 			DeleteObject(SelectObject(dc, penOld));
 		}
 	}
@@ -1123,7 +1153,7 @@ char *loadSkin(HBITMAP fbmp)
 			bmW=h;
 			DeleteObject(SelectObject(bmpdc, fbmp));
 			bm=fbmp;
-			for(int i=0; i<3; i++){
+			for(int i=0; i<4; i++){
 				colors[i]= GetPixel(bmpdc, bmW*5, i);
 			}
 			SetBkColor(dc, colors[0]);
@@ -1397,7 +1427,7 @@ BOOL CALLBACK LogProc(HWND hWnd, UINT msg, WPARAM wP, LPARAM lP)
 BOOL CALLBACK OptionsProc(HWND hWnd, UINT msg, WPARAM wP, LPARAM)
 {
 	int i, id;
-	static int width1, height1, tolerance1, maxMemory1, exactFive1, continuous1;
+	static int width1, height1, tolerance1, maxMemory1, ruleFive1, continuous1;
 	static struct{ int *prom, id; } D[]={
 		{&width, 103},
 		{&height, 104},
@@ -1432,7 +1462,7 @@ BOOL CALLBACK OptionsProc(HWND hWnd, UINT msg, WPARAM wP, LPARAM)
 			height1=height;
 			tolerance1=tolerance;
 			maxMemory1=maxMemory;
-			exactFive1=exactFive;
+			ruleFive1=ruleFive;
 			continuous1=continuous;
 			for(i=0; i<sizeof(D)/sizeof(*D); i++){
 				id=D[i].id;
@@ -1444,7 +1474,7 @@ BOOL CALLBACK OptionsProc(HWND hWnd, UINT msg, WPARAM wP, LPARAM)
 					 CheckDlgButton(hWnd, id, *D[i].prom ? BST_CHECKED : BST_UNCHECKED);
 				 }
 			}
-			CheckRadioButton(hWnd, 555, 556, 555+exactFive);
+			CheckRadioButton(hWnd, 555, 557, 555+ruleFive);
 			CheckRadioButton(hWnd, 559, 560, 559+continuous);
 			for(i=0; i<sizeA(priorTab); i++){
 				SendDlgItemMessage(hWnd, 120, CB_ADDSTRING, 0, (LPARAM)lng(690+i, priorTab[i]));
@@ -1474,7 +1504,7 @@ BOOL CALLBACK OptionsProc(HWND hWnd, UINT msg, WPARAM wP, LPARAM)
 							 *D[i].prom= IsDlgButtonChecked(hWnd, id);
 						 }
 					}
-					exactFive= getRadioButton(hWnd, 555, 556);
+					ruleFive= getRadioButton(hWnd, 555, 557);
 					continuous= getRadioButton(hWnd, 559, 560);
 					priority= (int)SendMessage(GetDlgItem(hWnd, 120), CB_GETCURSEL, 0, 0);
 					if(isWin9X){
@@ -1486,7 +1516,7 @@ BOOL CALLBACK OptionsProc(HWND hWnd, UINT msg, WPARAM wP, LPARAM)
 					GetDlgItemText(hWnd, 122, dataDir, sizeof(dataDir));
 					if(turNplayers || isNetGame){
 						width=width1, height=height1, tolerance=tolerance1;
-						exactFive=exactFive1, continuous=continuous1;
+						ruleFive=ruleFive1, continuous=continuous1;
 					}
 					if(width1!=width || height1!=height){
 						wP=119;
@@ -1496,7 +1526,7 @@ BOOL CALLBACK OptionsProc(HWND hWnd, UINT msg, WPARAM wP, LPARAM)
 							players[0].sendInfo(INFO_MEMORY);
 							players[1].sendInfo(INFO_MEMORY);
 						}
-						if(exactFive1!=exactFive || continuous1!=continuous){
+						if(ruleFive1!=ruleFive || continuous1!=continuous){
 							players[0].sendInfo(INFO_RULE);
 							players[1].sendInfo(INFO_RULE);
 						}
@@ -1801,7 +1831,7 @@ BOOL CALLBACK TurProc(HWND hWnd, UINT msg, WPARAM wP, LPARAM)
 			SetDlgItemText(hWnd, 114, cmdTurEnd);
 			CheckRadioButton(hWnd, 570, 571, 570+turRule);
 			CheckRadioButton(hWnd, 575, 576, 575+turNet);
-			CheckRadioButton(hWnd, 555, 556, 555+exactFive);
+			CheckRadioButton(hWnd, 555, 557, 555+ruleFive);
 			CheckDlgButton(hWnd, 572, turFormat==2 ? BST_CHECKED : BST_UNCHECKED);
 			for(i=0; i<sizeof(D)/sizeof(*D); i++){
 				id=D[i].id;
@@ -1871,7 +1901,7 @@ BOOL CALLBACK TurProc(HWND hWnd, UINT msg, WPARAM wP, LPARAM)
 					GetDlgItemText(hWnd, 114, cmdTurEnd, sizeof(cmdTurEnd));
 					turRule= getRadioButton(hWnd, 570, 571); //radio is not visible when starting tournament
 					turNet= getRadioButton(hWnd, 575, 576);
-					exactFive= getRadioButton(hWnd, 555, 556);
+					ruleFive= getRadioButton(hWnd, 555, 557);
 					turFormat= 1+IsDlgButtonChecked(hWnd, 572);
 					for(i=0; i<sizeof(D)/sizeof(*D); i++){
 						id=D[i].id;
@@ -2732,12 +2762,12 @@ char* parseCommandLine(bool &openingEnabled)
 			msg("Please see piskvork.txt for command line options.");
 		}
 		else if(!strcmp(arg, "-rule") && __argc > i+1){ //rule
-			int exactFiveTmp;
-			int exactFiveParsed = sscanf(__argv[++i], "%d", &exactFiveTmp);
-			if(!exactFiveParsed || exactFiveTmp > 1 || exactFiveTmp < 0)
-			 msg("Unknown rule %s", __argv[i]);
+			int ruleFiveTmp;
+			int ruleFiveParsed = sscanf(__argv[++i], "%d", &ruleFiveTmp);
+			if(!ruleFiveParsed || ruleFiveTmp > 2 || ruleFiveTmp < 0)
+				msg("Unknown rule %s", __argv[i]);
 			else
-				exactFive = exactFiveTmp;
+				ruleFive = ruleFiveTmp;
 		}
 		else if(!strcmp(arg, "-timematch") && __argc > i+1){ //time game
 			int timeGameTmp;

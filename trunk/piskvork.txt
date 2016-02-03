@@ -24,17 +24,18 @@ Right-click on the player's name on the statusbar to switch between Human / Comp
 
 More artificial inteligences (AI)
 ---------------------------------
-Many AI from other authors can be downloaded from http://gomocup.wz.cz/. Most of them have some restrictions:
+Many AI from other authors can be downloaded from http://gomocup.org/. Most of them have some restrictions:
 1) Board width must be equal to board height. Some AI only support size 20x20.
 2) Thinking time precision is usually 1 second. Some AI cannot adjust the time at all. 
-3) Most AI don't support continuous game or exactly five in a row option.
+3) Most AI don't support continuous game or exactly five in a row option or renju rule.
 
 Options
 -------
 - Width, height: size of the board. A new game is started when these values are changed!
 - Automatic opening moves: the game manager automatically makes three or five moves at the beginning of each game. It is especially useful for tournaments with repeat count greater than one, because it guarantees that all games will not be the same.
 - Openings are randomly rotated: Opening moves coordinates are randomly shifted and rotated or mirrored.
-- five or more stones win / exactly five stones win: How many symbols in a line are required for a win. The first rule is always used during a tournament.
+- five or more stones win / exactly five stones win: How many symbols in a line are required for a win.
+- renju rule: The first player must not make double-four, double-three or overline. More detailed rules are on http://www.renju.net
 - single game / continuous game: If single game is checked, a game over when one player wins. If continuous game is checked, you can play until the whole board is full and make many fives in a row. Continuous game is not supported during a tournament.
 - Hilight duration: how long is hilighted last move. You can set it to zero if it bothers you.
 - Sound notifications: the sound gomoku.wav is played after every AI move. You can replace this file by another wav file.
@@ -97,8 +98,8 @@ Command line parameters
     Generate psq files continuously into tmp subfolder. It is suitable for online tournament broadcast.
  -a <mask>
     Set CPU affinity. If there are 2 piskvork on a computer with dualcore procesor, it is suitable to execute the first piskvork.exe -a 1 and the second  piskvork.exe -a 2. There can be no CPU concurrency then. 
- -rule 0/1 
-    More then five in row win/exactly five in row win.
+ -rule 0/1/2
+    More then five in row win / exactly five in row win / renju rule.
  -timematch <seconds>
     Time for match in seconds.
  -timeturn <milliseconds>
@@ -138,4 +139,4 @@ This program (except folders skelet and skelet_Delphi) is distributed under the 
 3) The Program is provided without warranty. 
 
 http://petr.lastovicka.sweb.cz
-http://gomocup.wz.cz
+http://gomocup.org

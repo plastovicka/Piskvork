@@ -167,35 +167,37 @@ BEGIN
     CTEXT           "&Height:",512,68,7,35,8
     EDITTEXT        104,107,4,21,14,ES_NUMBER
     CONTROL         "&Automatic opening moves",545,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,7,25,148,10
+                    WS_TABSTOP,7,23,148,10
     CONTROL         "&Openings are randomly rotated",568,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,7,38,148,10
-    GROUPBOX        "Rules",672,4,53,148,36
+                    BS_AUTOCHECKBOX | WS_TABSTOP,7,36,148,10
+    GROUPBOX        "Rules",672,4,51,148,49
     CONTROL         "five or mo&re stones win",555,"Button",
-                    BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,11,63,137,10
+                    BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,11,61,137,10
     CONTROL         "e&xactly five stones win",556,"Button",
-                    BS_AUTORADIOBUTTON,11,75,137,10
-    GROUPBOX        "",IDC_STATIC,4,90,148,36
+                    BS_AUTORADIOBUTTON,11,73,137,10
+    CONTROL         "ren&ju rule",557,"Button",BS_AUTORADIOBUTTON,11,85,137,
+                    10
+    GROUPBOX        "",IDC_STATIC,4,100,148,34
     CONTROL         "singl&e game",559,"Button",BS_AUTORADIOBUTTON | 
-                    WS_GROUP | WS_TABSTOP,11,98,137,10
+                    WS_GROUP | WS_TABSTOP,11,107,137,10
     CONTROL         "&continuous game",560,"Button",BS_AUTORADIOBUTTON,11,
-                    112,137,10
-    GROUPBOX        "",IDC_STATIC,4,127,148,136,WS_GROUP
-    CTEXT           "Highlight durat&ion :",513,7,138,73,8
-    EDITTEXT        108,84,136,30,14,ES_NUMBER
-    LTEXT           "ms",536,119,138,22,8
+                    119,137,10
+    GROUPBOX        "",IDC_STATIC,4,134,148,129,WS_GROUP
+    CTEXT           "Highlight durat&ion :",513,7,145,73,8
+    EDITTEXT        108,84,143,30,14,ES_NUMBER
+    LTEXT           "ms",536,119,145,22,8
     CONTROL         "Sound &notifications",671,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,11,156,137,10
+                    WS_TABSTOP,11,163,137,10
     CONTROL         "&Show coordinates",510,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,11,178,137,12
+                    WS_TABSTOP,11,183,137,12
     CONTROL         "Coordinates start from &1",518,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,11,194,137,12
+                    WS_TABSTOP,11,199,137,12
     CONTROL         "Divide move number by two",516,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,11,210,137,12
+                    WS_TABSTOP,11,215,137,12
     CONTROL         "Move number starts &from 1",546,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,11,226,137,12
+                    BS_AUTOCHECKBOX | WS_TABSTOP,11,231,137,12
     CONTROL         "Save undo moves",670,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,11,242,137,10
+                    WS_TABSTOP,11,247,137,10
     GROUPBOX        "Timeouts",673,159,4,148,43
     CONTROL         "Chec&k timeout for computer",515,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,166,17,137,10
@@ -230,7 +232,7 @@ BEGIN
                     WS_TABSTOP,165,234,137,10
     CONTROL         "&Log pipe protocol to a file",549,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,165,248,137,10
-    CTEXT           "AI &data folder:",557,8,274,68,8
+    CTEXT           "AI &data folder:",957,8,274,68,8
     EDITTEXT        122,81,271,187,14,ES_AUTOHSCROLL
     PUSHBUTTON      "...",124,273,270,14,14
     DEFPUSHBUTTON   "OK",1,18,292,51,16,WS_GROUP
@@ -242,7 +244,7 @@ STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "About"
 FONT 10, "MS Shell Dlg"
 BEGIN
-    CTEXT           "(C) 2000-2015  Petr Lastovicka",501,4,50,104,10
+    CTEXT           "(C) 2000-2016  Petr Lastovicka",501,4,50,104,10
     CTEXT           "Version",503,35,24,28,9
     CTEXT           "Piskvorky",504,36,6,40,9
     ICON            1,-1,12,20,20,20
@@ -285,14 +287,14 @@ BEGIN
     PUSHBUTTON      "Cancel",IDCANCEL,118,197,50,14
 END
 
-TOURNAMENT DIALOG DISCARDABLE  0, 0, 345, 313
+TOURNAMENT DIALOG DISCARDABLE  0, 0, 345, 328
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Tournament"
 FONT 8, "MS Shell Dlg"
 BEGIN
-    DEFPUSHBUTTON   "OK",IDOK,10,290,50,14
-    PUSHBUTTON      "Cancel",IDCANCEL,75,290,50,14
-    PUSHBUTTON      "Continue",569,148,290,50,14
+    DEFPUSHBUTTON   "OK",IDOK,10,297,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,75,297,50,14
+    PUSHBUTTON      "Continue",569,148,297,50,14
     LTEXT           "Players  (EXE or &ZIP files):",563,15,9,95,8
     EDITTEXT        101,7,22,190,139,ES_MULTILINE | ES_AUTOVSCROLL | 
                     ES_AUTOHSCROLL | ES_WANTRETURN | WS_VSCROLL
@@ -338,24 +340,26 @@ BEGIN
                     WS_TABSTOP,205,190,140,10
     CONTROL         "&Openings are randomly rotated",568,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,205,203,140,10
-    GROUPBOX        "",IDC_STATIC,207,218,126,34
+    GROUPBOX        "",IDC_STATIC,207,213,126,51
     CONTROL         "five or mo&re stones win",555,"Button",
-                    BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,214,226,114,
+                    BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,214,223,114,
                     10
     CONTROL         "e&xactly five stones win",556,"Button",
-                    BS_AUTORADIOBUTTON,214,239,114,10
-    GROUPBOX        "",IDC_STATIC,207,254,126,34
-    CONTROL         "&Local computer",575,"Button",BS_AUTORADIOBUTTON | 
-                    WS_GROUP,214,262,114,10
-    CONTROL         "Networ&k",576,"Button",BS_AUTORADIOBUTTON,214,274,114,
+                    BS_AUTORADIOBUTTON,214,236,114,10
+    CONTROL         "renju rule",557,"Button",BS_AUTORADIOBUTTON,214,249,114,
                     10
-    CTEXT           "TCP/IP  &port:",592,203,294,64,8
-    EDITTEXT        110,271,291,35,14,ES_AUTOHSCROLL | ES_NUMBER
-    LTEXT           "Command to e&xecute after each game:",578,7,227,183,8
-    EDITTEXT        113,7,239,190,14,ES_AUTOHSCROLL
+    GROUPBOX        "",IDC_STATIC,207,266,126,35
+    CONTROL         "&Local computer",575,"Button",BS_AUTORADIOBUTTON | 
+                    WS_GROUP,214,274,114,10
+    CONTROL         "Networ&k",576,"Button",BS_AUTORADIOBUTTON,214,287,114,
+                    10
+    CTEXT           "TCP/IP  &port:",592,203,307,64,8
+    EDITTEXT        110,271,304,35,14,ES_AUTOHSCROLL | ES_NUMBER
+    LTEXT           "Command to e&xecute after each game:",578,7,231,183,8
+    EDITTEXT        113,7,243,190,14,ES_AUTOHSCROLL
     LTEXT           "Command to execute &when a tournament finished:",579,7,
-                    257,182,8
-    EDITTEXT        114,7,269,190,14,ES_AUTOHSCROLL
+                    261,182,8
+    EDITTEXT        114,7,273,190,14,ES_AUTOHSCROLL
 END
 
 RESULT DIALOG DISCARDABLE  0, 0, 200, 182
@@ -493,7 +497,7 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 8,7,0,0
+ FILEVERSION 8,8,0,0
  PRODUCTVERSION 0,0,0,0
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
@@ -512,9 +516,9 @@ BEGIN
             VALUE "Comments", "\0"
             VALUE "CompanyName", " \0"
             VALUE "FileDescription", "Piškvorky\0"
-            VALUE "FileVersion", "8, 7, 0, 0\0"
+            VALUE "FileVersion", "8, 8, 0, 0\0"
             VALUE "InternalName", "\0"
-            VALUE "LegalCopyright", "© 2000 - 2015  Petr Laštovièka\0"
+            VALUE "LegalCopyright", "© 2000 - 2016  Petr Laštovièka, Tianyi Hao\0"
             VALUE "LegalTrademarks", "\0"
             VALUE "OriginalFilename", "piskvork.exe\0"
             VALUE "PrivateBuild", "\0"
@@ -562,7 +566,7 @@ BEGIN
         LEFTMARGIN, 7
         RIGHTMARGIN, 337
         TOPMARGIN, 7
-        BOTTOMMARGIN, 306
+        BOTTOMMARGIN, 321
     END
 
     "RESULT", DIALOG

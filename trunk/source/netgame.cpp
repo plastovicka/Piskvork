@@ -1,8 +1,19 @@
 /*
-	(C) 2005-2007  Petr Lastovicka
+	(C) 2000-2015  Petr Lastovicka
+	(C) 2015  Tianyi Hao
 
-	This program is free software; you can redistribute it and/or
-	modify it under the terms of the GNU General Public License.
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	*/
 #include "hdr.h"
 #pragma hdrstop
@@ -23,7 +34,7 @@ HANDLE netGameThread;
 sockaddr_in netGameIP;
 
 struct TnetGameSettings {
-	char width, height, begin, cont, exact5;
+	char width, height, begin, cont, rule5;
 };
 //---------------------------------------------------------------
 void newNetGame(LPARAM lP)
@@ -34,9 +45,9 @@ void newNetGame(LPARAM lP)
 	width=b->width;
 	height=b->height;
 	newGame(b->begin ? 1-NET_PLAYER : NET_PLAYER, false);
-	if(exactFive!=b->exact5){
-		exactFive=b->exact5;
-		wrLog(b->exact5 ? lng(655, "Exactly five in a row win") : lng(654, "Five or more in a row win"));
+	if(ruleFive!=b->rule5){
+		ruleFive=b->rule5;
+		wrLog(b->rule5==2 ? lng(660, "rule renju") : (b->rule5 ? lng(655, "Exactly five in a row win") : lng(654, "Five or more in a row win")));
 	}
 	if(continuous!=b->cont){
 		continuous=b->cont;
@@ -104,9 +115,9 @@ DWORD WINAPI netGameLoop(void *param)
 		b->width=(char)width;
 		b->height=(char)height;
 		b->begin= (player==1);
-		b->exact5=(char)exactFive;
+		b->rule5=(char)ruleFive;
 		b->cont=(char)continuous;
-		if(netGameVersion<2) b->exact5=b->cont=0;
+		if(netGameVersion<2) b->rule5=b->cont=0;
 		wr(buf, 2+sizeof(TnetGameSettings));
 		if(rd1()!=C_INFO_OK) goto le;
 		b->begin= !b->begin;
