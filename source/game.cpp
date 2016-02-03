@@ -1,8 +1,19 @@
 /*
-(C) 2000-2015  Petr Lastovicka
+	(C) 2000-2016  Petr Lastovicka
+	(C) 2015-2016  Tianyi Hao
 
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License.
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 //-----------------------------------------------------------------
 #include "hdr.h"
@@ -635,7 +646,7 @@ void turResultInner(TfileName& fn)
 	else{
 		strcpy(buf1, lng(611, "No"));
 	}
-	removeChar(ruleBuffer, exactFive ? lng(556, "exactly five stones wins") : lng(555, "five or more stones wins"), '&');
+	removeChar(ruleBuffer, ruleFive ==2 ? lng(557, "renju rule") :(ruleFive ? lng(556, "exactly five stones wins") : lng(555, "five or more stones wins")), '&');
 
 	s+=sprintf(s, lng(600, "Time for turn: %d %s,   Time for match: %s\r\nTolerance: %d %s,   Memory: %d MB\r\nOpenings: %s\r\nRule: %s\r\nOpening CRC: %x\r\nGames played: %d"),//
 		m%1000 ? m : m/1000, getLngSec(m%1000==0), buf,
@@ -1073,6 +1084,7 @@ void init()
 			p->y= y;
 			p->winLineDir=0;
 			p->winLineStart=0;
+			p->foul=0;
 			p++;
 		}
 	}
@@ -1171,7 +1183,7 @@ void restartGame()
 //action: 0=local turn, 1=network turn, 2=file opened, 3=redo
 bool doMove1(Psquare p, int action)
 {
-	int i, poc, s, i1, i2;
+	int i, poc, s, i1, i2, playerWin, playerLoss;
 	TturPlayer *t1, *t2;
 	TturCell *c;
 	Psquare p1, p2, lastMove0;
@@ -1188,6 +1200,8 @@ bool doMove1(Psquare p, int action)
 	p->nxt=lastMove0;
 	if(!lastMove0 || lastMove0->pre != p) p->pre=0;
 	if(lastMove0) lastMove0->pre= p;
+	//renju rule
+	bool f = (ruleFive == 2) && checkforbid(p);
 	//redraw square
 	paintSquare(p);
 	//increment time
@@ -1228,19 +1242,26 @@ bool doMove1(Psquare p, int action)
 			nxtP(p2, 1);
 			poc++;
 		} while(p2->z==p->z && !p2->winLineDir);
-		if(exactFive ? poc==5 : poc>=5){
+
+		if((ruleFive%2 ? poc==5 : poc>=5) || f){
 			nxtP(p1, 1);
 			prvP(p2, 1);
 			//win
+			playerWin = 1-player;
+			playerLoss = player;
+			if(f){
+				playerWin = player;
+				playerLoss = 1-player;
+			}
 			if(!disableScore && action<2){
 				if(!continuous || turNplayers) disableScore=true;
 				if(turNplayers){
-					t1=&turTable[i1=players[1-player].turPlayerId];
-					t2=&turTable[i2=players[player].turPlayerId];
+					t1=&turTable[i1=players[playerWin].turPlayerId];
+					t2=&turTable[i2=players[playerLoss].turPlayerId];
 					t1->wins++;
 					t2->losses++;
 					c= getCell(i2, i1);
-					if(moves&1){ //winner started
+					if((moves&1) ^ f){ //winner started
 						t1->wins1++;
 						c->start++;
 					}
@@ -1251,29 +1272,37 @@ bool doMove1(Psquare p, int action)
 					turAddTime();
 				}
 				else{
-					players[1-player].score++;
+					players[playerWin].score++;
 				}
 				//log
 				char buf[64];
-				players[1-player].getName(buf, sizeof(buf));
+				players[playerWin].getName(buf, sizeof(buf));
 				wrLog(lng(653, "\r\n%s wins\r\n"), buf);
 				wrGameResult();
 			}
-			//draw a line
-			for(;; prvP(p2, 1)){
-				p2->winLineDir=s;
-				p2->winLineStart=p1;
-				if(p2==p1) break;
+			cancelHilite();
+			if(!f)
+			{
+				//draw a line
+				for(;; prvP(p2, 1)){
+					p2->winLineDir=s;
+					p2->winLineStart=p1;
+					if(p2==p1) break;
+				}
+				printWinLine(p);
+			}
+			else {
+				p->foul=1;
+				printFoul(p);
 			}
 			boardChanged();
-			cancelHilite();
-			printWinLine(p);
+
 			printScore();
 			if(!continuous || turNplayers) finishGame(0);//standard finish
 			break;
 		}
 	}
-	if(moves>=width*height && !finished){
+	if(moves>=width*height-25 && !finished){
 		//board is full
 		if(turNplayers && turTieCounter<turTieRepeat){
 			turTieCounter++;
@@ -1326,6 +1355,10 @@ bool undo()
 			p2->winLineStart=0;
 			if(p2==p1) break;
 		}
+		UpdateWindow(hWin);
+	}
+	if(lastMove->foul==1) {
+		lastMove->foul=0;
 		UpdateWindow(hWin);
 	}
 	//erase square

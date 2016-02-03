@@ -1,8 +1,19 @@
 /*
- (C) Petr Lastovicka
+	(C) 2000-2016  Petr Lastovicka
+	(C) 2015  Tianyi Hao
  
- This program is free software; you can redistribute it and/or
- modify it under the terms of the GNU General Public License.
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */  
 #include "lang.h"
 #include "taskbarprogress.h"
@@ -35,6 +46,7 @@ struct Tsquare
   int time;       //total thinking time
   Psquare winLineStart;//0 or beginning of a winning line
   int winLineDir; //direction offset of a winning line
+  int foul;
 };
 
 struct Txyp {
@@ -142,7 +154,7 @@ struct PROCESS_MEMORY_COUNTERS {
 typedef BOOL (__stdcall *TmemInfo)(HANDLE,PROCESS_MEMORY_COUNTERS*,DWORD);
 
 //-----------------------------------------------------------------
-extern int player,moves,width,height,tolerance,maxMemory,turNplayers,logDebug,logMessage,suspendAI,debugAI,port,turCurRepeat,autoBegin,turRepeat,turRecord,turDelay,priority,terminateAI,turGamesCounter,turTieRepeat,turTieCounter,startMoves,errDelay,turOnlyLosses,turFormat,turGamesTotal,turOpening,invert,turNet,turRule,mx,my,height2,lastTurnTime[2],hardTimeOut,humanTimeOut,opening,logMoves,moveStart,coordStart,sameTime,turMatchRepeat,turLogMsg,infoEval,saveLock,debugPipe,exactFive,continuous,undoRequest,netGameVersion,ignoreErrors,openingRandomShift1,openingRandomShiftT,affinity, Nopening, includeUndoMoves, soundNotification,cmdlineGameOutFileFormat;
+extern int player,moves,width,height,tolerance,maxMemory,turNplayers,logDebug,logMessage,suspendAI,debugAI,port,turCurRepeat,autoBegin,turRepeat,turRecord,turDelay,priority,terminateAI,turGamesCounter,turTieRepeat,turTieCounter,startMoves,errDelay,turOnlyLosses,turFormat,turGamesTotal,turOpening,invert,turNet,turRule,mx,my,height2,lastTurnTime[2],hardTimeOut,humanTimeOut,opening,logMoves,moveStart,coordStart,sameTime,turMatchRepeat,turLogMsg,infoEval,saveLock,debugPipe,ruleFive,continuous,undoRequest,netGameVersion,ignoreErrors,openingRandomShift1,openingRandomShiftT,affinity, Nopening, includeUndoMoves, soundNotification,cmdlineGameOutFileFormat;
 extern DWORD openingCRC;
 extern bool paused,finished,disableScore,isWin9X,is64bit,isClient,isServer,isNetGame,isListening,turTimerAvail,levelChanged,cmdLineGame,autoBeginForce,tmpPsq;
 
@@ -182,6 +194,7 @@ void printMoves();
 void printTime(int pl);
 bool getWinLine(Psquare p, Psquare &p2);
 void printWinLine(Psquare p);
+void printFoul(Psquare p);
 void invalidate();
 void hiliteLast();
 void cancelHilite();
@@ -277,6 +290,8 @@ void netGameMove(Psquare p);
 void netGameMsg();
 void netGameUndo();
 void netGameNew();
+
+bool checkforbid(Psquare lastMove);
 
 //-----------------------------------------------------------------
 

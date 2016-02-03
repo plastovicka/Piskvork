@@ -1,5 +1,5 @@
 20=Piškvorky
-501=(C) 2000-2015  Petr Laštovièka
+501=(C) 2000-2016  Petr Laštovièka
 503=Verze
 13=piskvork_CZ.txt
 26=language\\history_CZ.txt
@@ -49,7 +49,8 @@
 549=Zap&isovat obsah roury do souboru
 555=pì&t nebo více vyhrává
 556=pøes&nì pìt vyhrává
-557=Složka pro &data:
+557=pravi&dlo renju
+957=Složka pro data:
 558=Složka pro datové soubory umìlých inteligencí
 559=&jednotlivé hry
 560=k&ontinuální hra
@@ -137,6 +138,7 @@
 653=\r\nVyhrál %s\r\n
 654=pìt nebo více v øadì vyhrává
 655=pøesnì pìt v øadì vyhrává
+660=pravidlo renju
 656=pouze jedna hra
 657=kontinuální hra
 

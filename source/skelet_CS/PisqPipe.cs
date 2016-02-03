@@ -13,6 +13,7 @@ abstract class GomocupInterface
 	public int info_max_memory = 0; /* maximum memory in bytes, zero if unlimited */
 	public int info_game_type = 1; /* 0:human opponent, 1:AI opponent, 2:tournament, 3:network tournament */
 	public bool info_exact5 = false; /* false:five or more stones win, true:exactly five stones win */
+	public bool info_renju = false; /* false:gomoku, true:renju */
 	public bool info_continuous = false; /* false:single game, true:continuous */
 	public int terminate; /* return from brain_turn when terminate>0 */
 	public int start_time; /* tick count at the beginning of turn */
@@ -156,6 +157,7 @@ abstract class GomocupInterface
 						{
 							info_exact5 = (e & 1) != 0;
 							info_continuous = (e & 2) != 0;
+							info_renju = (e & 4) != 0;
 						}
 						break;
 					case "folder":

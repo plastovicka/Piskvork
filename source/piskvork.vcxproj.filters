@@ -36,6 +36,9 @@
     <ClCompile Include="taskbarprogress.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="renju.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Piskvork.rc">

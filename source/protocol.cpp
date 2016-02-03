@@ -1,8 +1,19 @@
 /*
-(C) 2004-2015  Petr Lastovicka
+	(C) 2004-2016  Petr Lastovicka
+	(C) 2015-2016  Tianyi Hao
 
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License.
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include "hdr.h"
 #pragma hdrstop
@@ -595,10 +606,8 @@ int Tplayer::sendInfo(int mask)
 		if(turNplayers) i= isClient ? 3 : 2;
 		sendInfoCmd("game_type", i);
 	}
-	if((mask & INFO_RULE)/* && !turNplayers*/){
-		//I dont why there is !turNplayers in condition,
-		//but that is the reason why rule 1 is not send in the tournament
-		sendInfoCmd("rule", exactFive|(continuous<<1));
+	if((mask & INFO_RULE)){
+		sendInfoCmd("rule", (ruleFive < 2 ? ruleFive : 4) | (continuous<<1));
 	}
 	if(mask & INFO_TIMELEFT) sendInfoCmd("time_left", timeLeft());
 	if((mask & INFO_DIR) && dataDir[0] && !isClient){
@@ -847,7 +856,7 @@ int Tplayer::move()
 	}
 	//remember the board
 	delete[] lastBoard;
-	if(moves==0 || lastMove->winLineStart || err){
+	if(moves==0 || lastMove->winLineStart || lastMove->foul || err){
 		DlastBoard=0;
 		lastBoard=0;
 	}

@@ -86,6 +86,12 @@ void computer()
 	DWORD t0, t1;
 	Psquare p;
 
+	static bool renjuErr = false;
+	if(info_renju && !renjuErr){
+		renjuErr = true;
+		pipeOut("MESSAGE renju rule is not supported");
+	}
+
 	resultMove=0;
 	holdMove=0;
 	highestEval=0;

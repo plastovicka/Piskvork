@@ -15,6 +15,7 @@ info_time_left:integer=1000000000;  { left time for a game }
 info_max_memory:integer=0; { maximum memory in bytes, zero if unlimited }
 info_game_type:integer=1;  { 0:human opponent, 1:AI opponent, 2:tournament, 3:network tournament }
 info_exact5:integer=0; { 0:five or more stones win, 1:exactly five stones win }
+info_renju:integer=0; { 0:Gomoku, 1:renju }
 info_continuous:integer=0; { 0:single game, 1:continuous }
 terminate:integer; { you must return from brain_turn when terminate>0 }
 start_time:longword; { tick count at the beginning of turn }
@@ -156,7 +157,7 @@ begin
     if get_cmd_param('timeout_turn',param,info) then info_timeout_turn:=StrToInt(info);
     if get_cmd_param('time_left',param,info) then info_time_left:=StrToInt(info);
     if get_cmd_param('game_type',param,info) then info_game_type:=StrToInt(info);
-    if get_cmd_param('rule',param,info) then begin e:=StrToInt(info); info_exact5:=e and 1; info_continuous:=(e shr 1)and 1; end;
+    if get_cmd_param('rule',param,info) then begin e:=StrToInt(info); info_exact5:=e and 1; info_continuous:=(e shr 1)and 1; info_renju:=(e shr 2)and 1; end;
     if get_cmd_param('folder',param,info) then dataFolder:=info;
 {$IFDEF DEBUG_EVAL}
     if get_cmd_param('evaluate',param,info) then begin

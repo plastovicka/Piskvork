@@ -20,17 +20,18 @@ Kliknutí pravým tlaèítkem myši na jméno hráèe na stavovém øádku pøepne mezi Èlov
 
 Další umìlé inteligence (AI)
 ----------------------------
-Na http://gomocup.wz.cz/ lze najít a stáhnout nìkolik dalších AI od rùzných autorù. Vìtšina z nich ale má nìjaká omezení:
+Na http://gomocup.org/ lze najít a stáhnout nìkolik dalších AI od rùzných autorù. Vìtšina z nich ale má nìjaká omezení:
 1) Hrací plocha musí být ètvercová. Nìkteré AI umìjí hrát jen na ploše 20x20.
 2) Dobu pøemýšlení lze nastavit s pøesností jen na celé sekundy. Nìkteré AI dokonce vùbec neumìjí nastavit dobu pøemýšlení. Nìkteré AI si kontrolují pouze èas na jeden tah, ale ne èas celé partie.
-3) Vìtšina AI neumí kontinuální hru ani možnost pøesnì pìt v øadì vyhrává.
+3) Vìtšina AI neumí kontinuální hru ani možnost pøesnì pìt v øadì vyhrává ani pravidlo renju.
 
 Možnosti
 --------
 - Šíøka,výška: rozmìry hrací plochy. Pøi jejich zmìnì zaène nová hra ! 
 - Automatické zahájení partie: pøi zaškrtnutí této možnosti je na zaèátku každé hry automaticky vygenerováno nìkolik tahù. Je to dobré k tomu, aby hra nebyla vždy stejná. Když zaèíná AI, pak obvykle volí vždy stejné zahájení. Touto volbou mu lze vnutit jiná zahájení.
 - Náhodnì otáèet zahájení: zahájení je náhodnì posunuto a otoèeno nebo zrcadleno.
-- pìt nebo více vyhrává/pøesnì pìt vyhrává: kolik svých symbolù musí hráè umístit do øady, aby vyhrál. Pøi turnaji vždy platí první pravidlo (šest a více v øadì je také výhra).
+- pìt nebo více vyhrává/pøesnì pìt vyhrává: kolik svých symbolù musí hráè umístit do øady, aby vyhrál.
+- pravidlo renju: zaèínající hráè nesmí v žádném tahu udìlat dvì ètveøice ani dvì trojice ani øadu více než pìti symbolù. Pøesná pravidla najdete na http://www.renju.net
 - jednotlivé hry / kontinuální hra: Když zaškrtnete jednotlivé hry, pak každá hra skonèí, jakmile jeden z hráèù vyhraje. Kontinuální hra znamená, že lze pokraèovat ve høe tak dlouho, dokud se nezaplní celá hrací plocha. Pøi turnaji se vždy hrají jednotlivé hry.
 - Doba zvýraznìní tahu: jak dlouho je zvýraznìn poslední tah. Pokud vás to pøi høe rozptyluje, pak zadejte 0.
 - Zvukové oznámení: na konci tahu poèítaèe se pøehraje zvuk gomoku.wav. Tento soubor mùžete nahradit jiným wav souborem.
@@ -94,8 +95,8 @@ Spouštìní s parametrem
     Generování prùbìžných psq souborù pøi turnaji. To je vhodné pro online pøenos turnaje.
  -a <maska>
     Nastavení využití jader procesoru. Pokud se pouští dva klienti na vícejádrovém procesoru, je vhodné jednoho spustit piskvork.exe -a 1 a druhého piskvork.exe -a 2. Pak si nemohou, co se týèe využití CPU, konkurovat.
- -rule 0/1 
-    Pravidlo pìt nebo více vyhrává / pøesnì pìt vyhrává.
+ -rule 0/1/2
+    Pravidlo pìt nebo více vyhrává / pøesnì pìt vyhrává / renju.
  -timematch <sekund>
     Èas na zápas.
  -timeturn <milisekund>
@@ -134,4 +135,4 @@ Na tento program (kromì složek skelet a skelet_Delphi) se vztahuje licence "GNU 
 3) Program je bez záruky. 
 
 http://petr.lastovicka.sweb.cz
-http://gomocup.wz.cz
+http://gomocup.org

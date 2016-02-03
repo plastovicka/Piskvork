@@ -1,8 +1,19 @@
 /*
-	(C) 2005-2015  Petr Lastovicka
+	(C) 2000-2016  Petr Lastovicka
+	(C) 2015-2016  Tianyi Hao
 
-	This program is free software; you can redistribute it and/or
-	modify it under the terms of the GNU General Public License.
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	*/
 #include "hdr.h"
 #pragma hdrstop
@@ -22,7 +33,7 @@ struct TgameSettings {
 	char sendMoves;
 	char tieRepeat;
 	char messages;
-	char exactFive;
+	char ruleFive;
 	char openingData[1];
 	void fill();
 	void use();
@@ -47,7 +58,7 @@ struct TturSettings {
 	bool autoBeginForce;
 
 #if STATE_VERSION >=0x805
-	bool exactFive;
+	char ruleFive;
 #endif
 
 	void fill();
@@ -338,7 +349,7 @@ void TgameSettings::use()
 	debugAI=(suspend>>1)&1;
 	turTieRepeat=tieRepeat;
 	turLogMsg=messages;
-	::exactFive=exactFive;
+	::ruleFive=ruleFive;
 }
 
 void TgameSettings::fill()
@@ -353,7 +364,7 @@ void TgameSettings::fill()
 	sendMoves=(char)turRecord;
 	tieRepeat=(char)turTieRepeat;
 	messages=(char)turLogMsg;
-	exactFive=(char)::exactFive;
+	ruleFive=(char)::ruleFive;
 	openingData[0]=0;
 }
 
@@ -376,7 +387,7 @@ void TturSettings::use()
 	turMatchRepeat= matchRepeat ? matchRepeat : 2;
 	openingRandomShiftT=openingRandomShift;
 	::autoBeginForce=autoBeginForce;
-	::exactFive = exactFive;
+	::ruleFive = ruleFive;
 }
 
 void TturSettings::fill()
@@ -399,7 +410,7 @@ void TturSettings::fill()
 	matchRepeat=(short)turMatchRepeat;
 	openingRandomShift=(char)openingRandomShiftT;
 	autoBeginForce=::autoBeginForce;
-	exactFive = ::exactFive!=0;
+	ruleFive = (char)::ruleFive;
 }
 
 //reload tournament state from a file
