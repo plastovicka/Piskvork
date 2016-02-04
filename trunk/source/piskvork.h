@@ -291,7 +291,7 @@ void netGameMsg();
 void netGameUndo();
 void netGameNew();
 
-bool checkforbid(Psquare lastMove);
+bool checkforbid();
 
 //-----------------------------------------------------------------
 

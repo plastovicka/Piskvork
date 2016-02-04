@@ -2,25 +2,23 @@
 	(C) 2012-2015  Tianyi Hao
 	(C) 2016  Petr Lastovicka
 
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
+	This program is free software: you can redistribute it and/or modify
+	it under the terms of the GNU General Public License as published by
+	the Free Software Foundation, either version 3 of the License, or
+	(at your option) any later version.
 
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU General Public License for more details.
 
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+	You should have received a copy of the GNU General Public License
+	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	*/
 #include "hdr.h"
 #pragma hdrstop
 #include "piskvork.h"
 
-#define GA(x) ((x)&0xff)
-#define GB(x) (((x)&0xff00)>>8)
 #define COMB(X) (0x100 | (X))
 #define COMC(X, Y) (0x10000 | ((X)<<8) | (Y))
 
@@ -30,16 +28,17 @@ typedef signed char Tsign;
 
 class line
 {
-public:
 	Tsign *x;
-	line(Tsign a[]) { x = a+2; }
-	int A6(int p);
-	int A5(int p);
-	int B4(int p);
-	int A3(int p);
+	int p;
+public:
+	void set(Tsign a[], int _p) { x = a+2; x[p = _p] = 1; }
+	int A6();
+	int A5();
+	int B4();
+	int A3();
 };
 
-int line::A6(int p)
+int line::A6()
 {
 	int xmin = max(p - 5, 0);
 	int xmax = min(p, S - 6);
@@ -51,20 +50,20 @@ int line::A6(int p)
 	return 0;
 }
 
-int line::A5(int p)
+int line::A5()
 {
 	int xmin = max(p - 4, 0);
 	int xmax = min(p, S - 5);
 	for(int i = xmin; i <= xmax; i++)
 	{
-		if(x[i] + x[i + 1] + x[i + 2] + x[i + 3] + x[i + 4] == 5 
+		if(x[i] + x[i + 1] + x[i + 2] + x[i + 3] + x[i + 4] == 5
 			&& x[i - 1] != 1 && x[i + 5] != 1) //XXXXX
 			return 1;
 	}
 	return 0;
 }
 
-int line::B4(int p)
+int line::B4()
 {
 	int xmin = max(p - 4, 0);
 	int xmax = min(p, S - 5);
@@ -79,7 +78,7 @@ int line::B4(int p)
 			}
 			else if(x[i + 3] == 0) //XXX_X
 			{
-				if(p == i + 4 && x[i + 5] == 0 && x[i + 6] == 1 
+				if(p == i + 4 && x[i + 5] == 0 && x[i + 6] == 1
 					&& x[i + 7] == 1 && x[i + 8] == 1 && x[i + 9] != 1) //XXX_X_XXX
 					return 2; //COMC(i+3,i+5);
 
@@ -110,13 +109,13 @@ int line::B4(int p)
 	return 0;
 }
 
-int line::A3(int p)
+int line::A3()
 {
 	int xmin = max(p - 3, 0);
 	int xmax = min(p, S - 4);
 	for(int i = xmin; i <= xmax; i++)
 	{
-		if(x[i] + x[i + 1] + x[i + 2] + x[i + 3] == 3 
+		if(x[i] + x[i + 1] + x[i + 2] + x[i + 3] == 3
 			&& x[i - 1] == 0 && x[i - 2] != 1)
 		{
 			if(x[i + 3] == 0) //XXX_
@@ -150,142 +149,90 @@ int line::A3(int p)
 
 class line4v
 {
-
-private:
-public:
 	Tsign x1[N][N+4], x2[N][N+4], x3[2 * N - 1][N+4], x4[2 * N - 1][N+4];
-	line4v(Tsign board[N][N]);
-	void pad(Tsign (*x)[N+4], int count, int len);
-	int A6(int x, int y);
-	int A5(int x, int y);
-	int B4(int x, int y);
-	int A3(int x, int y);
+	line l1, l2, l3, l4;
+	int x, y;
+	void pad(Tsign(*x)[N+4], int count, int len);
+	int A3(line &l, int (line4v::*f)(int));
+	int f1(int r);
+	int f2(int r);
+	int f3(int r);
+	int f4(int r);
+public:
+	line4v();
 	int foulr(int x, int y);
 };
 
 int line4v::foulr(int x, int y)
 {
-	int result=0;
+	int result = 0;
+
 	if(x1[x][y + 2] != -1)
 	{
-		int sign = 0;
-		if(x1[x][y + 2] == 0)
+		line m1 = l1, m2 = l2, m3 = l3, m4 = l4;
+		int x0 = this->x, y0 = this->y;
+		this->x = x; this->y = y;
+		Tsign sign = x1[x][y + 2];
+
+		//move to x,y
+		l1.set(x1[x], y);
+		l2.set(x2[y], x);
+		l3.set(x3[x+y], y);
+		l4.set(x4[S-1-y+x], S-1-y);
+
+		if(l1.A5() || l2.A5() || l3.A5() || l4.A5())
 		{
-			sign = 1;
-			x1[x][y + 2] = 1;
-			x2[y][x + 2] = 1;
-			x3[x + y][y + 2] = 1;
-			x4[S - 1 - y + x][S - 1 - y + 2] = 1;
+			result = 0; //five in a row
 		}
-		if(A5(x, y))
+		else if(l1.B4() + l2.B4() + l3.B4() + l4.B4() >= 2)
 		{
-			result = 0;
+			result = 2; //double-four
 		}
-		else if(B4(x, y) >= 2)
+		else if(A3(l1, &line4v::f1) + A3(l2, &line4v::f2) + A3(l3, &line4v::f3) + A3(l4, &line4v::f4) >= 2)
 		{
-			result = 2;
+			result = 1; //double-three
 		}
-		else if(A3(x, y) >= 2)
+		else if(l1.A6() || l2.A6() || l3.A6() || l4.A6())
 		{
-			result = 1;
+			result = 3; //overline
 		}
-		else if(A6(x, y) > 0)
-		{
-			result = 3;
-		}
-		if(sign)
-		{
-			x1[x][y + 2] = 0;
-			x2[y][x + 2] = 0;
-			x3[x + y][y + 2] = 0;
-			x4[S - 1 - y + x][S - 1 - y + 2] = 0;
-		}
+
+		//restore
+		x1[x][y + 2] = x2[y][x + 2] = x3[x+y][y + 2] =
+				x4[S-1-y+x][S-1-y + 2] = sign;
+		l1 = m1, l2 = m2, l3 = m3, l4 = m4;
+		this->x = x0; this->y = y0;
 	}
 	return result;
 }
 
-int line4v::A5(int x,int y)
+int line4v::A3(line &l, int (line4v::*f)(int))
 {
-	line l1(x1[x]),l2(x2[y]),l3(x3[x+y]),l4(x4[S-1-y+x]);
-	int p1=y,p2=x,p3=y,p4=S-1-y;
-	return l1.A5(p1) || l2.A5(p2) || l3.A5(p3) || l4.A5(p4);
+	int r = l.A3();
+	return r && (!(this->*f)(r & 0xff) || r >= 0x10000 && !(this->*f)((r>>8) & 0xff));
 }
 
-int line4v::A3(int x,int y)
+int line4v::f1(int r)
 {
-	line l1(x1[x]),l2(x2[y]),l3(x3[x+y]),l4(x4[S-1-y+x]);
-	int p1=y,p2=x,p3=y,p4=S-1-y;
-	int count=0;
-	int ll1 = l1.A3(p1);
-	if(ll1)
-	{
-		int r=GA(ll1);
-		if(!foulr(x,r)) 
-			count++;
-		else if(ll1 >= 65536)
-		{
-			r=GB(ll1);
-			if(!foulr(x,r))
-				count++;
-		}
-	}
-	int ll2 = l2.A3(p2);
-	if(ll2)
-	{
-		int r=GA(ll2);
-		if(!foulr(r,y))
-			count++;
-		else if(ll2 >= 65536)
-		{
-			r=GB(ll2);
-			if(!foulr(r,y))
-				count++;
-		}
-	}
-	int ll3 = l3.A3(p3);
-	if(ll3)
-	{
-		int r=GA(ll3);
-		if(!foulr(x+y-r,r))
-			count++;
-		else if(ll3 >= 65536)
-		{
-			r=GB(ll3);
-			if(!foulr(x+y-r,r))
-				count++;
-		}
-	}
-	int ll4 = l4.A3(p4);
-	if(ll4)
-	{
-		int r=GA(ll4);
-		if(!foulr(S-1 + x - y - r, S-1 - r))
-			count++;
-		else if(ll4 >= 65536)
-		{
-			r=GB(ll4);
-			if(!foulr(S-1 + x - y - r, S-1 - r))
-				count++;
-		}
-	}
-	return count;
+	return foulr(x, r);
 }
 
-int line4v::B4(int x,int y)
+int line4v::f2(int r)
 {
-	line l1(x1[x]),l2(x2[y]),l3(x3[x+y]),l4(x4[S-1-y+x]);
-	int p1=y,p2=x,p3=y,p4=S-1-y;
-	return l1.B4(p1) + l2.B4(p2) + l3.B4(p3) + l4.B4(p4);
+	return foulr(r, y);
 }
 
-int line4v::A6(int x,int y)
+int line4v::f3(int r)
 {
-	line l1(x1[x]),l2(x2[y]),l3(x3[x+y]),l4(x4[S-1-y+x]);
-	int p1=y,p2=x,p3=y,p4=S-1-y;
-	return l1.A6(p1) || l2.A6(p2) || l3.A6(p3) || l4.A6(p4);
+	return foulr(x + y - r, r);
 }
 
-void line4v::pad(Tsign (*x)[N+4], int count, int len)
+int line4v::f4(int r)
+{
+	return foulr(S-1 + x - y - r, S-1 - r);
+}
+
+void line4v::pad(Tsign(*x)[N+4], int count, int len)
 {
 	for(int i = 0; i < count; i++)
 	{
@@ -295,37 +242,33 @@ void line4v::pad(Tsign (*x)[N+4], int count, int len)
 	}
 }
 
-line4v::line4v(Tsign board[N][N])
+line4v::line4v()
 {
 	pad(x1, width, height);
 	pad(x2, height, width);
 	pad(x3, width+height-1, 0);
 	pad(x4, width+height-1, 0);
 
+	Tsign conv[4];
+	conv[0] = 0;
+	conv[lastMove->z] = 1;
+	conv[3-lastMove->z] = -1;
+
 	for(int i = 0; i < width; i++)
 		for(int j = 0; j < height; j++)
-			x1[i][j+2] = x2[j][i+2] = x3[i+j][j+2] =
-			x4[S-1-j+i][S-1-j+2] = board[i][j];
+		{
+			Psquare p = Square(i, j);
+			x1[i][j+2] = x2[j][i+2] = x3[i+j][j+2] = x4[S-1-j+i][S-1-j+2] =
+				(p->winLineDir ? 20 : conv[p->z]);
+		}
 }
 
-bool checkforbid(Psquare lastMove)
+bool checkforbid()
 {
-	Tsign board_[N][N];
-
 	S = max(width, height);
-	if((moves & 1) == 0 || S > N) return false;
+	if(S > N) return true;
+	if((moves & 1) == 0) return false;
 
-	for(int i = 0; i<width; i++)
-		for(int j = 0; j<height; j++)
-			board_[i][j] = 0;
-
-	Tsign sign = 1;
-	for(Psquare p = lastMove; p; p = p->nxt)
-	{
-		board_[p->x - 1][p->y - 1] = sign;
-		sign *= -1;
-	}
-
-	line4v lin4v(board_);
+	line4v lin4v;
 	return lin4v.foulr(lastMove->x - 1, lastMove->y - 1) != 0;
 }

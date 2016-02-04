@@ -1201,7 +1201,7 @@ bool doMove1(Psquare p, int action)
 	if(!lastMove0 || lastMove0->pre != p) p->pre=0;
 	if(lastMove0) lastMove0->pre= p;
 	//renju rule
-	bool f = (ruleFive == 2) && checkforbid(p);
+	bool f = (ruleFive == 2) && checkforbid();
 	//redraw square
 	paintSquare(p);
 	//increment time
