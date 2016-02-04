@@ -1,6 +1,7 @@
-8.8 (3 February 2016)
+8.8 (4 February 2016)
 renju rule
 AI can have both 32bit and 64bit executable in ZIP
+game is draw if there are only 25 empty squares on the board
 
 8.7 (24 May 2015)
 tournament progress on taskbar icon on Windows 7 or later

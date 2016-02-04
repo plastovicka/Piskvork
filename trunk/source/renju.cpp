@@ -259,7 +259,7 @@ line4v::line4v()
 		{
 			Psquare p = Square(i, j);
 			x1[i][j+2] = x2[j][i+2] = x3[i+j][j+2] = x4[S-1-j+i][S-1-j+2] =
-				(p->winLineDir ? 20 : conv[p->z]);
+				(p->winLineDir ? (Tsign)20 : conv[p->z]);
 		}
 }
 
