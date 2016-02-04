@@ -2,18 +2,18 @@
 	(C) 2000-2016  Petr Lastovicka
 	(C) 2015-2016  Tianyi Hao
 
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
+	This program is free software: you can redistribute it and/or modify
+	it under the terms of the GNU General Public License as published by
+	the Free Software Foundation, either version 3 of the License, or
+	(at your option) any later version.
 
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU General Public License for more details.
 
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+	You should have received a copy of the GNU General Public License
+	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	*/
 #include "hdr.h"
 #pragma hdrstop
@@ -23,6 +23,7 @@
 #include "piskvork.h"
 
 #define STATE_VERSION 0x805
+#define PROTOCOL_VERSION 2 //must be less than 8
 
 
 //info about game that is sent to a client
@@ -602,7 +603,7 @@ lstart:
 		//receive game settings
 		c=rd1();
 		len=rd1();
-		if(c!=1 || len!=sizeof(TgameSettings)){
+		if(c!=PROTOCOL_VERSION || len!=sizeof(TgameSettings)){
 			wrLog(lng(884, "Server is running different version of Piskvork than client"));
 			show(logDlg);
 			break;
@@ -736,8 +737,8 @@ DWORD WINAPI serverLoop(void *param)
 			CloseHandle(h);
 			if(c!=118) goto lend;
 		}
-		//older versions did not check TgameSettings length properly, this byte will disconnect them
-		buf[0]=1; //must be less than 8
+		//must be less than 8, because older versions did not have the version byte and expected TgameSettings length >= 8
+		buf[0]=PROTOCOL_VERSION;
 		//send game settings
 		b=(TgameSettings*)(buf+2);
 		buf[1]=sizeof(TgameSettings);
