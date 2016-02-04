@@ -1,8 +1,18 @@
 /*
-	(C) 2004-2015  Petr Lastovicka
+	(C) 2004-2016  Petr Lastovicka
 
-	This program is free software; you can redistribute it and/or
-	modify it under the terms of the GNU General Public License.
+	This program is free software: you can redistribute it and/or modify
+	it under the terms of the GNU General Public License as published by
+	the Free Software Foundation, either version 3 of the License, or
+	(at your option) any later version.
+
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU General Public License for more details.
+
+	You should have received a copy of the GNU General Public License
+	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	*/
 #include "hdr.h"
 #pragma hdrstop
@@ -40,6 +50,7 @@ char lang[64];            //name of the current language
 static char *langFile;     //file content (\n are replaced by \0)
 static char *lngstr[MAXLNGSTR];//pointers to lines in the langFile
 static char *lngNames[MAXLANG+1];//names of all foundlanguages
+extern bool isWin9X;
 //-------------------------------------------------------------------------
 
 char *lng(int i, char *s)
@@ -141,19 +152,27 @@ static int *subPtr;
 static void fillPopup(HMENU h)
 {
 	int i, id, j;
-	char *s;
+	char *s, *n;
+	UINT f;
 	HMENU sub;
 	ACCEL *a;
 	MENUITEMINFO mii;
 	char buf[128];
+	WCHAR w[21];
 
 	for(i=GetMenuItemCount(h)-1; i>=0; i--){
 		id=GetMenuItemID(h, i);
 		if(id==29999){
-			for(j=0; lngNames[j]; j++){
-				InsertMenu(h, 0xFFFFFFFF,
-					MF_BYPOSITION|(_stricmp(lngNames[j], lang) ? 0 : MF_CHECKED),
-					30000+j, lngNames[j]);
+			for(j=0; (n=lngNames[j])!=0; j++){
+				f = MF_BYPOSITION|(_stricmp(n, lang) ? 0 : MF_CHECKED);
+				w[0] = 0;
+				if(!isWin9X){
+					size_t len = strlen(n);
+					// L"\x10c" does not compile correctly in Microsoft Visual C++ 6.0
+					if(len==5 && !_strnicmp(n+1, "esky", 4)){ wcscpy(w, L"0esky"); w[0] = 0x10c; }
+				}
+				if(w[0]) InsertMenuW(h, 0xFFFFFFFF, f, 30000+j, w);
+				else InsertMenuA(h, 0xFFFFFFFF, f, 30000+j, n);
 			}
 			DeleteMenu(h, 0, MF_BYPOSITION);
 		}
