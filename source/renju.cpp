@@ -160,10 +160,10 @@ class line4v
 	int f4(int r);
 public:
 	line4v();
-	int foulr(int x, int y);
+	int foulr(int x, int y, int five);
 };
 
-int line4v::foulr(int x, int y)
+int line4v::foulr(int x, int y, int five)
 {
 	int result = 0;
 
@@ -182,7 +182,7 @@ int line4v::foulr(int x, int y)
 
 		if(l1.A5() || l2.A5() || l3.A5() || l4.A5())
 		{
-			result = 0; //five in a row
+			result = five; //five in a row
 		}
 		else if(l1.B4() + l2.B4() + l3.B4() + l4.B4() >= 2)
 		{
@@ -214,22 +214,22 @@ int line4v::A3(line &l, int (line4v::*f)(int))
 
 int line4v::f1(int r)
 {
-	return foulr(x, r);
+	return foulr(x, r, 1);
 }
 
 int line4v::f2(int r)
 {
-	return foulr(r, y);
+	return foulr(r, y, 1);
 }
 
 int line4v::f3(int r)
 {
-	return foulr(x + y - r, r);
+	return foulr(x + y - r, r, 1);
 }
 
 int line4v::f4(int r)
 {
-	return foulr(S-1 + x - y - r, S-1 - r);
+	return foulr(S-1 + x - y - r, S-1 - r, 1);
 }
 
 void line4v::pad(Tsign(*x)[N+4], int count, int len)
@@ -270,5 +270,5 @@ bool checkforbid()
 	if((moves & 1) == 0) return false;
 
 	line4v lin4v;
-	return lin4v.foulr(lastMove->x - 1, lastMove->y - 1) != 0;
+	return lin4v.foulr(lastMove->x - 1, lastMove->y - 1, 0) != 0;
 }
