@@ -630,7 +630,7 @@ int Tplayer::storeBoard()
 	for(int y=0; y<height; y++){
 		for(int x=0; x<width; x++){
 			Psquare p=Square(x, y);
-			fputc(p->winLineDir ? '#' : "-xo-"[p->z], f);
+			fputc(p->blocked() ? '#' : "-xo-"[p->z], f);
 		}
 		fputc('\n', f);
 	}
@@ -760,7 +760,7 @@ int Tplayer::move()
 				for(p=lastMove; p->nxt; p=p->nxt);
 				for(;;){
 					assert(p->z==1 || p->z==2);
-					sendCommand("%d,%d,%d", p->x-1, p->y-1, p->winLineDir ? 3 :
+					sendCommand("%d,%d,%d", p->x-1, p->y-1, p->blocked() ? 3 :
 						(this==&players[0] ? p->z : 3-p->z));
 					if(p==lastMove) break;
 					p=p->pre;
@@ -856,7 +856,7 @@ int Tplayer::move()
 	}
 	//remember the board
 	delete[] lastBoard;
-	if(moves==0 || lastMove->winLineStart || lastMove->foul || err){
+	if(moves==0 || lastMove->blocked() || err){
 		DlastBoard=0;
 		lastBoard=0;
 	}
