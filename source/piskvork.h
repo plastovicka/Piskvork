@@ -46,7 +46,9 @@ struct Tsquare
   int time;       //total thinking time
   Psquare winLineStart;//0 or beginning of a winning line
   int winLineDir; //direction offset of a winning line
-  int foul;
+  bool foul;
+
+	bool blocked(){ return winLineDir || foul; }
 };
 
 struct Txyp {

@@ -1084,7 +1084,7 @@ void init()
 			p->y= y;
 			p->winLineDir=0;
 			p->winLineStart=0;
-			p->foul=0;
+			p->foul=false;
 			p++;
 		}
 	}
@@ -1237,11 +1237,11 @@ bool doMove1(Psquare p, int action)
 		do{
 			prvP(p1, 1);
 			poc++;
-		} while(p1->z==p->z && !p1->winLineDir);
+		} while(p1->z==p->z && !p1->blocked());
 		do{
 			nxtP(p2, 1);
 			poc++;
-		} while(p2->z==p->z && !p2->winLineDir);
+		} while(p2->z==p->z && !p2->blocked());
 
 		if((ruleFive%2 ? poc==5 : poc>=5) || f){
 			nxtP(p1, 1);
@@ -1292,7 +1292,7 @@ bool doMove1(Psquare p, int action)
 				printWinLine(p);
 			}
 			else {
-				p->foul=1;
+				p->foul=true;
 				printFoul(p);
 			}
 			boardChanged();
@@ -1357,8 +1357,8 @@ bool undo()
 		}
 		UpdateWindow(hWin);
 	}
-	if(lastMove->foul==1) {
-		lastMove->foul=0;
+	if(lastMove->foul) {
+		lastMove->foul=false;
 		UpdateWindow(hWin);
 	}
 	//erase square

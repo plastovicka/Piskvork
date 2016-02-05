@@ -781,7 +781,7 @@ void cancelHilite()
 void hiliteLast()
 {
 	cancelHilite();
-	if(moves && hiliteDelay && !lastMove->winLineDir && !lastMove->foul){
+	if(moves && hiliteDelay && !lastMove->blocked()){
 		SetTimer(hWin, 10, hiliteDelay, NULL);
 		paintSquare(hilited=lastMove);
 	}
