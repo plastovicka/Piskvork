@@ -15,7 +15,7 @@ extern unsigned start_time; /* tick count at the beginning of turn */
 extern char dataFolder[256]; /* folder for persistent files */
 
 /* you have to implement these functions */
-void brain_init(); /* create the board and call pipeOut("OK"); */
+void brain_init(); /* create the board and call pipeOut("OK"); or pipeOut("ERROR Maximal board size is .."); */
 void brain_restart(); /* delete old board, create new board, call pipeOut("OK"); */
 void brain_turn(); /* choose your move and call do_mymove(x,y);
                       0<=x<width, 0<=y<height */
