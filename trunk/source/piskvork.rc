@@ -497,7 +497,7 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 8,8,0,0
+ FILEVERSION 8,8,1,0
  PRODUCTVERSION 0,0,0,0
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
@@ -516,7 +516,7 @@ BEGIN
             VALUE "Comments", "\0"
             VALUE "CompanyName", " \0"
             VALUE "FileDescription", "Piškvorky\0"
-            VALUE "FileVersion", "8, 8, 0, 0\0"
+            VALUE "FileVersion", "8, 8, 1, 0\0"
             VALUE "InternalName", "\0"
             VALUE "LegalCopyright", "© 2000 - 2016  Petr Laštovièka, Tianyi Hao\0"
             VALUE "LegalTrademarks", "\0"
