@@ -10,15 +10,20 @@ class GomocupEngine : GomocupInterface
 	{
 		get
 		{
-			return "name=\"Random\", author=\"Petr Lastovicka\", version=\"1.0\", country=\"Czech Republic\", www=\"http://petr.lastovicka.sweb.cz\"";
+			return "name=\"Random\", author=\"Petr Lastovicka\", version=\"1.1\", country=\"Czech Republic\", www=\"http://petr.lastovicka.sweb.cz\"";
 		}
 	}
 
 	public override void brain_init()
 	{
-		if (width < 5 || width > MAX_BOARD || height < 5 || height > MAX_BOARD)
+		if (width < 5 || height < 5)
 		{
 			Console.WriteLine("ERROR size of the board");
+			return;
+		}
+		if (width > MAX_BOARD || height > MAX_BOARD)
+		{
+			Console.WriteLine("ERROR Maximal board size is " + MAX_BOARD);
 			return;
 		}
 		Console.WriteLine("OK");

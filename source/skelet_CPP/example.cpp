@@ -1,17 +1,21 @@
 #include "pisqpipe.h"
 #include <windows.h>
 
-const char *infotext="name=\"Random\", author=\"Petr Lastovicka\", version=\"3.1\", country=\"Czech Republic\", www=\"http://petr.lastovicka.sweb.cz\"";
+const char *infotext="name=\"Random\", author=\"Petr Lastovicka\", version=\"3.2\", country=\"Czech Republic\", www=\"http://petr.lastovicka.sweb.cz\"";
 
 #define MAX_BOARD 100
 int board[MAX_BOARD][MAX_BOARD];
 static unsigned seed;
 
-               
+
 void brain_init() 
 {
-  if(width<5 || width>MAX_BOARD || height<5 || height>MAX_BOARD){
+  if(width<5 || height<5){
     pipeOut("ERROR size of the board");
+    return;
+  }
+  if(width>MAX_BOARD || height>MAX_BOARD){
+    pipeOut("ERROR Maximal board size is %d", MAX_BOARD);
     return;
   }
   seed=start_time;
@@ -85,7 +89,7 @@ void brain_turn()
     x=rnd(width);
     y=rnd(height);
     i++;
-    if(terminate) return;
+    if(terminateAI) return;
   }while(!isFree(x,y));
 
   if(i>1) pipeOut("DEBUG %d coordinates didn't hit an empty field",i);

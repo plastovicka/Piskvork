@@ -21,7 +21,7 @@ abstract class GomocupInterface
 
 	/* you have to implement these functions */
 	abstract public string brain_about { get; } /* copyright, version, homepage */
-	abstract public void brain_init(); /* create the board and call Console.WriteLine("OK"); */
+	abstract public void brain_init(); /* create the board and call Console.WriteLine("OK"); or Console.WriteLine("ERROR Maximal board size is .."); */
 	abstract public void brain_restart(); /* delete old board, create new board, call Console.WriteLine("OK"); */
 	abstract public void brain_turn(); /* choose your move and call do_mymove(x,y); 0<=x<width, 0<=y<height */
 	abstract public void brain_my(int x, int y); /* put your move to the board */
