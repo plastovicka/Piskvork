@@ -614,7 +614,7 @@ int Tplayer::sendInfo(int mask)
 		sendInfoCmd("folder", dataDir);
 	}
 
-	if(!pipeToAI){
+	if(infoDatFile){
 		if(fclose(infoDatFile)) result=8;
 	}
 lend:
