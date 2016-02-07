@@ -1,0 +1,290 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1250">
+<meta name="description" content="novy protokol pro komunikaci piskvorkovych brainu">
+<meta name="author" content="Martin Petricek">
+<meta name="language" content="Czech">
+<title>Nový protokol</title>
+<link rel="stylesheet" type="text/css" href="../styl.css">
+</head>
+
+<body>
+<h1>Nový protokol</h1>
+
+<p align="center">
+  <a href="info.htm"><span class="bigbutton">Zpět na informace</span></a>
+  <br>
+</p>
+
+<h2>Úvod</h2>
+<p>
+Příkazy putují do roury vždy jeden příkaz na řádce, po příkazu je poslána
+sekvence CRLF (0x0d, 0x0a) - neboli konec řádky.<br>
+Manažer očekává odpoveďi taktéž ukončené CRLF, nebo jenom LF nebo jenom CR.
+Prázdné řádky ignoruje.<br>
+V zásadě lze příkazy číst treba obyčejným readln,scanf, nebo něčím podobným a odpovídat pomocí
+writeln, printf, nebo něčím podobným a bude to fungovat bez problému.<br>
+Brainu stačí aby uměl příkazy BEGIN, END, TURN a START, uměl korektně buď zpracovávat,
+nebo ignorovat INFO a na zbylé příkazy může klidně odpovídat "UNKNOWN". Pokud se protokol
+rozšíří o nějaké další příkazy (např. analýza tahu), tak nebudou důležité pro použití v turnaji<br>
+<br>
+Jinak je poměrně důležité aby brain nečetl ze vstupu když nemá (nebo nečeká na další příkaz)
+a nezapisoval tam když nemá, pokud se pokusí číst další příkaz ve chvíli kdy se od něj očekává
+odpověď, tak dojde k zablokování (brain čeká až na další příkaz, manager čeká na odpověď -
+vzniká deadlock) a typicky to po timeoutu na tah pak skončí odstřelením a diskvalifikaci brainu.
+<br>
+Název brainu musí začínat na "pbrain-"<br>
+<br>
+Příklad:<br>
+<code>
+pbrain-svine.exe<br>
+pbrain-pisq5.exe<br>
+</code>
+pokud brain začíná na jiný prefix, tak se bere že komunikuje <a href="protocl1.htm" title="popis starého protokolu">starou metodou přes soubor</a>
+</p>
+
+<h3>Reakce na neznámý příkaz</h3>
+
+<p>
+<b>Jak by se měl brain chovat když dostane jiný příkaz, kterému nerozumí?</b><br>
+
+  Měl by vrátit řádku začínající řetězcem "UNKNOWN" následovaným volitelně
+  nějakým human-readable popisem chyby. Manager se pak zkusí buď obejít
+  bez podpory toho příkazu, nebo shledá-li to fatální, pošle příkaz END.
+  Obdržení neznámého příkazu tedy není důvodem k ukončení brainu.
+</p>
+
+<h3>Reakce na špatný příkaz</h3>
+<p>
+
+<b>Jak by se měl brain chovat když dostane příkaz, kterému rozumí, ale nemůže ho
+ z jakéhokoliv důvodu provést (např. předtím dostal nevyhovující info hodnotu)</b><br>
+
+ Měl by vrátit řádku začínající řetězcem "ERROR" následovaným volitelně
+ nějakým human-readable popisem chyby. Manager pak buď zkusí příkaz
+ provést jinak, nebo pošle pokyn ke konci (příkaz END).
+</p>
+
+<h2>Příkazy</h2>
+
+<h3>INFO [klíč] [hodnota]</h3>
+<pre>
+ Manažer posílá brainu informaci (jaký je nastaven časový limit, atd ....)
+ klíč je jeden z:
+
+ timeout_match - hodnota udává limit na zápas v milisekundách (0=bez limitu)
+ timeout_turn  - hodnota udává limit na tah v milisekundách (0=bez limitu)
+ max_memory    - hodnota udává limit na maximální spotřebovanou paměť (v bajtech, 0=bez limitu).
+
+ Příklad:
+ INFO timeout_match 300000
+ INFO timeout_turn 10000
+ INFO max_memory 83886080
+
+Jak by se měl brain chovat když dostane INFO, kterému nerozumí:
+- Ignorovat ho, není to nic důležitého. Pokud by to bylo důležité,
+  dostal by příkaz, ktreremu nerozumí
+
+Jak by se měl brain chovat když dostane INFO, kterému rozumí, ale je nepřijatelné
+ (např. příliš malý limit na paměť)
+- Brain musí s vracením chyby počkat až dostane první příkaz (typicky do MOVE nebo BEGIN),
+  neboť info příkazy nejsou nikdy posílaný samostatně, vždy předchází nějakému jinému příkazu
+  a během posílání info příkazu manager nečte vstup (takže snaha tam něco poslat vede k
+  zablokování procesu).
+
+ Očekávaná odpověď: žádná
+</pre>
+
+<h3>START [velikost]</h3>
+<pre>
+ Instrukce pro brain k inicializaci dat. Parametrem je celé číslo určující velikost plochy
+ V tomto turnaji bude velikost vždy 20, nicméně v protokolu je takhle rezerva do budoucna,
+ pokud budeme chtít velikost ploch změnit. Tímto se pouze inicializuje brain, ještě ale
+ nemá provést žádný tah.
+
+ Příklad:
+ START 20
+
+ Očekávaná odpověď:
+ "OK" - parametry vyhovují
+ cokoliv jiného: řetězec bude brán jako chybová hláška a bude zobrazen v manažeru (např. že
+ neumí jiné rozměry než 20x20, eventuelně mu nevyhovují paměťové limity, atd ...)
+</pre>
+
+<h3>TURN [X],[Y]</h3>
+
+<pre>
+říká brainovi na které souřadnice tahnul soupeř. Souřadnice jsou číslovány od nuly.
+
+ Očekávaná odpověď:
+ dvě čísla oddělená čárkou - kam tahne brain
+
+ Příklad:
+ TURN 10,10
+ odpověď:
+ 11,10
+</pre>
+
+<h3>BEGIN</h3>
+
+<pre>
+ jednomu z brainu bude tento příkaz poslán po startu
+ - neboli že brain má začít na této prázdné ploše hrát.
+ Druhý z brainu dostane po startu místo toho příkaz TURN s prvním tah soupeře
+
+ Očekávaná odpověď:
+ dvě čísla oddělená čárkou - kam táhne brain
+
+ Příklad:
+ BEGIN
+ odpověď:
+ 10,10
+</pre>
+
+<h3>END</h3>
+<pre>
+ Příkaz k ukončení brainu. Brain by se měl co nejrychleji ukončit (pokud to neudělá,
+ bude odstrelen). Tenhle příkaz se pošle oboum brainům po dohrání hry.
+
+ Očekávaná odpověď:
+ Očekává se, že se brain co nejrychleji ukončí a nebude posílat žádnou odpověď.
+ Před ukončením by měl po sobě smazat všechny dočasné soubory, pokud si někde nějaké vytvořil.
+</pre>
+
+<p>
+Timelimit na partii se bude počítat od spuštění procesu do zaslání příkazu END
+(ukončování se tedy už nepočítá, i když pokud bude trvat déle než chvilku, bude
+proces odstřelen).<br>
+Timelimit na tah se buď počítat od poslání příkazu BEGIN resp. TURN do obdržení odpovědi.<br>
+Po odehrání svého tahu by se měl brain zablokovat tím, že bude čekat na další příkaz
+(další tah) - ale pro jistotu při tahu jednoho procesu toho druhého vždy radši manažer zastaví.<br>
+(Brain by neměl přemýšlet během tahu soupeře a tak mu užírat CPU)<br>
+</p>
+
+<h2>ROZŠÍŘENÍ PROTOKOLU</h2>
+
+<p>
+Rozšíření zde uvedené nemusí být implementované pro účast v turnaji, nicméně
+autor se může rozhodnout je implementovat, neboť mu mohou být užitečné.
+</p>
+
+<h3>Oznamování zbývajícího času</h3>
+<pre>
+Před každým tahem (příkaz TURN nebo BEGIN) bude poslána hodnota
+info TIME_LEFT v milisekundách, která říká kolik brainu zbývá času
+(aby si to nemusel hlídat sám)
+
+příklad:
+
+INFO time_left 278123
+TURN 10,14
+</pre>
+
+<h3>Hlášky od brainu</h3>
+
+<pre>
+Pokud brain pošle místo očekávané odpovědi na příkaz řádku začínající na "MESSAGE"
+  (informace) nebo "DEBUG" (debugovací informace), tak se tato řádka přeskočí a přečte
+  se další (takže takovychhle řádek tam může být za sebou i více). Manager tyhle informace
+  buď bude ignorovat, nebo tam půjde zapnout možnost si je logovat do souboru nebo do
+  nějakého okna.
+
+Příklad:
+manager pošle:
+
+TURN 10,15
+
+brain odpoví:
+
+DEBUG Zatím nejlepší tah [10,14] alfa=10025 beta=8641
+DEBUG Zatím nejlepší tah [11,14] alfa=10125 beta=8641
+MESSAGE Mám to vyhraný
+10,16
+</pre>
+
+<h3>SUGGEST</h3>
+
+<pre>
+Tohle je rozšíření protokolu, které se nebude používat na turnaji, brainy ho tedy
+ nemusí podporovat, ale může se hodit pro debugovani a porovnávání brainů.
+Pokud brain místo tahu (např "10 9") odpoví:
+SUGGEST [X],[Y]
+kde [X] a [Y] jsou souřadnice kam chce táhnout, dává tím manažeru najevo, že toto
+ rozšíření podporuje a chce používat. Tímto má manager možnost na druhé straně tah,
+ který tento algoritmus vymyslel změnit a vnutit mu jiný, který pak on ve svém
+ vnitřním stavu provede. Brain tedy po odeslání SUGGEST nemění svůj vnitřní stav,
+ manager na toto odpoví vždy buď příkazem PLAY, kterým mu vnutí tah, nebo END.
+</pre>
+
+<h3>PLAY [X],[Y]</h3>
+<pre>
+ Vnucení tahu brainu - říká brainu, že svůj další tah má udělat na políčko
+ dané souřadnicemi [X],[Y].
+ Používá se pouze jako odpověď na SUGGEST.
+
+ Očekávaná odpověď:
+ Stejně jako na příkaz TURN nebo BEGIN - dvě čísla oddělená čárkou, neboli
+ kam brain tahnul. Brain se může rozhodnout tohle vnucení tahu ignorovat a táhnout jinam,
+ pro manager je relevantní co brain vrátí, ale silně se nedoporučuje tento příkaz
+ neposlechnout.
+
+ Příklad, brain odpověděl:
+  SUGGEST 10,10
+ odpověď managera:
+  PLAY 12,10
+ Brain udělá tah na 12,10 a odpoví:
+  12,10
+
+ V turnaji manažer brainu vždy vrátí tah, který brain poslal v SUGGEST. 
+</pre>
+
+<h3>BOARD</h3>
+<pre>
+[data]
+ Tímto lze vnutit brainu úplně novou plochu. Vhodné pro pokračování např. nějaké
+ rozehrané partie.
+ Je posláno místo příkazu BEGIN nebo TURN po inicializaci (příkaz START).
+ Tento příkaz nebude poslán brainovi, ve kterém je rozehrána nějaká hra - v takovém
+ případě by byl brain odstrelen a spuštěn nový.
+
+ Po tomto příkazu jsou poslány data tvořící plochu, je to vždy jeden záznam na jeden řádek ve formátu:
+ [X],[Y],[POLE]
+ kde [X] a [Y] jsou souřadnice a [POLE] je buď číslo 1 (vlastní piškvorka) nebo 2 (piškvorka soupeře)
+ Tyto tahy jsou poslány v pořadí v jakém byly provedeny, pokud je tato informace o tazích
+ k dispozici, pokud ne, mohou být poslány políčka v libovolném pořadí.
+ data jsou ukončeny samostatným řádkem DONE.
+
+ Tímto příkazem se od brainu očekává že bude z této pozice ihned táhnout, neboli čeká se
+ odpověď jako u příkazu TURN nebo BEGIN
+
+Příklad:
+
+ Manager pošle:
+  BOARD
+  10,10,1
+  10,11,2
+  11,11,1
+  9,10,2
+  DONE
+ Brain odpoví:
+  9,9
+</pre>
+
+<h3>ABOUT</h3>
+<pre>
+ Od brainu se čeká, že pošle na jedné řádce o sobě nějaké stručné info
+ (určené pro zobrazení člověkovi)
+ Je celkem jedno co vrátí, ale měl by o sobě sdělit nejlépe jméno, verzi a autora
+ Brain smí jako odpověď poslat pouze jednu řádku textu
+
+ Manager pošle:
+  ABOUT
+ Brain odpoví:
+  SomeBrain version 1.0, author Nymand
+</pre>
+
+
+</body>
+
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1250">
+<meta name="description" content="Soutez v programovani piskvorek Gomocup">
+<meta name="author" content="Vojta Havránek">
+<meta name="language" content="Czech">
+<title>Komunikace UI přes soubory</title>
+<link rel="stylesheet" type="text/css" href="../styl.css">
+</head>
+
+<body>
+<h1>Starý protokol</h1>
+
+<p align="center">
+  <a href="info.htm"><span class="bigbutton">Zpět na informace</span></a>
+  <br>
+</p>
+
+
+<br>
+<h3><em>Tento protokol je již zastaralý.</em> Nový manažer ho sice stále podporuje, ale tvoříte-li novou umělou inteligenci, doporučujeme vám použít <a href="http://web.quick.cz/lastp/protocl2.htm">nový protokol</a>.</h3>
+<br>
+
+<p>
+Umělá inteligence(UI) komunikuje s manažerem(programem, který zprostředkovává zápas) přes datové soubory. PLOCHA.DAT obsahuje informace o hrací ploše a TAH.DAT má dvě podoby. V prvni obsahuje informaci
+od manažeru pro UI, v druhé podobě informaci od UI pro manažer. Protokol dále obsahuje soubor TIMEOUTS.DAT, který obsahuje informace o časových limitech. Nepovinné rozšíření protokolu zahrnuje také soubor MSG.DAT a INFO.DAT.</p>
+
+<p class="vetsi"><em>PLOCHA.DAT:</em></p>
+
+<p>Obsahuje záznam hrací plochy. Soubor má tolik neprázdných řádků a tolik sloupců (znaků na každém řádku), jaká je velikost plochy. Brain by měl při čtení souboru tuto velikost sám zjišťovat. Prázdná pole
+jsou reprezentovaná znakem pomlčky (-). První hráč vždy
+hraje za křížky, které jsou zaznamenány znakem malé x (x).
+Druhému hráči připadají kolečka, která se zapisují jako
+malé o (o). Pozn: (o) se zapíše bez závorek. Platí i pro
+obdobné zápisy. Příklad souboru PLOCHA.DAT s velikostí 20 krát 20:<br>
+
+<pre><code>
+---x-x--------------
+----x-o---x---------
+-----xxoooox--------
+------x-o-----------
+------xoooxo--------
+--------x-x---------
+--------------------
+-------------------x
+------o---oxoo-----o
+----xooo-x----------
+------xox-----------
+-------xo-----------
+------xoxx----------
+-----o--------------
+--------------------
+ooox----------------
+---x----------------
+-x-x----------xoo-x-
+--------------------
+--------------------</code></pre>
+
+<p>
+Tento soubor edituje pouze manažer a UI ho smí pouze načíst k
+získání obrazu o stavu hrací plochy.<br>
+</p>
+
+<p class="vetsi"><em>TAH.DAT:</em></p>
+<p>Než manažer spustí nějakou
+UI, tak zapíše do souboru TAH.DAT jeden znak (buď (x),nebo
+(o)), což znamená za jakého hráče má UI vymyslet tah. Když
+je tah vymyšlen, přepíše UI tento soubor do formátu (x,y).
+To jsou souřadnice, kam chce UI umístit znak. Hrací plocha je
+číslována od levého horního rohu, přičemž první pole
+nahoře vlevo má souřadnice [0,0]. <em>POZOR: hodnota x i hodnota y
+je v rozmezí 0-19, nikoliv v rozmezí 1-20.</em> Manažer tah
+vyhodnotí a opět zapíše do souboru TAH.DAT (x), nebo (o).</p>
+
+<p class="vetsi"><em>TIMEOUTS.DAT:</em></p>
+<p>
+Program Gomotur generuje soubor timeouts.dat, kam textově zapisuje na první řádek časový limit na tah v sekundách a na druhý, kolik zbývá do konce partie v milisekundách(pokud není zaškrtnuto, aby se vyhodnocoval
+TO, píše tam MaxInt 2^31). Nulová hodnota času na tah znamená, že brain má odpovědět pokud možno co nejdříve (měl by například jenom spočítat ohodnocovací funkci a už neprohledávat do hloubky všechny možné tahy). Časové limity jsou stanoveny v pravidlech turnaje.
+</p>
+
+<p class="vetsi"><em>MSG.DAT:</em></p>
+<p>
+Pokud chcete, můžete tento soubor použít k tomu, aby brain během hry posílal manažeru textové zprávy, které manažer loguje (např. pro ladění nebo pro pobavení).
+Funguje to jednoduše a to sice:<br>
+0. Manažer vytvoří prázdný soubor msg.dat<br>
+1. Brain zapíše tah do souboru tah.dat a jednořádkovou message do msg.dat (Manažer P. Laštovičky umožňuje i víceřádkovou)<br>
+2. Brain se ukončí<br>
+3. Manažer přečte tah.dat a msg.dat<br>
+4. Manažer vymaže msg.dat, provede tah a zobrazí message
+5. Dál je to stejné, hraje soupeř jako obvykle
+</p>
+
+<p class="vetsi"><em>INFO.DAT:</em></p>
+<p>
+Manažer P. Laštovičky navíc vytváří i soubor info.dat, kde každý řádek je ve tvaru [klíč] [hodnota]. Obsahuje stejné údaje jako INFO příkazy u <a href="http://web.quick.cz/lastp/protocl2.htm">nového protokolu</a>.
+</p>
+
+</body>
+</html>
