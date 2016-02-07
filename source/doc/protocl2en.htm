@@ -2,18 +2,34 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<meta name="description" content="new protocol for gomoku brains">
+<meta name="description" content="New protocol for gomoku artificial intelligences which use pipes to communicate with gomoku tournament manager.">
 <meta name="author" content="Martin Petricek and Petr Lastovicka">
 <meta name="language" content="English">
 <title>New protocol</title>
 <link rel="stylesheet" type="text/css" href="styl.css">
 </head>
 <body>
+
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-391946-1";
+_udn="none"; 
+_ulink=1; 
+urchinTracker();
+</script>
+
 <h1>New protocol</h1>
 <p align="center">
-  <a href="http://gomocup.wz.cz/en/info.htm"><span class="bigbutton">Back to information</span></a>
-  <br>
-</p>
+
+<script type="text/javascript"> 
+document.write('<a href="javascript:__utmLinker(\'http://gomocup.org/detail-information/\');"><SPAN class=bigbutton>Back to information</SPAN></a>'); 
+</script> 
+<noscript> 
+<A href="http://gomocup.org/detail-information/"><SPAN class=bigbutton>Back to information</SPAN></A>
+</noscript> 
+
+<br></p>
 <h2>Introduction</h2>
 <p>
 This document describes communication between a brain (an artificial intelligence) and a go-moku manager (a program which manages and controls a tournament). The manager creates two pipes. The first pipe is used to send commands from the manager to the brain. The second pipe is used to send replies from the brain to the manager. The brain uses standard input-output functions (scanf and printf in C, readln and
@@ -32,7 +48,7 @@ Example:
 pbrain-swine.exe
 pbrain-pisq5.exe
 </pre>
-Only the executable file is required to begin with prefix "pbrain-". The name of ZIP file does not have this prefix.
+Only the executable file is required to begin with prefix "pbrain-". The name of ZIP file does not have this prefix. There can be both 32-bit and 64-bit exe in the ZIP file, the 64-bit exe file name must have substring 64. For example, MyGomo.ZIP can contain files pbrain-MyGomo.exe and pbrain-MyGomo64.exe. The manager launches pbrain-MyGomo.exe on 32-bit OS and pbrain-MyGomo64.exe on 64-bit OS.
 <p>
 Working directory is set by the manager. It doesn't have to be the directory where the brain's executable file is saved. The brain must specify full path to all data files which it uses. It can obtain the path from function GetModuleFileName or it can look at the beginning of its command line which can be discovered from the main function parameters. The manager must put name of brain's exe file on the command line in such a form so that the brain can open the file. 
 <p>
@@ -90,7 +106,9 @@ After this command the data forming the playing field are send. Every line is in
 <pre>
  [X],[Y],[field]
 </pre>
-where [X] and [Y] are coordinates and [field] is either number 1 (own stone) or number 2 (opponent's stone) or number 3 (winning line when continuous game rule is on). The manager should send these lines in the same order as moves were made, but the brain should not depend on it and must cope with any order. Data are ended by DONE command. Then the brain is expected to answer such as to TURN or BEGIN command.
+where [X] and [Y] are coordinates and [field] is either number 1 (own stone) or number 2 (opponent's stone) or number 3 (only if continuous game is enabled, stone is part of winning line or is forbidden according to renju rules).
+<p>
+If game rule is renju, then the manager must send these lines in the same order as moves were made. If game rule is Gomoku, then the manager may send moves in any order and the brain must somehow cope with it. Data are ended by <b>DONE</b> command. Then the brain is expected to answer such as to TURN or BEGIN command.
 <p>
 <pre>
 Example:
@@ -115,14 +133,13 @@ timeout_match - time limit of a whole match (milliseconds, 0=no limit)
 max_memory    - memory limit (bytes, 0=no limit)
 time_left     - remaining time limit of a whole match (milliseconds)
 game_type     - 0=opponent is human, 1=opponent is brain, 2=tournament, 3=network tournament
-rule          - 0=five or more stones in a row win, 1=exactly five in a row win,
-                2=continuous game, 3=continuous and exactly five
+rule          - bitmask or sum of 1=exactly five in a row win, 2=continuous game, 4=renju
 evaluate      - coordinates X,Y representing current position of the mouse cursor
 folder        - folder for persistent files
 </pre>
 Information about time and memory limits is sent before the first move (after or before START command). Info time_left is sent before every move (before commands TURN, BEGIN and BOARD). The remaining time can be negative when the brain runs out of time. Remaining time is equal to 2147483647 if the time for a whole match is unlimited. The manager is required to send info time_left if the time is limited, so that the brain can ignore info timeout_match and only rely on info time_left.
 <p>
-Time for a match is measured from creating a process to the end of a game (but not during opponent's turn). Time for a turn includes processing of all commands except initialization (commands START, RECTSTART, RESTART). Turn limit equal to zero means that the brain should play as fast as possibble (eg count only a static evaluation and don't search possibble moves). 
+Time for a match is measured from creating a process to the end of a game (but not during opponent's turn). Time for a turn includes processing of all commands except initialization (commands START, RECTSTART, RESTART). Turn limit equal to zero means that the brain should play as fast as possible (eg count only a static evaluation and don't search possible moves). 
 <p>
 INFO folder is used to determine a folder for files that are permanent. Because this folder is common for all brains and maybe other applications, the brain must create its own subfolder which name must be the same as the name of the brain. If the manager does not send INFO folder, then the brain cannot store permanent files.
 <p>
@@ -150,6 +167,17 @@ When the brain obtains this command, it must terminate as soon as possible. The 
 <pre>
  Expected answer: none
  The brain should delete its temporary files.
+</pre>
+<p>
+
+<h3>ABOUT</h3>
+The brain is expected to send some information about itself on one line. Each info must be written as keyword, equals sign, text value in quotation marks. Recommended keywords are name, version, author, country, www, email. Values should be separated by commas that can be followed by spaces. The manager can use this info, but must cope with old brains that used to send only human-readable text. 
+<pre>
+Example:
+ The manager sends:
+  ABOUT
+ The brain answers:
+  name="SomeBrain", version="1.0", author="Nymand", country="USA"
 </pre>
 <p>
 
@@ -208,17 +236,6 @@ Example:
 </pre>
 <p>
 
-<h3>ABOUT</h3>
-The brain is expected to send some information about itself on one line. Each info must be written as keyword, equals sign, text value in quotation marks. Recommended keywords are name, version, author, country, www, email. Values should be separated by commas that can be followed by spaces. The manager can use this info, but must cope with old brains that used to send only human-readable text. 
-<pre>
-Example:
- The manager sends:
-  ABOUT
- The brain answers:
-  name="SomeBrain", version="1.0", author="Nymand", country="USA"
-</pre>
-<p>
-
 <h2>Commands that are sent by the brain</h2>
 The brain can use these commands if it needs them. The manager is required to know them. 
 <p>
@@ -256,7 +273,10 @@ The brain can answer SUGGEST [X],[Y] instead of [X],[Y] and does not change it's
 <p>
 
 <h2>Version history</h2>
-<ul><li>2006-03-11<br>INFO rule 2 - option continuous game, also added value 3 to the BOARD command
+<ul>
+<li>2016-02-07<br>coordinates in BOARD command must be in correct order if rule is renju<br>both 64-bit and 32-bit exe can be in ZIP
+<li>2016-02-02<br>INFO rule 4 - renju
+<li>2006-03-11<br>INFO rule 2 - option continuous game, also added value 3 to the BOARD command
 <li>2005-12-19<br>INFO folder - for permanent files<br>ABOUT - format changed to keyword="value"<br>INFO timeout_turn 0 means as fast as possible
 <li>2005-06-26<br>TAKEBACK - used for undo
 <li>2005-06-03<br>INFO rule - option exactly five in a row

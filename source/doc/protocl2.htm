@@ -2,18 +2,34 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=windows-1250">
-<meta name="description" content="novy protokol pro komunikaci piskvorkovych brainu">
+<meta name="description" content="Specifikace nového protokolu pro piškvorkové algoritmy, které komunikují s manažerem piškvorkového turnaje přes rouru.">
 <meta name="author" content="Martin Petricek a Petr Lastovicka">
 <meta name="language" content="Czech">
 <title>Nový protokol</title>
 <link rel="stylesheet" type="text/css" href="styl.css">
 </head>
 <body>
+
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script>
+<script type="text/javascript">
+_uacct = "UA-391946-1";
+_udn="none"; 
+_ulink=1; 
+urchinTracker();
+</script>
+
 <h1>Nový protokol</h1>
 <p align="center">
-  <a href="http://gomocup.wz.cz/cz/info.htm"><span class="bigbutton">Zpět na informace</span></a>
-  <br>
-</p>
+
+<script type="text/javascript"> 
+document.write('<a href="javascript:__utmLinker(\'http://gomocup.org/detail-information/\');"><SPAN class=bigbutton>Zpět na informace</SPAN></a>'); 
+</script> 
+<noscript> 
+<A href="http://gomocup.org/detail-information/"><SPAN class=bigbutton>Zpět na informace</SPAN></A>
+</noscript> 
+
+<br></p>
 <h2>Úvod</h2>
 Tento dokument popisuje, jak spolu komunikují piškvorkový brain (umělá inteligence) a piškvorkový manažer (program, který zprostředkovává zápas). Komunikace probíhá přes dvě roury, které vytváří manažer. Jednou rourou posílá manažer příkazy brainu a druhou rourou posílá brain odpovědi manažeru. Důležité je, že brain komunikuje přes standardní vstup a výstup. Nemusí tedy nic vědět o rourách a může si myslet, že příkazy čte z klávesnice a odpovědi vypisuje na obrazovku. Proto může být brain vytvořen prakticky v libovolném programovacím jazyce, který umožňuje vytvářet konzolové aplikace. V zásadě lze příkazy číst třeba obyčejným readln,scanf nebo něčím podobným a odpovídat pomocí writeln, printf nebo něčím podobným. Je třeba dát pozor na to, že za printf je nutné zavolat funkci fflush(stdout), jinak krátké řádky mohou zůstat v bufferu, aniž by byly poslány. Druhou možností je použít nízkoúrovňové funkce ReadFile a WriteFile. 
 <p>
@@ -33,7 +49,7 @@ Příklad:
  pbrain-svine.exe
  pbrain-pisq5.exe
 </pre>
-Pokud brain začíná na jiný prefix, tak to znamená, že komunikuje <a href="protocl1.htm" title="popis starého protokolu">starou metodou přes soubory</a>. Pokud se brain skládá z více souborů, pak je prefix pbrain- povinný jen u jednoho z nich (u toho, který se spouští). Je-li brain zkomprimován do ZIP archivu, pak název ZIP souboru nemá prefix pbrain-.
+Pokud brain začíná na jiný prefix, tak to znamená, že komunikuje <a href="protocl1.htm" title="popis starého protokolu">starou metodou přes soubory</a>. Pokud se brain skládá z více souborů, pak je prefix pbrain- povinný jen u spustitelného souboru. Je-li brain zkomprimován do ZIP archivu, pak název ZIP souboru nemá prefix pbrain-. V ZIP souboru může být zároveň 32-bitový a 64-bitový exe soubor. Název 64-bitového exe souboru musí obsahovat 64. Například uvnitř MyPisq.ZIP může být zároveň pbrain-MyPisq.exe a pbrain-MyPisq64.exe. Manažer si automaticky zvolí správný exe soubor podle toho, jestli běží na 32-bitovém nebo 64-bitovém operačním systému.
 <p>
 Pracovní adresář si volí manažer. Brain musí počítat s tím, že pracovní adresář je jiný než ten, ve kterém se nachází spustitelný soubor brainu. Jestliže tedy brain kromě EXE a DLL souborů obsahuje také ještě nějaké datové soubory, pak se na ně musí odkazovat celou cestou. Cestu může brain zjistit například pomocí funkce GetModuleFileName. Druhou možností je podívat se na nultý parametr na příkazové řádce. Manažer musí při spouštění brainu na příkazovou řádku dát název exe souboru v takovém tvaru, aby ho brain mohl otevřít, tedy včetně exe přípony a případně cesty, pokud brain neleží v pracovním adresáři.
 <p>
@@ -89,7 +105,9 @@ Po tomto příkazu jsou poslána data tvořící plochu. Je to vždy jeden záznam na je
 <pre>
  [X],[Y],[POLE]
 </pre>
- kde [X] a [Y] jsou souřadnice a [POLE] je buď číslo 1 (vlastní piškvorka), nebo 2 (piškvorka soupeře), nebo 3 (výherní řada při kontinuální hře). Manažer by pokud možno měl poslat tahy v takovém pořadí, v jakém byly provedeny. Brain se však na to nesmí spoléhat a musí správně reagovat i tehdy, když dostane políčka v nějakém náhodném pořadí. Data jsou ukončena samostatným řádkem <b>DONE</b>.
+ kde [X] a [Y] jsou souřadnice a [POLE] je buď číslo 1 (vlastní piškvorka), nebo 2 (piškvorka soupeře), nebo 3 (pouze při kontinuální hře, označuje výherní řadu nebo chybný tah při Renju).
+<p>
+Pokud se hraje podle pravidel Renju, pak musí manažer poslat tahy v takovém pořadí, v jakém byly provedeny. Při standardním Gomoku nebo Piškvorkách může manažer poslat tahy v libovolném pořadí a brain se s tím musí nějak vypořádat. Data jsou ukončena samostatným řádkem <b>DONE</b>.
 <p>
 Tímto příkazem se od brainu očekává že bude z této pozice ihned táhnout, neboli čeká se odpověď jako u příkazu TURN nebo BEGIN.
 
@@ -116,8 +134,7 @@ timeout_match - limit na zápas (v milisekundách, 0=bez limitu)
 max_memory    - limit na maximální spotřebovanou paměť (v bajtech, 0=bez limitu)
 time_left     - zbývající čas do konce partie (v milisekundách)
 game_type     - 0=hra proti člověku, 1=hra proti brainu, 2=turnaj, 3=síťový turnaj
-rule          - 0=pět nebo více v řadě vyhrává, 1=přesně pět v řadě vyhrává,
-                2=kontinuální hra, 3=kontinuální a přesně pět v řadě
+rule          - bitová maska neboli součet hodnot: 1=přesně pět v řadě vyhrává, 2=kontinuální hra, 4=renju
 evaluate      - souřadnice X,Y aktuální pozice ukazatele myši
 folder        - složka, kam si brain může zapisovat trvalé soubory
 </pre>
@@ -152,6 +169,17 @@ Příkaz k ukončení brainu. Brain by se měl co nejrychleji ukončit (pokud to neudě
  Očekávaná odpověď:
  Očekává se, že se brain co nejrychleji ukončí a nebude posílat žádnou odpověď.
  Před ukončením by měl po sobě smazat všechny dočasné soubory, pokud si někde nějaké vytvořil.
+</pre>
+<p>
+
+<h3>ABOUT</h3>
+Od brainu se čeká, že na jedné řádce o sobě pošle stručné informace (jméno, autora, verzi,...). Každý údaj musí být uveden ve tvaru název, rovnítko, hodnota v uvozovkách, kde název je například name, version, author, country, www, email. Jednotlivé informace jsou odděleny čárkou, za kterou mohou následovat mezery. Manažer musí počítat s tím, že starší brainy odpovídaly na příkaz ABOUT libovolným textem čitelným pouze pro člověka. V žádném případě brain jako odpověď nesmí poslat více řádek textu.
+<pre>
+Příklad:
+ Manažer pošle:
+  ABOUT
+ Brain odpoví:
+  name="SomeBrain", version="1.0", author="Nymand", country="USA"
 </pre>
 <p>
 
@@ -214,17 +242,6 @@ Příklad:
 </pre>
 <p>
 
-<h3>ABOUT</h3>
-Od brainu se čeká, že na jedné řádce o sobě pošle stručné informace (jméno, autora, verzi,...). Každý údaj musí být uveden ve tvaru název, rovnítko, hodnota v uvozovkách, kde název je například name, version, author, country, www, email. Jednotlivé informace jsou odděleny čárkou, za kterou mohou následovat mezery. Manažer musí počítat s tím, že starší brainy odpovídaly na příkaz ABOUT libovolným textem čitelným pouze pro člověka. V žádném případě brain jako odpověď nesmí poslat více řádek textu.
-<pre>
-Příklad:
- Manažer pošle:
-  ABOUT
- Brain odpoví:
-  name="SomeBrain", version="1.0", author="Nymand", country="USA"
-</pre>
-<p>
-
 <h2>Příkazy, které posílá brain</h2>
 Následující příkazy může brain použít, pokud je potřebuje. Manažer všechny tyto příkazy musí znát. 
 <p>
@@ -263,7 +280,10 @@ Tohle je rozšíření protokolu, které se může hodit pro debugování a porovnávání b
 <p>
 
 <h2>Historie změn</h2>
-<ul><li>2006-03-11<br>INFO rule 2 - možnost kontinuální hry, do příkazu BOARD byla přidána hodnota 3
+<ul>
+<li>2016-02-07<br>při Renju musí být tahy v příkazu BOARD ve správném pořadí<br>ZIP může obsahovat zároveň 32-bitový a 64-bitový exe soubor
+<li>2016-02-02<br>INFO rule 4 - Renju
+<li>2006-03-11<br>INFO rule 2 - možnost kontinuální hry, do příkazu BOARD byla přidána hodnota 3
 <li>2005-12-19<br>INFO folder - pro trvalé soubory<br>ABOUT - formát změněn na název="hodnota"<br>INFO timeout_turn 0 znamená co nejrychleji
 <li>2005-06-26<br>TAKEBACK - použito pro Zpět
 <li>2005-06-03<br>INFO rule - možnost přesně pět v řadě vyhrává
