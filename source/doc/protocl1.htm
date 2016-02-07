@@ -1,100 +1,90 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=windows-1250">
-<meta name="description" content="Soutez v programovani piskvorek Gomocup">
-<meta name="author" content="Vojta Havránek">
-<meta name="language" content="Czech">
-<title>Komunikace UI přes soubory</title>
-<link rel="stylesheet" type="text/css" href="../styl.css">
-</head>
-
-<body>
-<h1>Starý protokol</h1>
-
-<p align="center">
-  <a href="info.htm"><span class="bigbutton">Zpět na informace</span></a>
-  <br>
-</p>
-
-
-<br>
-<h3><em>Tento protokol je již zastaralý.</em> Nový manažer ho sice stále podporuje, ale tvoříte-li novou umělou inteligenci, doporučujeme vám použít <a href="http://web.quick.cz/lastp/protocl2.htm">nový protokol</a>.</h3>
-<br>
-
-<p>
-Umělá inteligence(UI) komunikuje s manažerem(programem, který zprostředkovává zápas) přes datové soubory. PLOCHA.DAT obsahuje informace o hrací ploše a TAH.DAT má dvě podoby. V prvni obsahuje informaci
-od manažeru pro UI, v druhé podobě informaci od UI pro manažer. Protokol dále obsahuje soubor TIMEOUTS.DAT, který obsahuje informace o časových limitech. Nepovinné rozšíření protokolu zahrnuje také soubor MSG.DAT a INFO.DAT.</p>
-
-<p class="vetsi"><em>PLOCHA.DAT:</em></p>
-
-<p>Obsahuje záznam hrací plochy. Soubor má tolik neprázdných řádků a tolik sloupců (znaků na každém řádku), jaká je velikost plochy. Brain by měl při čtení souboru tuto velikost sám zjišťovat. Prázdná pole
-jsou reprezentovaná znakem pomlčky (-). První hráč vždy
-hraje za křížky, které jsou zaznamenány znakem malé x (x).
-Druhému hráči připadají kolečka, která se zapisují jako
-malé o (o). Pozn: (o) se zapíše bez závorek. Platí i pro
-obdobné zápisy. Příklad souboru PLOCHA.DAT s velikostí 20 krát 20:<br>
-
-<pre><code>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD><TITLE>Komunikace UI přes soubory</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=windows-1250">
+<META content="Soutez v programovani piskvorek Gomocup" name=description>
+<META content="Vojta Havránek a Petr Laštovička" name=author>
+<META content=Czech name=language>
+<link rel="stylesheet" type="text/css" href="styl.css">
+<BODY>
+<H1>Starý protokol</H1>
+<P align=center><A href="http://gomocup.wz.cz/cz/info.htm"><SPAN 
+class=bigbutton>Zpět na informace</SPAN></A><BR></P><BR>
+<P><EM>Tento protokol je již zastaralý.</EM> Manažer ho sice stále 
+podporuje, ale tvoříte-li novou umělou inteligenci, doporučujeme vám použít <A 
+href="protocl2.htm">nový protokol</A>.</P>
+<P>Umělá inteligence (UI) komunikuje s manažerem (programem, který zprostředkovává 
+zápas) přes datové soubory. Soubor PLOCHA.DAT obsahuje hrací plochu. Soubor TAH.DAT má dvě podoby. Nejdříve obsahuje informaci o hráči, který je právě na tahu, a potom obsahuje výsledný tah UI. V souboru TIMEOUTS.DAT jsou časové limity. Nepovinným rozšířením protokolu jsou soubory MSG.DAT a INFO.DAT.</P>
+<P>Funguje to jednoduše a to sice:<BR><OL>
+<LI>Manažer vytvoří soubory PLOCHA.DAT, TAH.DAT, INFO.DAT, TIMEOUTS.DAT a prázdný soubor MSG.DAT.
+<LI>Manažer spustí UI a pak čeká (například pomocí funkce WaitForSingleObject).
+<LI>UI si přečte datové soubory a vymyslí svůj tah.
+<LI>UI zapíše souřadnice do TAH.DAT a případně také zapíše zprávu do MSG.DAT.
+<LI>UI se ukončí.
+<LI> Manažer přečte MSG.DAT. Jestliže není prázdný, zobrazí zprávu do logovacího okna nebo souboru. 
+<LI>Manažer přečte TAH.DAT a podle něj provede tah. 
+<LI>Pak se vše opakuje pro druhého hráče atd.
+<LI>Při ukončení by manažer měl odstranit všechny zde používané soubory.
+</OL>
+</P>
+<P>Pracovní adresář si volí manažer. UI musí počítat s tím, že pracovní adresář je jiný než ten, ve kterém se nachází spustitelný soubor UI. Jestliže tedy UI kromě EXE a DLL souborů obsahuje také ještě nějaké datové soubory, pak se na ně musí odkazovat celou cestou. Cestu může UI zjistit například pomocí funkce GetModuleFileName. Druhou možností je podívat se na nultý parametr na příkazové řádce. Manažer musí při spouštění UI na příkazovou řádku dát název exe souboru v takovém tvaru, aby ho UI mohla otevřít, tedy včetně exe přípony a případně cesty, pokud UI neleží v pracovním adresáři.</P>
+<P>Pokud UI potřebuje ukládat na disk nějaké soubory, pak si v pracovním adresáři vytvoří složku, jejíž název musí být stejný jako název UI. V této složce si pak UI může dělat prakticky cokoli, pokud tím nepřekročí maximální povolenou velikost, která je zveřejněna na webových stránkách turnaje (nyní je 20MB). Během turnaje se soubory v této složce nemažou. Manažer může všechny dočasné soubory odstranit až po skončení turnaje nebo při ukončení manažeru. Pro trvalé ukládání souborů slouží složka, jejíž název je v souboru INFO.DAT.</P>
+<P class=vetsi><EM>PLOCHA.DAT:</EM></P>
+<P>Tento soubor obsahuje záznam hrací plochy. Počet řádků v souboru je roven výšce hrací plochy. Počet znaků na každém řádku je roven šířce hrací plochy. UI si tedy musí zjistit rozměry hrací plochy tak, že si spočítá, kolik má soubor řádků a jak jsou tyto řádky dlouhé. Při turnaji budou použity rozměry 20x20. Prázdná pole jsou reprezentovaná znakem - (pomlčka, minus). Jeden hráč hraje za křížky, které jsou 
+zaznamenány znakem x (malé písmeno x). Druhému hráči připadají kolečka, která se 
+zapisují znakem o (malé písmeno o). Při kontinuální hře mohou být některá pole obsazena výherní pěticí, tato pole se zapisují znakem # (křížek).
+<BR><BR>Příklad souboru PLOCHA.DAT:<PRE><CODE>
 ---x-x--------------
 ----x-o---x---------
 -----xxoooox--------
-------x-o-----------
-------xoooxo--------
---------x-x---------
---------------------
--------------------x
-------o---oxoo-----o
-----xooo-x----------
-------xox-----------
--------xo-----------
-------xoxx----------
+-----#x-o-----------
+-----#xoooxo--------
+-----#--x-x---------
+-----#--------------
+-----#-----#-------x
+------o---#xoo-----o
+----xooo-#----------
+------xo#-----------
+-------#o-----------
+------#oxx----------
 -----o--------------
 --------------------
 ooox----------------
 ---x----------------
 -x-x----------xoo-x-
 --------------------
---------------------</code></pre>
-
-<p>
-Tento soubor edituje pouze manažer a UI ho smí pouze načíst k
-získání obrazu o stavu hrací plochy.<br>
-</p>
-
-<p class="vetsi"><em>TAH.DAT:</em></p>
-<p>Než manažer spustí nějakou
-UI, tak zapíše do souboru TAH.DAT jeden znak (buď (x),nebo
-(o)), což znamená za jakého hráče má UI vymyslet tah. Když
-je tah vymyšlen, přepíše UI tento soubor do formátu (x,y).
-To jsou souřadnice, kam chce UI umístit znak. Hrací plocha je
-číslována od levého horního rohu, přičemž první pole
-nahoře vlevo má souřadnice [0,0]. <em>POZOR: hodnota x i hodnota y
-je v rozmezí 0-19, nikoliv v rozmezí 1-20.</em> Manažer tah
-vyhodnotí a opět zapíše do souboru TAH.DAT (x), nebo (o).</p>
-
-<p class="vetsi"><em>TIMEOUTS.DAT:</em></p>
-<p>
-Program Gomotur generuje soubor timeouts.dat, kam textově zapisuje na první řádek časový limit na tah v sekundách a na druhý, kolik zbývá do konce partie v milisekundách(pokud není zaškrtnuto, aby se vyhodnocoval
-TO, píše tam MaxInt 2^31). Nulová hodnota času na tah znamená, že brain má odpovědět pokud možno co nejdříve (měl by například jenom spočítat ohodnocovací funkci a už neprohledávat do hloubky všechny možné tahy). Časové limity jsou stanoveny v pravidlech turnaje.
-</p>
-
-<p class="vetsi"><em>MSG.DAT:</em></p>
-<p>
-Pokud chcete, můžete tento soubor použít k tomu, aby brain během hry posílal manažeru textové zprávy, které manažer loguje (např. pro ladění nebo pro pobavení).
-Funguje to jednoduše a to sice:<br>
-0. Manažer vytvoří prázdný soubor msg.dat<br>
-1. Brain zapíše tah do souboru tah.dat a jednořádkovou message do msg.dat (Manažer P. Laštovičky umožňuje i víceřádkovou)<br>
-2. Brain se ukončí<br>
-3. Manažer přečte tah.dat a msg.dat<br>
-4. Manažer vymaže msg.dat, provede tah a zobrazí message
-5. Dál je to stejné, hraje soupeř jako obvykle
-</p>
-
-<p class="vetsi"><em>INFO.DAT:</em></p>
-<p>
-Manažer P. Laštovičky navíc vytváří i soubor info.dat, kde každý řádek je ve tvaru [klíč] [hodnota]. Obsahuje stejné údaje jako INFO příkazy u <a href="http://web.quick.cz/lastp/protocl2.htm">nového protokolu</a>.
-</p>
-
-</body>
-</html>
+--------------------
+</CODE></PRE>
+<P class=vetsi><EM>TAH.DAT:</EM></P>
+<P>Než manažer spustí nějakou UI, zapíše do souboru TAH.DAT jeden znak (buď 
+x, nebo o), což znamená za jakého hráče má UI vymyslet tah. Když je tah 
+vymyšlen, přepíše UI tento soubor do formátu x,y (číslo sloupce, čárka, číslo řádku). To jsou souřadnice, kam chce UI umístit svůj symbol. <EM>POZOR: hodnota x i hodnota y je v rozmezí 0-19, nikoliv v rozmezí 1-20.</EM> Levý horní roh hrací plochy má souřadnice [0,0]. </P>
+<P class=vetsi><EM>TIMEOUTS.DAT:</EM></P>
+<P>Tento soubor obsahuje dva řádky. Na prvním řádku je časový limit na tah v sekundách. Nulová hodnota času na tah znamená, že UI má odpovědět pokud možno co nejdříve (měla by například jenom spočítat ohodnocovací funkci a už neprohledávat do hloubky všechny možné tahy). Na druhém řádku je zbývající čas do konce partie v milisekundách. Pokud UI překročí časový limit, pak zbývající čas může být záporný. Pokud čas na partii je neomezený, pak je na druhém řádku číslo 2147483647.</P>
+<P>Soubor TIMEOUTS.DAT obsahuje čas na tah s přesností pouze na celé sekundy, zatímco v souboru INFO.DAT je čas na tah s přesností na milisekundy. Bohužel některé manažery vůbec nevytvářejí soubor INFO.DAT. Proto se doporučuje, aby se UI nejdříve pokusila otevřít soubor INFO.DAT, a jestliže tento soubor neexistuje, tak teprve pak používat soubor TIMEOUTS.DAT.</P>
+<P class=vetsi><EM>MSG.DAT:</EM></P>
+<P>UI během hry může posílat manažeru textové zprávy, které manažer loguje (např. pro ladění nebo pro 
+pobavení). Před každým spuštěním UI manažer vytvoří prázdný soubor MSG.DAT. Do tohoto souboru UI zapíše jednu nebo více řádek textu. Nedoporučuje se používat více řádek, protože některé manažery umějí načíst jen jednu řádku.
+</P>
+<P class=vetsi><EM>INFO.DAT:</EM></P>
+<P>UI musí počítat s tím, že starší manažery tento soubor nevytvářejí a nebo v něm nejsou všechny zde popsané informace. Obsah tohoto souboru se může měnit i v průběhu hry. 
+Každý řádek je ve tvaru [klíč] [hodnota].<PRE>
+timeout_turn  - limit na tah (v milisekundách, 0=hraj co nejrychleji)
+timeout_match - limit na zápas (v milisekundách, 0=bez limitu)
+max_memory    - limit na maximální spotřebovanou paměť (v bajtech, 0=bez limitu)
+time_left     - zbývající čas do konce partie (v milisekundách)
+game_type     - 0=hra proti člověku, 1=hra proti UI, 2=turnaj, 3=síťový turnaj
+rule          - 0=pět nebo více v řadě vyhrává, 1=přesně pět v řadě vyhrává,
+                2=kontinuální hra, 3=kontinuální a přesně pět v řadě
+folder        - složka, kam si UI může zapisovat trvalé soubory
+</PRE>
+Složka pro trvalé soubory je společná pro všechny UI, případně i pro jiné aplikace. Proto je UI povinna si v dané složce vytvořit svoji podsložku, jejíž název je stejný jako název UI. Do ní si může ukládat například znalosti a zkušenosti získané během hry.
+<BR><BR>Příklad souboru INFO.DAT:
+<PRE><CODE>max_memory 83886080
+timeout_match 180000
+timeout_turn 2500
+game_type 0
+rule 3
+time_left 148150
+folder C:\Documents and Settings\All Users\Data aplikací
+</CODE></PRE></P>
+</BODY></HTML>
