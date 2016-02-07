@@ -1,0 +1,333 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1250">
+<meta name="description" content="new protocol for gomoku brains">
+<meta name="author" content="Martin Petricek">
+<meta name="language" content="English">
+<title>New protocol</title>
+<link rel="stylesheet" type="text/css" href="../styl.css">
+</head>
+
+<body>
+<h1>New protocol</h1>
+
+<p align="center">
+  <a href="info.htm"><span class="bigbutton">Back to information</span></a>
+  <br>
+</p>
+
+<h2>Introduction</h2>
+<p>
+The pipe communication with go-moku tournament manager proceeds
+through the standard input-output (scanf and printf in C, readln and
+writeln in Pascal,..). One line contains (save for minor exception) one
+command. The line should be ended with CRLF (0x0d, 0x0a), the manager
+also manages process lines ended only with LF or CR. Manager also
+expects lines ended with CRLF, LF or CR. Empty lines are ignored. <br>
+<br>
+The brain in Gomocup 2004 is require to process commands BEGIN, END,
+TURN a START and to process or ignore INFO commands. The reply for
+every other command is UNKNOWN (Due to backward compatibility and
+possibility to extend protocol). <br>
+<br>
+It is very important for brain not to read from input or waiting for
+the next command when the brain is required to think or write and the
+other way around as well. This situation can lead to timeout (brain and
+manager waiting) and to disqualification as well.<br>
+<br>
+The name of the brain is required to begin with prefix "pbrain-". In
+the other case the brain is considered to use
+communication via files (old method).<br>
+<br>
+Example:<br>
+pbrain-svine.exe<br>
+pbrain-pisq5.exe<br>
+</p>
+
+<h3>Reaction to unknown command<br></h3>
+<p>
+<b>How should the brain obtaining the unknown command behave?<br>
+</b>The brain should write to the output the line starting with string
+"UNKNOWN" following any human-readable description of the problem. In
+this case manager trys to do without this command. In case manager
+finds
+out this problem to be fatal, sends to brain END command to terminate
+the brain. Also Obtaining the unknown command is not a reason for the
+brain to terminate.<br>
+</p>
+
+<h3>Reaction to wrong or unachievable command<br></h3>
+<p>
+<b>How should the brain obtaining the wrong or unachievable
+command behave?</b><br>
+The unachievable command is
+considered as the case the brain can´t meet memory limit, size of playing
+field
+etc. The brain should write to the output the line starting with
+string "UNKNOWN" following any human-readable description of the
+problem. In case manager finds out this problem to be fatal, sends to
+brain END
+command to terminate the brain. Also obtaining the wrong or
+unachievable command is not a reason for the brain to terminate itself.
+</p>
+
+<h2>Commands</h2>
+<h3>INFO [key] [value]</h3>
+<p>
+Manager sends information to brain, the key can be:<br>
+<br>
+timeout_match<br>
+- time limit of the whole match (milliseconds), 0= no limit<br>
+<br>
+time_left<br>
+- remaining time limit of the whole match (milliseconds)<br>
+<br>
+timeout_turn<br>
+- time limit of the move (milliseconds), 0= no limit<br>
+<br>
+max_memory<br>
+- memory limit (bytes), 0= no limit<br>
+<br>
+<br>
+<br>
+Example:<br>
+</p>
+
+<pre>INFO timeout_match 300000<br>INFO timeout_turn 10000<br>INFO max_memory 83886080<br></pre>
+
+<p>
+<br>
+How should the brain obtaining the unknow INFO command behave?<br>
+<br>
+- Ignore it, it is not important. If it is important, it is not in a
+INFO command form.<br>
+<br>
+<br>
+How should the brain obtaining the unachievable INFO command behave?<br>
+(for example too small memory limit)<br>
+The brain is required to wait with the output of the problem until
+manager sends the first command not having a info form (for example
+MOVE or BEGIN).<br>
+<br>
+The manager always after INFO commands sends not INFO command. The
+manager isn't reading input while is sending INFO commands (Sending an
+answer to manager in unsuitable time can lead to problems).<br>
+<br>
+Expected answer: none<br>
+<br>
+</p>
+
+<h3>START [size]</h3>
+<p>
+<br>
+The instruction for data initialization. The parameter size is a number
+determining the size of playing field. In gomocup 2004 tournament the
+size will be 20, utilizitation of this parameter is in the future.
+After this command brain is required to initialize itself, but it's not
+yet required to do the move.<br>
+<br>
+Example:
+</p>
+
+<pre>START 20</pre>
+
+<p>
+Expected answer:<br>
+</p>
+
+<pre>OK - parameters are OK</pre>
+
+<p>
+anything else is considered as error report and it will be shown in
+manager.<br>
+<br>
+</p>
+
+<h3>TURN [X],[Y]</h3>
+<p>
+<br>
+The coordinate of opponent's move. The coordinate are numbered from
+zero.<br>
+<br>
+Expected answer:<br>
+two numbers separated by comma - the coordinate of brain's move<br>
+<br>
+Example:
+</p>
+
+<pre> TURN 10,10</pre>
+
+<p>
+answer:
+</p>
+
+<pre> 11,10</pre>
+
+
+<h3>BEGIN</h3>
+<p>
+<br>
+This command is send by manager to one of the players (brains)
+immediately after start of the match. This means the brain is required to
+play (open the match) on the empty playing field. After it the other brain
+obtains the TURN command with the first opponent's move.<br>
+<br>
+Expected answer:<br>
+two numbers separated by comma - the coordinate of brain's move<br>
+<br>
+Example:
+</p>
+
+<pre> BEGIN</pre>
+
+<p>
+answer:
+</p>
+
+<pre> 10,10</pre>
+
+<h3>END</h3>
+<p>
+<br>
+Brain obtaining this command shloud terminate (deleting all temporary
+files,...) itself as fast as possible without any output. If the time
+of termination is long, the brain will be terminated by manager.
+This command is sended with the end of the match.<br>
+<br>
+The time limit of the whole match is measured from executing the process
+to sending the END command, time limit of move is measured from sending
+BEGIN resp. TURN to obtaining the answer. After the brain's answer the
+brain should block by waiting for the reply. The manager always block
+the not playing brain just in case (The brain shlouldn't be using the
+opponent's CPU).<br>
+<br>
+<br>
+</p>
+
+<h2>The extended protocol<br></h2>
+<p>
+The extended protocol published in this section is not required to be
+implemented in Gomocup 2004 tournament, however it can be useful.<br>
+<br>
+<br>
+</p>
+
+<h3>The brain's report<br>
+</h3>
+<p>
+If the brain sends instead of the expected answer the line beginnig
+with the string "MESSAGE" (information) or "DEBUG" (debug information),
+manager ignores these line (instead of the switch-on possibility to log
+it in the file or window)<br>
+<br>
+Example:<br>
+manager sends:<br>
+</p>
+<pre>TURN 10,15</pre><br>
+<p>
+brain's answer:<br>
+</p>
+<pre>
+DEBUG The most promising move for the time being is [10,14] alfa=10025 beta=8641
+DEBUG The most promising move for the time being is [11,14] alfa=10125 beta=8641MESSAGE I will be the winner
+10,16</pre>
+<br>
+
+<h3>SUGGEST</h3>
+<p>
+This command belongs to the extended protocol and that's why will not
+be used in Gomocup 2004 tournament, but it can be useful for comparing
+brains. The brain answers SUGGEST [X],[Y] instead of [X],[Y] and gives
+the sign to the manager, that the brain supports the SUGGEST command
+and wants to use it. The manager has a possibility to follow the move
+or to impose another move on brain. Also the brain does not change
+it's internal state. Expected manager's answer is PLAY or END.<br>
+<br>
+</p>
+
+<h3>PLAY [X],[Y]</h3>
+<p>
+Imposing move [X],[Y] to the brain. It is used by manager as the answer
+to SUGGEST command only.<br>
+<br>
+Expected answer:<br>
+two numbers separated by comma. Brain can follow the PLAY command or
+not ,but it is strongly recommended to follow the PLAY command. <br>
+<br>
+Example, brain answered:
+</p>
+
+<pre>SUGGEST 10,10</pre>
+
+<p>
+manager's answer:
+</p>
+
+<pre>PLAY 12,10</pre>
+
+<p>
+Brain moves onto 12,10 and answers:
+</p>
+
+<pre>12,10</pre>
+
+<p>
+In gomocup 2004 tournament manager always answers the move the brain
+have send in SUGGEST command (in case the brain wants to use SUGGEST
+command).<br>
+<br></p>
+
+<h3>BOARD</h3>
+
+<p>
+[data]<br>
+This command imposes to the brain entirely new playing field. It is
+suitable for continuation of any open match. The BOARD command is send instead of BEGIN or TURN command after START
+command. If there is any open match, manager don't use BOARD command. Instead of
+manager terminates the brain with END command and then executes the
+brain following sending the START command.<br>
+<br>
+After this command the data forming the playing field are send.
+Every line is in the form:<br>
+[X],[Y],[field]<br>
+where [X] and [Y] are coordinate of the field and [field] is either number 1
+(own stone) or number 2 (opponent's stone). These moves are sending in order being done, if this information is
+available. Data are ended by DONE command. Then the brain is expected to answer
+such as to TURN or BEGIN command.<br>
+<br>
+<br>
+Example:<br>
+<br>
+Manager sends:
+</p>
+
+<pre>BOARD<br>10,10,1<br>10,11,2<br>11,11,1<br>9,10,2<br>DONE</pre>
+<p>
+Brain's answer:<br>
+</p>
+
+<pre>9,9</pre>
+<br>
+
+<h3>ABOUT</h3>
+<p>
+The brain is expected to send some human-readable information about
+itself on the only line.<br>
+The information can be name, version, author,e-mail,etc.<br>
+<br>
+Manager sends:
+</p>
+
+<pre>ABOUT</pre>
+<p>
+Brain's answer:
+</p>
+
+<pre>SomeBrain version 1.0, author Nymand&lt;nymand@example.com&gt;</pre>
+<br>
+<br>
+
+</body>
+</html>

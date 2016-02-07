@@ -1,0 +1,107 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1250">
+<meta name="description" content="old protocol for gomoku brains">
+<meta name="author" content="Vojta Havranek">
+<meta name="language" content="Czech">
+<title>Old protocol</title>
+<link rel="stylesheet" type="text/css" href="../styl.css">
+</head>
+
+<body>
+<h1>Old protocol</h1>
+
+<p align="center">
+  <a href="info.htm"><span class="bigbutton">Back to information</span></a>
+  <br>
+</p>
+
+
+<br>
+<h3><em>This protocol is obsolete.</em> It's still supported by new manager, but if you create a new brain, we recommend you to use <a href="http://web.quick.cz/lastp/protocl2en.htm">the new protocol</a>.</h3>
+<br>
+
+<p>
+The brain communicates with the manager(a program which manages the tounament) using two files - PLOCHA.DAT and TAH.DAT. The first one contains information about the board. The second has two forms. It can either tell the brain whether to play with circles or crosses or it can contain a response from the brain - the coordinates of the move. The protocol uses also file TIMEOUTS.DAT, which contains information about time limits. The brain may optionally use files MSG.DAT and INFO.DAT also.
+
+ Protokol dále obsahuje soubor TimeOuts.dat, který obsahuje informace o časových limitech. Nepovinné rozšíření protokolu zahrnuje také soubor msg.dat a info.dat
+</p>
+
+<p class="vetsi"><em>PLOCHA.DAT:</em></p>
+      <p>
+         The file plocha.dat contains the data record of playing area. The number of non-blank lines and the number of characters on each line is equal to the size of the board. A brain should autodetect the size. The empty fields are represented
+         by a dash. The fields occupied by player one (player one moves first)
+         playing with cross are represented by lowercase x. The fields
+         occupied by player two playing with circles are represented by
+         lowercase o. An example of the file PLOCHA.DAT for a 20x20 board:
+         <br>
+      </p>
+<pre>
+<code>---x-x--------------
+----x-o---x---------
+-----xxoooox--------
+------x-o-----------
+------xoooxo--------
+--------x-x---------
+--------------------
+-------------------x
+------o---oxoo-----o
+----xooo-x----------
+------xox-----------
+-------xo-----------
+------xoxx----------
+-----o--------------
+--------------------
+ooox----------------
+---x----------------
+-x-x----------xoo-x-
+--------------------
+--------------------
+</code>
+</pre>
+
+      <p>
+      This file can be changed only by tournament interface and can be only read
+      by AI.
+      </p>
+
+<p class="vetsi"><em>TAH.DAT:</em></p>
+      <p>
+         The tournament interface writes into file TAH.DAT one of the chars
+         (x,o) representing the player moving before executing any AI. When AI
+         thinks out the move, writes (rewrites) into file TAH.DAT coordinate to
+         move in format x,y. The coordination are indexed from left-upper
+         corner. The coordination of the left-upper field is [0,0]. Attention!
+         x,y is from interval 0-19. The tournament reads the though out
+         coordinate, evaluates the move and rewrites the files PLOCHA.DAT and
+         TAH.DAT again.
+      </p>
+
+<p class="vetsi"><em>TIMEOUTS.DAT:</em></p>
+      <p>
+         Gomotur interface generates a file timeouts.dat. There is the time
+         limit in seconds per move on the first line and the remaining time for the match
+		 in milliseconds on the second line of timeouts.dat. There is
+         written MaxInt (2^31) on the second line if the time limit per match
+         is not set up and the time limit per match is considered to be
+         infinite. Turn limit equal to zero means that the brain should play as fast as possibble (eg count only a static evaluation and stop searching possibble moves). Actual values of the limits are written in the tournament rules.
+      </p>
+
+<p class="vetsi"><em>MSG.DAT:</em></p>
+<p>
+You may use this file to let the brain send text messages, that will be loged, to the manager (eg for debug). The way it work is that:<br>
+0. The manager creates empty file msg.dat<br>
+1. The brain writes his move to tah.dat and a one line text message to msg.dat (P. Lastovicka's manager allows multiline messages)<br>
+2. The brain ends<br>
+3. The manager reads from tah.dat and msg.dat<br>
+4. The manager erases msg.dat, performs the move and displays the message<br>
+5. Repeats from the point 0., it's the opponents turn
+</p>
+
+<p class="vetsi"><em>INFO.DAT:</em></p>
+<p>
+P. Lastovicka's manager creates also file info.dat, where each line has form [key] [value]. This file contains the same information as INFO commands of <a href="http://web.quick.cz/lastp/protocl2en.htm">the new protocol</a>.
+</p>
+</body>
+</html>
