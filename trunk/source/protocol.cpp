@@ -173,6 +173,7 @@ int Tplayer::createProcess(bool pipe, STARTUPINFO &si)
 		size_t len = strlen(brain2);
 		memcpy(buf+1, exe, len);
 		buf[len+1]='"';
+		buf[len+2]=0;
 		exe=buf;
 	}
 	//start process
