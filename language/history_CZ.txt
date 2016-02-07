@@ -1,7 +1,8 @@
-8.8 (4.2.2016)
+8.8 (7.2.2016)
 pravidlo renju
 AI mùže v ZIP souboru obsahovat zároveò 32-bit a 64-bit exe
 hra konèí remízou, pokud zbývá už jen 25 volných polí
+opraveno: AI proces nemìl název exe souboru zakonèený nulou
 
 8.7 (24.5.2015)
 prùbìh turnaje na ikonì na hlavním panelu Windows 7
