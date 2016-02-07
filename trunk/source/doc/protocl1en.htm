@@ -1,56 +1,54 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=windows-1250">
+<html><head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <meta name="description" content="old protocol for gomoku brains">
-<meta name="author" content="Vojta Havranek">
-<meta name="language" content="Czech">
+<meta name="author" content="Vojta Havranek and Petr Lastovicka">
+<meta name="language" content="English">
 <title>Old protocol</title>
-<link rel="stylesheet" type="text/css" href="../styl.css">
+<link rel="stylesheet" type="text/css" href="styl.css">
 </head>
-
 <body>
 <h1>Old protocol</h1>
-
-<p align="center">
-  <a href="info.htm"><span class="bigbutton">Back to information</span></a>
-  <br>
-</p>
-
-
+<p align="center"><a href="http://gomocup.wz.cz/en/info.htm"><span class="bigbutton">Back to information</span></a><br></p>
 <br>
-<h3><em>This protocol is obsolete.</em> It's still supported by new manager, but if you create a new brain, we recommend you to use <a href="http://web.quick.cz/lastp/protocl2en.htm">the new protocol</a>.</h3>
+<h3><em>This protocol is obsolete.</em> It is still supported by new managers, but if you create a new brain, we recommend to use <a href="protocl2en.htm">the new protocol</a>.</h3>
 <br>
-
 <p>
-The brain communicates with the manager(a program which manages the tounament) using two files - PLOCHA.DAT and TAH.DAT. The first one contains information about the board. The second has two forms. It can either tell the brain whether to play with circles or crosses or it can contain a response from the brain - the coordinates of the move. The protocol uses also file TIMEOUTS.DAT, which contains information about time limits. The brain may optionally use files MSG.DAT and INFO.DAT also.
-
- Protokol dále obsahuje soubor TimeOuts.dat, který obsahuje informace o časových limitech. Nepovinné rozšíření protokolu zahrnuje také soubor msg.dat a info.dat
+The brain (artificial intelligence) communicates with the manager (a program which manages the Gomoku tournament) via files. File PLOCHA.DAT contains information about the board. File TAH.DAT has two forms. It can either tell the brain whether to play with circles or crosses or it can contain a response from the brain - the coordinates of the move. File TIMEOUTS.DAT contains information about time limits. The brain may optionally use files MSG.DAT and INFO.DAT.
 </p>
+<P>How it works:<BR><OL>
+<LI>The manager creates files PLOCHA.DAT, TAH.DAT, INFO.DAT, TIMEOUTS.DAT and empty file MSG.DAT.
+<LI>The manager starts the brain and then waits (the manager calls function WaitForSingleObject).
+<LI>The brain reads the files and thinks.
+<LI>The brain writes its move coordinates to TAH.DAT and optionally writes a message to MSG.DAT.
+<LI>The brain ends.
+<LI>The manager reads MSG.DAT. If it is not empty, the manager displays messages to some log window or log file.
+<LI>The manager reads TAH.DAT and performs the move. 
+<LI>Then everything is repeated for the second brain etc.
+<LI>The manager should remove all these files when it finishes.
+</OL>
+</P>
+<p>
+Working directory is set by the manager. It doesn't have to be the directory where the brain's executable file is saved. The brain must specify full path to all data files which it uses. It can obtain the path from function GetModuleFileName or it can look at the beginning of its command line which can be discovered from the main function parameters. The manager must put name of brain's exe file on the command line in such a form so that the brain can open the file. 
+</p><p>
+The brain can create a folder in a current directory to store its temporary files. The name of the folder must be the same as the name of the brain. The maximal allowed size of the folder will be announced on Gomocup web page (it is now 20MB). The manager can delete all temporary files when the manager exits or after a tournament finished. File INFO.DAT is used to determine folder where persistent files can be saved.</p>
 
 <p class="vetsi"><em>PLOCHA.DAT:</em></p>
-      <p>
-         The file plocha.dat contains the data record of playing area. The number of non-blank lines and the number of characters on each line is equal to the size of the board. A brain should autodetect the size. The empty fields are represented
-         by a dash. The fields occupied by player one (player one moves first)
-         playing with cross are represented by lowercase x. The fields
-         occupied by player two playing with circles are represented by
-         lowercase o. An example of the file PLOCHA.DAT for a 20x20 board:
-         <br>
-      </p>
-<pre>
-<code>---x-x--------------
+<p>The file plocha.dat contains the data record of playing area (the board). The number of non-blank lines and the number of characters on each line is equal to the size of the board. A brain should autodetect the size. Empty squares are represented by - (dash,minus). Squares occupied by the first player are represented by x (lowercase letter x). Squares occupied by the second player are represented by o (lowercase letter o). If option continuous is on, some squares can be blocked by winning lines and those squares are represented by # (hash). 
+<BR><BR>An example of PLOCHA.DAT for a 20x20 board:<pre><code>
+---x-x--------------
 ----x-o---x---------
 -----xxoooox--------
-------x-o-----------
-------xoooxo--------
---------x-x---------
---------------------
--------------------x
-------o---oxoo-----o
-----xooo-x----------
-------xox-----------
--------xo-----------
-------xoxx----------
+-----#x-o-----------
+-----#xoooxo--------
+-----#--x-x---------
+-----#--------------
+-----#-----#-------x
+------o---#xoo-----o
+----xooo-#----------
+------xo#-----------
+-------#o-----------
+------#oxx----------
 -----o--------------
 --------------------
 ooox----------------
@@ -58,50 +56,35 @@ ooox----------------
 -x-x----------xoo-x-
 --------------------
 --------------------
-</code>
-</pre>
-
-      <p>
-      This file can be changed only by tournament interface and can be only read
-      by AI.
-      </p>
-
+</code></pre>
 <p class="vetsi"><em>TAH.DAT:</em></p>
-      <p>
-         The tournament interface writes into file TAH.DAT one of the chars
-         (x,o) representing the player moving before executing any AI. When AI
-         thinks out the move, writes (rewrites) into file TAH.DAT coordinate to
-         move in format x,y. The coordination are indexed from left-upper
-         corner. The coordination of the left-upper field is [0,0]. Attention!
-         x,y is from interval 0-19. The tournament reads the though out
-         coordinate, evaluates the move and rewrites the files PLOCHA.DAT and
-         TAH.DAT again.
-      </p>
-
+<p>The manager writes into file TAH.DAT one of the characters (x,o) representing the player who is moving. When the brain thinks out its move, it writes (rewrites) into file TAH.DAT coordinate to move in format x,y (column number, comma, row number). Attention! The coordinate of the top-left corner is [0,0]. 
+</p>
 <p class="vetsi"><em>TIMEOUTS.DAT:</em></p>
-      <p>
-         Gomotur interface generates a file timeouts.dat. There is the time
-         limit in seconds per move on the first line and the remaining time for the match
-		 in milliseconds on the second line of timeouts.dat. There is
-         written MaxInt (2^31) on the second line if the time limit per match
-         is not set up and the time limit per match is considered to be
-         infinite. Turn limit equal to zero means that the brain should play as fast as possibble (eg count only a static evaluation and stop searching possibble moves). Actual values of the limits are written in the tournament rules.
-      </p>
-
+<p>This file has two lines. There is the time limit in seconds per move on the first line and the remaining time for the match in milliseconds on the second line. Turn limit equal to zero means that the brain should play as fast as possibble (eg count only a static evaluation and don't search possibble moves). The remaining time can be negative when the brain runs out of time. Remaining time is equal to 2147483647 if the time for a whole match is unlimited.
+</p>
 <p class="vetsi"><em>MSG.DAT:</em></p>
-<p>
-You may use this file to let the brain send text messages, that will be loged, to the manager (eg for debug). The way it work is that:<br>
-0. The manager creates empty file msg.dat<br>
-1. The brain writes his move to tah.dat and a one line text message to msg.dat (P. Lastovicka's manager allows multiline messages)<br>
-2. The brain ends<br>
-3. The manager reads from tah.dat and msg.dat<br>
-4. The manager erases msg.dat, performs the move and displays the message<br>
-5. Repeats from the point 0., it's the opponents turn
+<p>You may use this file to let the brain send text messages to the manager that will log them (eg for debug). The manager creates empty file MSG.DAT before the brain is started. It is recommended to send only one line messages because some managers do not support multiline messages. 
 </p>
-
 <p class="vetsi"><em>INFO.DAT:</em></p>
-<p>
-P. Lastovicka's manager creates also file info.dat, where each line has form [key] [value]. This file contains the same information as INFO commands of <a href="http://web.quick.cz/lastp/protocl2en.htm">the new protocol</a>.
-</p>
-</body>
-</html>
+<p>Older managers do not create this file or they do not put all values in this file, thus the brain must not rely on it.<br>Every line has form [key] [value].<PRE> 
+timeout_turn  - time limit for each move (milliseconds, 0=play as fast as possible)
+timeout_match - time limit of a whole match (milliseconds, 0=no limit)
+max_memory    - memory limit (bytes, 0=no limit)
+time_left     - remaining time limit of a whole match (milliseconds)
+game_type     - 0=opponent is human, 1=opponent is brain, 2=tournament, 3=network tournament
+rule          - 0=five or more stones in a row win, 1=exactly five in a row win,
+                2=continuous game, 3=continuous and exactly five
+folder        - folder for persistent files
+</pre>
+Folder for persistent files is common for all brains and maybe other applications, therefore the brain must create its own subfolder which name must be the same as the name of the brain. If the manager does not create INFO.DAT file, then the brain cannot store permanent files.
+<BR><BR>Example of INFO.DAT:
+<PRE><CODE>max_memory 83886080
+timeout_match 180000
+timeout_turn 2500
+game_type 0
+rule 3
+time_left 148150
+folder C:\Documents and Settings\All Users\Application data
+</CODE></PRE></P>
+</BODY></HTML>
