@@ -21,7 +21,8 @@
 
 int
 height2,   //height+2
- moves,     //moves counter
+ moves,     //moves count
+ blockCount,//blocked squares count (continuous game or renju fouls)
  depth,     //maximal recursion depth (is increased until timeout)
  diroff[9];	//pointer difference to adjacent squares
 
@@ -284,7 +285,53 @@ void init()
 			p++;
 		}
 	}
-	moves=0;
+	moves=blockCount=0;
+}
+//-------------------------------------------------------------------
+bool checkForbid(Psquare p, int player)
+{
+	int i, poc, s, y, n3, n4, n6;
+	Psquare p1, p2;
+
+	if((moves & 1) != player) return false;
+	Tprior *pr = &p->h[player];
+	if(pr->pv < 2*H21) return false;
+
+	if(pr->pv >= H4)
+	{
+		n6=0;
+		for(i=0; i<4; i++)
+		{
+			if(pr->ps[i] >= H4)
+			{
+				s=diroff[i];
+				p1=p2=p;
+				poc=-1;
+				do{
+					prvP(p1, 1);
+					poc++;
+				} while(p1->z==player+1);
+				do{
+					nxtP(p2, 1);
+					poc++;
+				} while(p2->z==player+1);
+				if(poc>=5){
+					if(poc==5) return false; //five in a row
+					n6++;
+				}
+			}
+		}
+		return n6>0; //overline
+	}
+
+	n3=n4=0;
+	for(i=0; i<4; i++)
+	{
+		y=pr->ps[i];
+		if(y>=H30) n4++;
+		else if(y>=H21) n3++;
+	}
+	return n4>1 || n3>1; //double-four or double-three
 }
 //-------------------------------------------------------------------
 //evaluate squares around p0 to distance 4
@@ -567,6 +614,8 @@ void databaseMove()
 	Psquare p, k;
 	int i, x, y, x1, y1, flip, len1, len2, left, top, right, bottom;
 
+	if(moves==blockCount) return;
+
 	//board rectangle
 	for(p=boardb; p->z!=1 && p->z!=2; p++);
 	left=p->x;
@@ -626,18 +675,18 @@ void firstMove()
 		doMove(Square(width/2+rnd(5)-2, height/2+rnd(5)-2));
 		return;
 	}
-	
+
 	if(moves==2){
 		//find both symbols 
 		Psquare p, p1=0, p2=0;
 		int i, y1, y2;
-		for (p = boardb; p<boardk; p++) {
-			if (p->z == 1) p1 = p;
-			if (p->z == 2) p2 = p;
+		for(p = boardb; p<boardk; p++) {
+			if(p->z == 1) p1 = p;
+			if(p->z == 2) p2 = p;
 		};
 		//evaluate
 		y1 = 5;  y2 = 0;
-		for (i = 0; i<8; i++) {
+		for(i = 0; i<8; i++) {
 			y1 += nxtS(p1, i)->h[0].pv;
 			y2 += nxtS(p2, i)->h[1].pv;
 		}
@@ -674,12 +723,12 @@ void getBestEval()
 				r-= lookAhead(1);
 				p->z=0;
 				evaluate(p);
-				if(r>m){
+				if(r>m && !(info_renju && checkForbid(p,0))){
 					m=r;
 					_bestMove=p;
 					Nresults=1;
 				}
-				else if(r>m-EVAL_RAND1){
+				else if(r>m-EVAL_RAND1 && !(info_renju && checkForbid(p, 0))){
 					Nresults++;
 					if(!rnd(Nresults)) _bestMove=p;
 				}
@@ -699,7 +748,7 @@ void getBestEval()
 		Nresults=0;
 		for(p=boardb; p<boardk; p++){
 			if(!p->z){
-				if(getEval(p) >= m-d){
+				if(getEval(p) >= m-d && !(info_renju && checkForbid(p, 0))){
 					Nresults++;
 					if(!rnd(Nresults)) _bestMove=p;
 				}

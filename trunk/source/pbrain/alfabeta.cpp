@@ -84,29 +84,46 @@ int alfabeta(int player1, Psquare *UcurMoves, int logWin, Psquare last1, Psquare
 
 	p=goodMoves[3][player1];
 	if(p){
-		//player1 has already four 
-		assert(dpth>0);
-		if(logWin && strike) addWinMove(p);
-		return 1000-dpth; //I win
+		do{
+			if(!(info_renju && checkForbid(p, player1)))
+			{
+				//player1 has already four 
+				assert(dpth>0 || info_renju);
+				if(logWin && strike) addWinMove(p);
+				return 1000-dpth; //I win
+			}
+			p=p->h[player1].nxt;
+		} while(p);
 	}
+
 	int player2=1-player1;
 	p=goodMoves[3][player2];
 	if(p){
-		//player2 has already four 
-		p->z=player1+1;
+		do{
+			if(!(info_renju && checkForbid(p, player2)))
+			{
+				//player2 has already four 
+				if(info_renju && checkForbid(p, player1)){
+					y=depth-999;
+				}else{
+					p->z=player1+1;
 #ifdef DEBUG
-		vis(p);
+					vis(p);
 #endif
-		evaluate(p);
-		y= -alfabeta(player2, UcurMoves, logWin, last2, last1, strike^1);
-		p->z=0;
+					evaluate(p);
+					y= -alfabeta(player2, UcurMoves, logWin, last2, last1, strike^1);
+					p->z=0;
 #ifdef DEBUG
-		vis(p);
+					vis(p);
 #endif
-		evaluate(p);
-		assert(dpth>0);
-		if(logWin && y && ((y>0) == strike)) addWinMove(p);
-		return y;
+					evaluate(p);
+					assert(dpth>0);
+				}
+				if(logWin && y && ((y>0) == strike)) addWinMove(p);
+				return y;
+			}
+			p=p->h[player2].nxt;
+		} while(p);
 	}
 
 	//find reasonable moves and store them to array curMoves
@@ -277,6 +294,7 @@ int alfabeta(int player1, Psquare *UcurMoves, int logWin, Psquare last1, Psquare
 	for(t=Utahy0; t<UcurMoves; t++){
 		p=*t;
 		if(!dpth && loss4 && strike && notInWinMove(p)) continue;
+		if(info_renju && checkForbid(p, player1)) continue;
 		//do move
 		p->z=player1+1;
 #ifdef DEBUG
@@ -322,6 +340,7 @@ int alfabeta(int player1, Psquare *UcurMoves, int logWin, Psquare last1, Psquare
 			}
 		}
 	}
+	if(info_renju && m==-0x7ffe) return 0;
 	return m;
 }
 
@@ -398,7 +417,7 @@ Psquare try4(int player1)
 	Psquare p, y=0, *t;
 	int j;
 
-	assert(!goodMoves[3][0] && !goodMoves[3][1]);
+	assert(!goodMoves[3][0] && !goodMoves[3][1] || info_renju);
 
 	//find triples of player1
 	t=curMoves;
