@@ -13,7 +13,7 @@
 #define MATCH_SPARE 7      //how much is time spared for the rest of game
 #define TIMEOUT_PREVENT 3  //how much is alfabeta slower when the depth is increased
 
-const char *infotext="author=\"Petr Lastovicka\", version=\"7.6\", country=\"Czech Republic\",  www=\"http://petr.lastovicka.sweb.cz\"";
+const char *infotext="author=\"Petr Lastovicka\", version=\"7.7\", country=\"Czech Republic\",  www=\"http://petr.lastovicka.sweb.cz\"";
 
 
 void brain_init()
@@ -69,13 +69,15 @@ void brain_opponents(int x, int y)
 void brain_block(int x, int y)
 {
 	if(!doMove0(Square(x, y), 3)){
-		pipeOut("ERROR winning move [%d,%d]", x, y);
+		pipeOut("ERROR blocked move [%d,%d]", x, y);
+	} else {
+		blockCount++;
 	}
 }
 
 bool doMove(Psquare p)
 {
-	if(p<boardb || p>=boardk || p->z) return false;
+	if(p<boardb || p>=boardk || p->z || (info_renju && checkForbid(p, 0))) return false;
 	if(!terminateAI || !resultMove) resultMove=p;
 	return true;
 }
@@ -116,7 +118,10 @@ void computer()
 	}
 	attackDone=defendDone=defendDone1=testDone=carefulAttack=carefulDefend=false;
 	loss4=try4(1);
-	if(loss4) doMove(loss4);
+	if(loss4){
+		doMove(loss4);
+		if(info_renju && !resultMove) getBestEval();
+	}
 	else getBestEval();
 	assert(resultMove);
 #ifdef DEBUG

@@ -33,13 +33,14 @@ struct Tsquare
 
 #define MwinMoves 512  //buffer size for win combination
 
-extern int diroff[9],moves,width,height,height2,depth,resulty,benchmark,mt,dpth,winEval[MwinMoves];
+extern int diroff[9],moves,blockCount,width,height,height2,depth,resulty,benchmark,mt,dpth,winEval[MwinMoves];
 extern bool attackDone,defendDone,defendDone1,testDone,depthReached,carefulAttack,carefulDefend;
 extern Psquare board,boardb,boardk,resultMove,loss4,highestEval,lastMove,bestMove,holdMove,goodMoves[4][2],*UwinMoves,winMoves1[MwinMoves],winMove[2];
 
 DWORD stopTime();
 void paintSquare(Psquare p);
 void computer1();
+bool checkForbid(Psquare p, int player);
 void evaluate(Psquare p0);
 int alfabeta(bool _careful, int strike, int player1, int logWin, Psquare last=0);
 int defend();
