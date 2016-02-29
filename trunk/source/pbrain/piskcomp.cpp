@@ -253,8 +253,8 @@ void init()
 	//alocate the board
 	delete[] board;
 	height2=height+2;
-	board= new Tsquare[(width+10)*(height2)];
-	boardb= board + 5*height2;
+	board= new Tsquare[(width+12)*(height2)];
+	boardb= board + 6*height2;
 	boardk= boardb+ width*height2;
 	// 5 4 3
 	// 6 8 2
@@ -271,7 +271,7 @@ void init()
 
 	//initialize the board
 	p=board;
-	for(x=-5; x<=width+4; x++){
+	for(x=-6; x<=width+5; x++){
 		for(y=-1; y<=height; y++){
 			p->z= (x<0 || y<0 || x>=width || y>=height) ? 3 : 0;
 			p->x= (short)x;
