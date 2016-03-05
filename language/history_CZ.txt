@@ -1,3 +1,6 @@
+8.9.1 (5.3.2016)
+opraveno: nastavení skrytí panelu nástrojù se neukládalo
+
 8.9 (28.2.2016)
 pravidlo renju
 AI mùže v ZIP souboru obsahovat zároveò 32-bit a 64-bit exe

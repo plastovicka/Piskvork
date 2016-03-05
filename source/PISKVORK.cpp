@@ -284,7 +284,7 @@ struct Treg { char *s; int *i; } regVal[]={
 	{"debugAI2", &debugAI},
 	{"autoBegin", &autoBegin},
 	{"opening", &opening},
-	{"toolbar", &toolBarVisible},
+	{"toolbarVisible", &toolBarVisible},
 	{"port", &port},
 	{"net", &turNet},
 	{"whoConnect", &whoConnect},
@@ -333,7 +333,7 @@ void vprint(int x, int y, SIZE *sz, char *format, va_list va)
 	int n;
 
 	n = vsprintf(buf, format, va);
-	
+
 	EnterCriticalSection(&drawLock);
 	SetTextAlign(dc, TA_CENTER);
 	if(sz){
@@ -2110,7 +2110,7 @@ LRESULT CALLBACK KeysDlgProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM)
 	return FALSE;
 }
 //-----------------------------------------------------------------
-DWORD getVer()
+VS_FIXEDFILEINFO *getVer()
 {
 	HRSRC r;
 	HGLOBAL h;
@@ -2122,19 +2122,20 @@ DWORD getVer()
 	h=LoadResource(0, r);
 	s=LockResource(h);
 	if(!s || !VerQueryValue(s, "\\", (void**)&v, &i)) return 0;
-	return v->dwFileVersionMS;
+	return v;
 }
 
 BOOL CALLBACK AboutProc(HWND hWnd, UINT msg, WPARAM wP, LPARAM)
 {
 	char buf[48];
-	DWORD d;
+	VS_FIXEDFILEINFO *v;
 
 	switch(msg){
 		case WM_INITDIALOG:
 			setDlgTexts(hWnd, 11);
-			d=getVer();
-			sprintf(buf, "%d.%d", HIWORD(d), LOWORD(d));
+			v=getVer();
+			sprintf(buf, HIWORD(v->dwFileVersionLS) ? "%d.%d.%d" : "%d.%d",
+				HIWORD(v->dwFileVersionMS), LOWORD(v->dwFileVersionMS), HIWORD(v->dwFileVersionLS));
 			SetDlgItemText(hWnd, 101, buf);
 			return TRUE;
 
@@ -2226,7 +2227,7 @@ LRESULT CALLBACK MainWndProc(HWND hWnd, UINT mesg, WPARAM wP, LPARAM lP)
 						msglng(739, "File %s not found", buf);
 					}
 				}
-					break;
+				break;
 				case 121: //about
 					DialogBox(inst, "ABOUT", hWnd, (DLGPROC)AboutProc);
 					break;
@@ -2493,7 +2494,7 @@ LRESULT CALLBACK MainWndProc(HWND hWnd, UINT mesg, WPARAM wP, LPARAM lP)
 					printLevel();
 					resume();
 				}
-					break;
+				break;
 				case 210: //undo 2x
 					if(moves>2){
 						if(notSuspended()){
@@ -2653,7 +2654,7 @@ LRESULT CALLBACK MainWndProc(HWND hWnd, UINT mesg, WPARAM wP, LPARAM lP)
 						nmtool= (NMTOOLBAR*)lP;
 						i= nmtool->iItem;
 						if(i<sizeA(tbb)){
-							lstrcpyn(nmtool->pszText, lng(tbb[i].idCommand+1000, toolNames[i]), nmtool->cchText);
+							lstrcpyn(nmtool->pszText, lng(1000+i, toolNames[i]), nmtool->cchText);
 							nmtool->tbButton= tbb[i];
 							return TRUE;
 						}
@@ -2668,26 +2669,26 @@ LRESULT CALLBACK MainWndProc(HWND hWnd, UINT mesg, WPARAM wP, LPARAM lP)
 						for(i=0; i<sizeA(tbb); i++){
 							if(tbb[i].idCommand==(int)ttt->hdr.idFrom){
 								ttt->hinst= NULL;
-								ttt->lpszText= lng(ttt->hdr.idFrom+1000, toolNames[i]);
+								ttt->lpszText= lng(1000+i, toolNames[i]);
 							}
 						}
 					}
-						break;
+					break;
 
 #ifndef UNICODE
-						//Linux
+					//Linux
 					case TTN_NEEDTEXTW:
 					{
 						TOOLTIPTEXTW *ttt = (LPTOOLTIPTEXTW)lP;
 						for(i=0; i<sizeA(tbb); i++){
 							if(tbb[i].idCommand==(int)ttt->hdr.idFrom){
 								ttt->hinst= NULL;
-								MultiByteToWideChar(CP_ACP, 0, lng(ttt->hdr.idFrom+1000, toolNames[i]), -1, ttt->szText, sizeA(ttt->szText));
+								MultiByteToWideChar(CP_ACP, 0, lng(1000+i, toolNames[i]), -1, ttt->szText, sizeA(ttt->szText));
 								ttt->szText[sizeA(ttt->szText)-1]=0;
 							}
 						}
 					}
-						break;
+					break;
 #endif
 				}
 			}

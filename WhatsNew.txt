@@ -1,3 +1,7 @@
+8.9.1 (5 March 2016)
+Fixed bug: toolbar visibility setting was not saved
+Fixed bug: toolbar tooltips were only in English and Czech languages
+
 8.9 (28 February 2016)
 renju rule
 AI can have both 32bit and 64bit executable in ZIP
