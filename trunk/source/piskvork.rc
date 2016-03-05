@@ -245,13 +245,13 @@ CAPTION "About"
 FONT 10, "MS Shell Dlg"
 BEGIN
     CTEXT           "(C) 2000-2016  Petr Lastovicka",501,4,50,104,10
-    CTEXT           "Version",503,35,24,28,9
+    CTEXT           "Version",503,32,24,28,9
     CTEXT           "Piskvorky",504,36,6,40,9
     ICON            1,-1,12,20,20,20
     PUSHBUTTON      "OK",IDOK,39,88,35,14
     ICON            1,-1,85,20,20,20
     PUSHBUTTON      "http://petr.lastovicka.sweb.cz",502,3,66,106,13
-    LTEXT           "",101,66,24,12,8
+    LTEXT           "",101,65,24,16,8
 END
 
 PLAYERS DIALOG DISCARDABLE  0, 0, 222, 218
@@ -497,7 +497,7 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 8,9,0,0
+ FILEVERSION 8,9,1,0
  PRODUCTVERSION 0,0,0,0
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
@@ -516,7 +516,7 @@ BEGIN
             VALUE "Comments", "\0"
             VALUE "CompanyName", " \0"
             VALUE "FileDescription", "Piškvorky\0"
-            VALUE "FileVersion", "8, 9, 0, 0\0"
+            VALUE "FileVersion", "8, 9, 1, 0\0"
             VALUE "InternalName", "\0"
             VALUE "LegalCopyright", "© 2000 - 2016  Petr Laštovièka, Tianyi Hao\0"
             VALUE "LegalTrademarks", "\0"
