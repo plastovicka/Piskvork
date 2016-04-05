@@ -502,7 +502,7 @@ void evalWinMoves()
 		addWinMove(p);
 	}
 	//evaluate
-	Nwins= UwinMoves-winMoves1;
+	Nwins= int(UwinMoves-winMoves1);
 	assert(Nwins<=MwinMoves);
 	for(t=UwinMoves-1, e=winEval+Nwins-1; t!=winMoves1-1; t--, e--){
 		*e= getEval(1, *t);

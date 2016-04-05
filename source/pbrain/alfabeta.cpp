@@ -450,7 +450,7 @@ int defend()
 	static int winIndex[MwinMoves];
 
 	dpth++;
-	Nwins= UwinMoves-winMoves1;
+	Nwins= int(UwinMoves-winMoves1);
 	assert(Nwins>0);
 	for(i=0; i<Nwins; i++){
 		winIndex[i]=i;
