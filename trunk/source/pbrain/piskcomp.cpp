@@ -1,5 +1,5 @@
 /*
-	(C) 2000-2015  Petr Lastovicka
+	(C) 2000-2017  Petr Lastovicka
 
 	This program is free software; you can redistribute it and/or
 	modify it under the terms of the GNU General Public License.
@@ -659,7 +659,9 @@ void databaseMove()
 				}
 				p=Square(x, y);
 				if(i==len1){
-					doMove(p);
+					//opening found
+					const int B = 4; //distance from border
+					if(x>=B && y>=B && x<width-B && y<height-B) doMove(p);
 					return;
 				}
 				if(p->z != 2-(i&1)) break;
