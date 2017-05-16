@@ -1123,11 +1123,51 @@ void wrMsgNewGame(int p1, int p2)
 	wrMessage("%s x %s", n[0], n[1]);
 }
 
+void playOpening()
+{
+	int j, x, y, x0, y0, w, r, xmin, xmax, ymin, ymax;
+	signed char *o,*o0;
+
+	o = o0 = getOpening(opening);
+	x0 = width / 2;
+	y0 = height / 2;
+	r = 0;
+	if (turNplayers ? openingRandomShiftT : openingRandomShift1) {
+		//random rotation or mirroring
+		r = rnd(8);
+		//mininal and maximal coordinates
+		xmin = ymin = 99;
+		xmax = ymax = -99;
+		for (j = *o++; j > 0; j--) {
+			x = *o++;
+			y = *o++;
+			if (r & 4) w = x, x = y, y = w;
+			amax(xmin, x);
+			amin(xmax, x);
+			amax(ymin, y);
+			amin(ymax, y);
+		}
+		//random translation (if not near edge of the board)
+		const int B = 4;
+		if (-xmin < x0 - B && xmax < x0 - B) x0 += rnd(4) - 2;
+		if (-ymin < y0 - B && ymax < y0 - B) y0 += rnd(4) - 2;
+		if ((r & 1) && !(width & 1)) x0--;
+		if ((r & 2) && !(height & 1)) y0--;
+	}
+	o = o0;
+	for (j = *o++; j>0; j--) {
+		x = *o++;
+		y = *o++;
+		if (r & 4) w = x, x = y, y = w;
+		if (r & 1) x = -x;
+		if (r & 2) y = -y;
+		doMove1(Square(x0 + x, y0 + y));
+	}
+	opening++;
+}
+
 void newGame(int pl, bool openingEnabled, bool forceAutoBegin)
 {
-	int j, x, y, x0, y0, w, r;
-	signed char *o;
-
 	if(!isClient){
 		wrMsgNewGame(players[pl].turPlayerId, players[1-pl].turPlayerId);
 	}
@@ -1139,26 +1179,7 @@ void newGame(int pl, bool openingEnabled, bool forceAutoBegin)
 	disableScore=false;
 	wrLog(0);
 
-	if((autoBegin || forceAutoBegin) && openingEnabled){
-		x0= width/2;
-		y0= height/2;
-		r= 0;
-		if(turNplayers ? openingRandomShiftT : openingRandomShift1){
-			x0 += rnd(4)-2;
-			y0 += rnd(4)-2;
-			r  += rnd(8);
-		}
-		o=getOpening(opening);
-		for(j=*o++; j>0; j--){
-			x= *o++;
-			y= *o++;
-			if(r&1) x=-x;
-			if(r&2) y=-y;
-			if(r&4) w=x, x=y, y=w;
-			doMove1(Square(x0+x, y0+y));
-		}
-		opening++;
-	}
+	if ((autoBegin || forceAutoBegin) && openingEnabled) playOpening();
 	startMoves=moves;
 	invalidate();
 	UpdateWindow(hWin);

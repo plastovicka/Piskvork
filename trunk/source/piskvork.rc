@@ -168,7 +168,7 @@ BEGIN
     EDITTEXT        104,107,4,21,14,ES_NUMBER
     CONTROL         "&Automatic opening moves",545,"Button",BS_AUTOCHECKBOX | 
                     WS_TABSTOP,7,23,148,10
-    CONTROL         "&Openings are randomly rotated",568,"Button",
+    CONTROL         "&Openings are randomly rotated or moved",568,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,7,36,148,10
     GROUPBOX        "Rules",672,4,51,148,49
     CONTROL         "five or mo&re stones win",555,"Button",
@@ -245,13 +245,13 @@ CAPTION "About"
 FONT 10, "MS Shell Dlg"
 BEGIN
     CTEXT           "(C) 2000-2017  Petr Lastovicka",501,4,50,104,10
-    CTEXT           "Version",503,32,24,28,9
+    CTEXT           "Version",503,30,24,28,9
     CTEXT           "Piskvorky",504,36,6,40,9
-    ICON            1,-1,12,20,20,20
+    ICON            1,-1,10,20,20,20
     PUSHBUTTON      "OK",IDOK,39,88,35,14
-    ICON            1,-1,85,20,20,20
+    ICON            1,-1,87,20,20,20
     PUSHBUTTON      "http://petr.lastovicka.sweb.cz",502,3,66,106,13
-    LTEXT           "",101,65,24,16,8
+    LTEXT           "",101,63,24,16,8
 END
 
 PLAYERS DIALOG DISCARDABLE  0, 0, 222, 218
@@ -338,7 +338,7 @@ BEGIN
     LTEXT           "MB",IDC_STATIC,299,172,19,8
     CONTROL         "Automatic opening mo&ves",545,"Button",BS_AUTOCHECKBOX | 
                     WS_TABSTOP,214,190,140,10
-    CONTROL         "&Openings are randomly rotated",568,"Button",
+    CONTROL         "&Openings are randomly rotated or moved",568,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,214,203,140,10
     GROUPBOX        "",IDC_STATIC,207,213,151,51
     CONTROL         "five or mo&re stones win",555,"Button",
