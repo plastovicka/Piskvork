@@ -1,5 +1,5 @@
 /*
-	(C) 2004-2016  Petr Lastovicka
+	(C) 2004-2017  Petr Lastovicka
 
 	This program is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
@@ -375,6 +375,7 @@ void initLang()
 			case LANG_CZECH: s="Èesky"; break;
 			case LANG_FRENCH: s="French"; break;
 			case LANG_CHINESE: s="Chinese (Simplified)"; break;
+			case LANG_RUSSIAN: s="Russian"; break;
 			case LANG_POLISH: s="Polski"; break;
 			default: s="English"; break;
 		}
