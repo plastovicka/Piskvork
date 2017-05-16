@@ -1,3 +1,6 @@
+8.9.2 (16.5.2017)
+zahájení nejsou náhodnì posouvána, pokud jsou blízko okraje hrací plochy
+
 8.9.1 (5.3.2016)
 opraveno: nastavení skrytí panelu nástrojù se neukládalo
 

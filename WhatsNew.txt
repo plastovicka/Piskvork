@@ -1,3 +1,6 @@
+8.9.2 (16 May 2017)
+openings near board edge are not randomly shifted
+
 8.9.1 (5 March 2016)
 Fixed bug: toolbar visibility setting was not saved
 Fixed bug: toolbar tooltips were only in English and Czech languages
