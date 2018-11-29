@@ -11,6 +11,8 @@ var board:array[0..MAX_BOARD-1,0..MAX_BOARD-1] of integer;
 procedure brain_init();
 begin
   if (width<5)or(width>MAX_BOARD)or(height<5)or(height>MAX_BOARD) then begin
+    width:=0;
+    height:=0;
     pipeOut('ERROR size of the board');
     exit;
   end;

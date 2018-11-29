@@ -16,13 +16,9 @@ class GomocupEngine : GomocupInterface
 
 	public override void brain_init()
 	{
-		if (width < 5 || height < 5)
-		{
-			Console.WriteLine("ERROR size of the board");
-			return;
-		}
 		if (width > MAX_BOARD || height > MAX_BOARD)
 		{
+			width = height = 0;
 			Console.WriteLine("ERROR Maximal board size is " + MAX_BOARD);
 			return;
 		}

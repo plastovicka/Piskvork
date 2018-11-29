@@ -15,11 +15,13 @@
 
 const char *infotext="author=\"Petr Lastovicka\", version=\"7.8\", country=\"Czech Republic\",  www=\"http://petr.lastovicka.sweb.cz\"";
 
+#define MAX_BOARD 127
 
 void brain_init()
 {
-	if(width<5 || width>127 || height<5 || height>127){
-		pipeOut("ERROR size of the board");
+	if (width > MAX_BOARD || height > MAX_BOARD) {
+		width = height = 0;
+		pipeOut("ERROR Maximal board size is %d", MAX_BOARD);
 		return;
 	}
 	init();

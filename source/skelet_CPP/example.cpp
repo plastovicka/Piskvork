@@ -10,11 +10,8 @@ static unsigned seed;
 
 void brain_init() 
 {
-  if(width<5 || height<5){
-    pipeOut("ERROR size of the board");
-    return;
-  }
   if(width>MAX_BOARD || height>MAX_BOARD){
+    width = height = 0;
     pipeOut("ERROR Maximal board size is %d", MAX_BOARD);
     return;
   }
