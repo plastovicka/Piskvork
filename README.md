@@ -7,5 +7,5 @@ Play Gomoku (five in a row) and Renju game against the best in the world AIs whi
 
 You can **download** released binaries (EXE file) for Windows from [sourceforge.net](https://sourceforge.net/projects/piskvork/).
 
-![HokeyP screenshot](http://petr.lastovicka.sweb.cz/img/pisvork-gomo-cz.png)
-![HokeyP screenshot](http://petr.lastovicka.sweb.cz/img/piskvork.png)
+![Piskvork screenshot](http://petr.lastovicka.sweb.cz/img/pisvork-gomo-cz.png)
+![Piskvork screenshot](http://petr.lastovicka.sweb.cz/img/piskvork.png)
