@@ -1083,7 +1083,7 @@ void copyToClipboard(HWND wnd)
 	int i= GetWindowTextLength(wnd)+1;
 	if(OpenClipboard(0)){
 		if(EmptyClipboard()){
-			if((hmem=GlobalAlloc(GMEM_DDESHARE, isWin9X ? i : 2*i))!=0){
+			if((hmem=GlobalAlloc(GMEM_MOVEABLE|GMEM_DDESHARE, isWin9X ? i : 2*i))!=0){
 				if((ptr=(char*)GlobalLock(hmem))!=0){
 					if(isWin9X) GetWindowText(wnd, ptr, i);
 					else ((int(WINAPI*)(HWND, char*, int))GetProcAddress(GetModuleHandle("user32.dll"), "GetWindowTextW"))(wnd, ptr, i);

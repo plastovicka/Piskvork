@@ -134,5 +134,5 @@ Na tento program (kromì složek skelet a skelet_Delphi) se vztahuje licence "GNU 
  d) Zdrojové kódy (vèetnì vašich úprav a rozšíøení) zdarma zveøejníte na internetu. 
 3) Program je bez záruky. 
 
-http://petr.lastovicka.sweb.cz
-http://gomocup.org
+https://plastovicka.github.io
+https://gomocup.org

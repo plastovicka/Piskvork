@@ -1,7 +1,7 @@
 #include "pisqpipe.h"
 #include <windows.h>
 
-const char *infotext="name=\"Random\", author=\"Petr Lastovicka\", version=\"3.2\", country=\"Czech Republic\", www=\"http://petr.lastovicka.sweb.cz\"";
+const char *infotext="name=\"Random\", author=\"Petr Lastovicka\", version=\"3.2\", country=\"Czech Republic\", www=\"https://plastovicka.github.io\"";
 
 #define MAX_BOARD 100
 int board[MAX_BOARD][MAX_BOARD];

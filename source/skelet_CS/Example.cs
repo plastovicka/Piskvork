@@ -10,7 +10,7 @@ class GomocupEngine : GomocupInterface
 	{
 		get
 		{
-			return "name=\"Random\", author=\"Petr Lastovicka\", version=\"1.1\", country=\"Czech Republic\", www=\"http://petr.lastovicka.sweb.cz\"";
+			return "name=\"Random\", author=\"Petr Lastovicka\", version=\"1.1\", country=\"Czech Republic\", www=\"https://plastovicka.github.io\"";
 		}
 	}
 

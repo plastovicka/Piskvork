@@ -114,5 +114,5 @@ end;
 {$ENDIF}
 
 initialization
-  infotext:='name="Random", author="Petr Lastovicka", version="3.1", country="Czech Republic", www="http://petr.lastovicka.sweb.cz"'
+  infotext:='name="Random", author="Petr Lastovicka", version="3.1", country="Czech Republic", www="https://plastovicka.github.io"'
 end.

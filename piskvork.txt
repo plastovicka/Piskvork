@@ -138,5 +138,5 @@ This program (except folders skelet and skelet_Delphi) is distributed under the 
   d) You will make your derived source code available via FTP or HTTP.
 3) The Program is provided without warranty. 
 
-http://petr.lastovicka.sweb.cz
-http://gomocup.org
+https://plastovicka.github.io
+https://gomocup.org
