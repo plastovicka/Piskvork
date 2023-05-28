@@ -20,10 +20,10 @@ Kliknutí pravým tlaèítkem myši na jméno hráèe na stavovém øádku pøepne mezi Èlov
 
 Další umìlé inteligence (AI)
 ----------------------------
-Na http://gomocup.org/ lze najít a stáhnout nìkolik dalších AI od rùzných autorù. Vìtšina z nich ale má nìjaká omezení:
+Na https://gomocup.org/ lze najít a stáhnout nìkolik dalších AI od rùzných autorù. Vìtšina z nich ale má nìjaká omezení:
 1) Hrací plocha musí být ètvercová. Nìkteré AI umìjí hrát jen na ploše 20x20.
 2) Dobu pøemýšlení lze nastavit s pøesností jen na celé sekundy. Nìkteré AI dokonce vùbec neumìjí nastavit dobu pøemýšlení. Nìkteré AI si kontrolují pouze èas na jeden tah, ale ne èas celé partie.
-3) Vìtšina AI neumí kontinuální hru ani možnost pøesnì pìt v øadì vyhrává ani pravidlo renju.
+3) Vìtšina AI neumí kontinuální hru ani možnost pøesnì pìt v øadì vyhrává ani pravidlo Renju ani pravidlo Caro.
 
 Možnosti
 --------
@@ -32,6 +32,7 @@ Možnosti
 - Náhodnì otáèet zahájení: zahájení je náhodnì posunuto a otoèeno nebo zrcadleno.
 - pìt nebo více vyhrává/pøesnì pìt vyhrává: kolik svých symbolù musí hráè umístit do øady, aby vyhrál.
 - pravidlo renju: zaèínající hráè nesmí v žádném tahu udìlat dvì ètveøice ani dvì trojice ani øadu více než pìti symbolù. Pøesná pravidla najdete na http://www.renju.net
+- pravidlo Caro: pìtice blokovaná soupeøem z obou stran není výhra.
 - jednotlivé hry / kontinuální hra: Když zaškrtnete jednotlivé hry, pak každá hra skonèí, jakmile jeden z hráèù vyhraje. Kontinuální hra znamená, že lze pokraèovat ve høe tak dlouho, dokud se nezaplní celá hrací plocha. Pøi turnaji se vždy hrají jednotlivé hry.
 - Doba zvýraznìní tahu: jak dlouho je zvýraznìn poslední tah. Pokud vás to pøi høe rozptyluje, pak zadejte 0.
 - Zvukové oznámení: na konci tahu poèítaèe se pøehraje zvuk gomoku.wav. Tento soubor mùžete nahradit jiným wav souborem.

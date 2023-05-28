@@ -1,5 +1,5 @@
 20=Piškvorky
-501=(C) 2000-2017  Petr Laštovièka
+501=(C) 2000-2023  Petr Laštovièka
 503=Verze
 13=piskvork_CZ.txt
 26=language\\history_CZ.txt
@@ -138,7 +138,8 @@
 653=\r\nVyhrál %s\r\n
 654=pìt nebo více v øadì vyhrává
 655=pøesnì pìt v øadì vyhrává
-660=pravidlo renju
+660=pravidlo Renju
+661=pravidlo Caro
 656=pouze jedna hra
 657=kontinuální hra
 

@@ -1,56 +1,39 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<HTML><HEAD><TITLE>Komunikace UI přes soubory</TITLE>
-<META http-equiv=Content-Type content="text/html; charset=windows-1250">
-<META content="Specifikace starého protokolu pro piškvorkové algoritmy, které komunikují s manažerem piškvorkového turnaje pomocí souborů." name="description">
-<META content="Vojta Havránek a Petr Laštovička" name="author">
-<META content=Czech name=language>
+ď»ż<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML lang="cs"><HEAD><TITLE>Komunikace UI pĹ™es soubory</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=utf-8">
+<META content="Specifikace starĂ©ho protokolu pro piĹˇkvorkovĂ© algoritmy, kterĂ© komunikujĂ­ s manaĹľerem piĹˇkvorkovĂ©ho turnaje pomocĂ­ souborĹŻ." name="description">
+<META content="Vojta HavrĂˇnek a Petr LaĹˇtoviÄŤka" name="author">
 <link rel="stylesheet" type="text/css" href="styl.css">
 <BODY>
 
-<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
-</script>
-<script type="text/javascript">
-_uacct = "UA-391946-1";
-_udn="none"; 
-_ulink=1; 
-urchinTracker();
-</script>
-
-<H1>Starý protokol</H1>
-<P align=center>
-
-<script type="text/javascript"> 
-document.write('<a href="javascript:__utmLinker(\'http://gomocup.org/detail-information/\');"><SPAN class=bigbutton>Zpět na informace</SPAN></a>'); 
-</script> 
-<noscript> 
-<A href="http://gomocup.org/detail-information/"><SPAN class=bigbutton>Zpět na informace</SPAN></A>
-</noscript> 
-
-<BR></P><BR>
-<P><EM>Tento protokol je již zastaralý.</EM> Manažer ho sice stále 
-podporuje, ale tvoříte-li novou umělou inteligenci, doporučujeme vám použít <A 
-href="protocl2.htm">nový protokol</A>.</P>
-<P>Umělá inteligence (UI) komunikuje s manažerem (programem, který zprostředkovává 
-zápas) přes datové soubory. Soubor PLOCHA.DAT obsahuje hrací plochu. Soubor TAH.DAT má dvě podoby. Nejdříve obsahuje informaci o hráči, který je právě na tahu, a potom obsahuje výsledný tah UI. V souboru TIMEOUTS.DAT jsou časové limity. Nepovinným rozšířením protokolu jsou soubory MSG.DAT a INFO.DAT.</P>
-<P>Funguje to jednoduše a to sice:<BR><OL>
-<LI>Manažer vytvoří soubory PLOCHA.DAT, TAH.DAT, INFO.DAT, TIMEOUTS.DAT a prázdný soubor MSG.DAT.
-<LI>Manažer spustí UI a pak čeká (například pomocí funkce WaitForSingleObject).
-<LI>UI si přečte datové soubory a vymyslí svůj tah.
-<LI>UI zapíše souřadnice do TAH.DAT a případně také zapíše zprávu do MSG.DAT.
-<LI>UI se ukončí.
-<LI> Manažer přečte MSG.DAT. Jestliže není prázdný, zobrazí zprávu do logovacího okna nebo souboru. 
-<LI>Manažer přečte TAH.DAT a podle něj provede tah. 
-<LI>Pak se vše opakuje pro druhého hráče atd.
-<LI>Při ukončení by manažer měl odstranit všechny zde používané soubory.
+<H1>StarĂ˝ protokol</H1>
+<P class=center>
+<A href="https://gomocup.org/detail-information/"><SPAN class=bigbutton>ZpÄ›t na informace</SPAN></A>
+</P><BR>
+<P><EM>Tento protokol je jiĹľ zastaralĂ˝.</EM> ManaĹľer ho sice stĂˇle 
+podporuje, ale tvoĹ™Ă­te-li novou umÄ›lou inteligenci, doporuÄŤujeme vĂˇm pouĹľĂ­t <A 
+href="protocl2.htm">novĂ˝ protokol</A>.</P>
+<P>UmÄ›lĂˇ inteligence (UI) komunikuje s manaĹľerem (programem, kterĂ˝ zprostĹ™edkovĂˇvĂˇ 
+zĂˇpas) pĹ™es datovĂ© soubory. Soubor PLOCHA.DAT obsahuje hracĂ­ plochu. Soubor TAH.DAT mĂˇ dvÄ› podoby. NejdĹ™Ă­ve obsahuje informaci o hrĂˇÄŤi, kterĂ˝ je prĂˇvÄ› na tahu, a potom obsahuje vĂ˝slednĂ˝ tah UI. V souboru TIMEOUTS.DAT jsou ÄŤasovĂ© limity. NepovinnĂ˝m rozĹˇĂ­Ĺ™enĂ­m protokolu jsou soubory MSG.DAT a INFO.DAT.</P>
+<P>Funguje to jednoduĹˇe a to sice:<BR><OL>
+<LI>ManaĹľer vytvoĹ™Ă­ soubory PLOCHA.DAT, TAH.DAT, INFO.DAT, TIMEOUTS.DAT a prĂˇzdnĂ˝ soubor MSG.DAT.
+<LI>ManaĹľer spustĂ­ UI a pak ÄŤekĂˇ (napĹ™Ă­klad pomocĂ­ funkce WaitForSingleObject).
+<LI>UI si pĹ™eÄŤte datovĂ© soubory a vymyslĂ­ svĹŻj tah.
+<LI>UI zapĂ­Ĺˇe souĹ™adnice do TAH.DAT a pĹ™Ă­padnÄ› takĂ© zapĂ­Ĺˇe zprĂˇvu do MSG.DAT.
+<LI>UI se ukonÄŤĂ­.
+<LI> ManaĹľer pĹ™eÄŤte MSG.DAT. JestliĹľe nenĂ­ prĂˇzdnĂ˝, zobrazĂ­ zprĂˇvu do logovacĂ­ho okna nebo souboru. 
+<LI>ManaĹľer pĹ™eÄŤte TAH.DAT a podle nÄ›j provede tah. 
+<LI>Pak se vĹˇe opakuje pro druhĂ©ho hrĂˇÄŤe atd.
+<LI>PĹ™i ukonÄŤenĂ­ by manaĹľer mÄ›l odstranit vĹˇechny zde pouĹľĂ­vanĂ© soubory.
 </OL>
 </P>
-<P>Pracovní adresář si volí manažer. UI musí počítat s tím, že pracovní adresář je jiný než ten, ve kterém se nachází spustitelný soubor UI. Jestliže tedy UI kromě EXE a DLL souborů obsahuje také ještě nějaké datové soubory, pak se na ně musí odkazovat celou cestou. Cestu může UI zjistit například pomocí funkce GetModuleFileName. Druhou možností je podívat se na nultý parametr na příkazové řádce. Manažer musí při spouštění UI na příkazovou řádku dát název exe souboru v takovém tvaru, aby ho UI mohla otevřít, tedy včetně exe přípony a případně cesty, pokud UI neleží v pracovním adresáři.</P>
-<P>Pokud UI potřebuje ukládat na disk nějaké soubory, pak si v pracovním adresáři vytvoří složku, jejíž název musí být stejný jako název UI. V této složce si pak UI může dělat prakticky cokoli, pokud tím nepřekročí maximální povolenou velikost, která je zveřejněna na webových stránkách turnaje (nyní je 20MB). Během turnaje se soubory v této složce nemažou. Manažer může všechny dočasné soubory odstranit až po skončení turnaje nebo při ukončení manažeru. Pro trvalé ukládání souborů slouží složka, jejíž název je v souboru INFO.DAT.</P>
+<P>PracovnĂ­ adresĂˇĹ™ si volĂ­ manaĹľer. UI musĂ­ poÄŤĂ­tat s tĂ­m, Ĺľe pracovnĂ­ adresĂˇĹ™ je jinĂ˝ neĹľ ten, ve kterĂ©m se nachĂˇzĂ­ spustitelnĂ˝ soubor UI. JestliĹľe tedy UI kromÄ› EXE a DLL souborĹŻ obsahuje takĂ© jeĹˇtÄ› nÄ›jakĂ© datovĂ© soubory, pak se na nÄ› musĂ­ odkazovat celou cestou. Cestu mĹŻĹľe UI zjistit napĹ™Ă­klad pomocĂ­ funkce GetModuleFileName. Druhou moĹľnostĂ­ je podĂ­vat se na nultĂ˝ parametr na pĹ™Ă­kazovĂ© Ĺ™Ăˇdce. ManaĹľer musĂ­ pĹ™i spouĹˇtÄ›nĂ­ UI na pĹ™Ă­kazovou Ĺ™Ăˇdku dĂˇt nĂˇzev exe souboru v takovĂ©m tvaru, aby ho UI mohla otevĹ™Ă­t, tedy vÄŤetnÄ› exe pĹ™Ă­pony a pĹ™Ă­padnÄ› cesty, pokud UI neleĹľĂ­ v pracovnĂ­m adresĂˇĹ™i.</P>
+<P>Pokud UI potĹ™ebuje uklĂˇdat na disk nÄ›jakĂ© soubory, pak si v pracovnĂ­m adresĂˇĹ™i vytvoĹ™Ă­ sloĹľku, jejĂ­Ĺľ nĂˇzev musĂ­ bĂ˝t stejnĂ˝ jako nĂˇzev UI. V tĂ©to sloĹľce si pak UI mĹŻĹľe dÄ›lat prakticky cokoli, pokud tĂ­m nepĹ™ekroÄŤĂ­ maximĂˇlnĂ­ povolenou velikost, kterĂˇ je zveĹ™ejnÄ›na na webovĂ˝ch strĂˇnkĂˇch turnaje (nynĂ­ je 20MB). BÄ›hem turnaje se soubory v tĂ©to sloĹľce nemaĹľou. ManaĹľer mĹŻĹľe vĹˇechny doÄŤasnĂ© soubory odstranit aĹľ po skonÄŤenĂ­ turnaje nebo pĹ™i ukonÄŤenĂ­ manaĹľeru. Pro trvalĂ© uklĂˇdĂˇnĂ­ souborĹŻ slouĹľĂ­ sloĹľka, jejĂ­Ĺľ nĂˇzev je v souboru INFO.DAT.</P>
 <P class=vetsi><EM>PLOCHA.DAT:</EM></P>
-<P>Tento soubor obsahuje záznam hrací plochy. Počet řádků v souboru je roven výšce hrací plochy. Počet znaků na každém řádku je roven šířce hrací plochy. UI si tedy musí zjistit rozměry hrací plochy tak, že si spočítá, kolik má soubor řádků a jak jsou tyto řádky dlouhé. Při turnaji budou použity rozměry 20x20. Prázdná pole jsou reprezentovaná znakem - (pomlčka, minus). Jeden hráč hraje za křížky, které jsou 
-zaznamenány znakem x (malé písmeno x). Druhému hráči připadají kolečka, která se 
-zapisují znakem o (malé písmeno o). Při kontinuální hře mohou být některá pole obsazena výherní pěticí, tato pole se zapisují znakem # (křížek).
-<BR><BR>Příklad souboru PLOCHA.DAT:<PRE><CODE>
+<P>Tento soubor obsahuje zĂˇznam hracĂ­ plochy. PoÄŤet Ĺ™ĂˇdkĹŻ v souboru je roven vĂ˝Ĺˇce hracĂ­ plochy. PoÄŤet znakĹŻ na kaĹľdĂ©m Ĺ™Ăˇdku je roven ĹˇĂ­Ĺ™ce hracĂ­ plochy. UI si tedy musĂ­ zjistit rozmÄ›ry hracĂ­ plochy tak, Ĺľe si spoÄŤĂ­tĂˇ, kolik mĂˇ soubor Ĺ™ĂˇdkĹŻ a jak jsou tyto Ĺ™Ăˇdky dlouhĂ©. PĹ™i turnaji budou pouĹľity rozmÄ›ry 20x20. PrĂˇzdnĂˇ pole jsou reprezentovanĂˇ znakem - (pomlÄŤka, minus). Jeden hrĂˇÄŤ hraje za kĹ™Ă­Ĺľky, kterĂ© jsou 
+zaznamenĂˇny znakem x (malĂ© pĂ­smeno x). DruhĂ©mu hrĂˇÄŤi pĹ™ipadajĂ­ koleÄŤka, kterĂˇ se 
+zapisujĂ­ znakem o (malĂ© pĂ­smeno o). PĹ™i kontinuĂˇlnĂ­ hĹ™e mohou bĂ˝t nÄ›kterĂˇ pole obsazena vĂ˝hernĂ­ pÄ›ticĂ­, tato pole se zapisujĂ­ znakem # (kĹ™Ă­Ĺľek).
+<BR><BR>PĹ™Ă­klad souboru PLOCHA.DAT:<PRE><CODE>
 ---x-x--------------
 ----x-o---x---------
 -----xxoooox--------
@@ -73,36 +56,35 @@ ooox----------------
 --------------------
 </CODE></PRE>
 <P class=vetsi><EM>TAH.DAT:</EM></P>
-<P>Než manažer spustí nějakou UI, zapíše do souboru TAH.DAT jeden znak (buď 
-x, nebo o), což znamená za jakého hráče má UI vymyslet tah. Když je tah 
-vymyšlen, přepíše UI tento soubor do formátu x,y (číslo sloupce, čárka, číslo řádku). To jsou souřadnice, kam chce UI umístit svůj symbol. <EM>POZOR: hodnota x i hodnota y je v rozmezí 0-19, nikoliv v rozmezí 1-20.</EM> Levý horní roh hrací plochy má souřadnice [0,0]. </P>
+<P>NeĹľ manaĹľer spustĂ­ nÄ›jakou UI, zapĂ­Ĺˇe do souboru TAH.DAT jeden znak (buÄŹ 
+x, nebo o), coĹľ znamenĂˇ za jakĂ©ho hrĂˇÄŤe mĂˇ UI vymyslet tah. KdyĹľ je tah 
+vymyĹˇlen, pĹ™epĂ­Ĺˇe UI tento soubor do formĂˇtu x,y (ÄŤĂ­slo sloupce, ÄŤĂˇrka, ÄŤĂ­slo Ĺ™Ăˇdku). To jsou souĹ™adnice, kam chce UI umĂ­stit svĹŻj symbol. <EM>POZOR: hodnota x i hodnota y je v rozmezĂ­ 0-19, nikoliv v rozmezĂ­ 1-20.</EM> LevĂ˝ hornĂ­ roh hracĂ­ plochy mĂˇ souĹ™adnice [0,0]. </P>
 <P class=vetsi><EM>TIMEOUTS.DAT:</EM></P>
-<P>Tento soubor obsahuje dva řádky. Na prvním řádku je časový limit na tah v sekundách. Nulová hodnota času na tah znamená, že UI má odpovědět pokud možno co nejdříve (měla by například jenom spočítat ohodnocovací funkci a už neprohledávat do hloubky všechny možné tahy). Na druhém řádku je zbývající čas do konce partie v milisekundách. Pokud UI překročí časový limit, pak zbývající čas může být záporný. Pokud čas na partii je neomezený, pak je na druhém řádku číslo 2147483647.</P>
-<P>Soubor TIMEOUTS.DAT obsahuje čas na tah s přesností pouze na celé sekundy, zatímco v souboru INFO.DAT je čas na tah s přesností na milisekundy. Bohužel některé manažery vůbec nevytvářejí soubor INFO.DAT. Proto se doporučuje, aby se UI nejdříve pokusila otevřít soubor INFO.DAT, a jestliže tento soubor neexistuje, tak teprve pak používat soubor TIMEOUTS.DAT.</P>
+<P>Tento soubor obsahuje dva Ĺ™Ăˇdky. Na prvnĂ­m Ĺ™Ăˇdku je ÄŤasovĂ˝ limit na tah v sekundĂˇch. NulovĂˇ hodnota ÄŤasu na tah znamenĂˇ, Ĺľe UI mĂˇ odpovÄ›dÄ›t pokud moĹľno co nejdĹ™Ă­ve (mÄ›la by napĹ™Ă­klad jenom spoÄŤĂ­tat ohodnocovacĂ­ funkci a uĹľ neprohledĂˇvat do hloubky vĹˇechny moĹľnĂ© tahy). Na druhĂ©m Ĺ™Ăˇdku je zbĂ˝vajĂ­cĂ­ ÄŤas do konce partie v milisekundĂˇch. Pokud UI pĹ™ekroÄŤĂ­ ÄŤasovĂ˝ limit, pak zbĂ˝vajĂ­cĂ­ ÄŤas mĹŻĹľe bĂ˝t zĂˇpornĂ˝. Pokud ÄŤas na partii je neomezenĂ˝, pak je na druhĂ©m Ĺ™Ăˇdku ÄŤĂ­slo 2147483647.</P>
+<P>Soubor TIMEOUTS.DAT obsahuje ÄŤas na tah s pĹ™esnostĂ­ pouze na celĂ© sekundy, zatĂ­mco v souboru INFO.DAT je ÄŤas na tah s pĹ™esnostĂ­ na milisekundy. BohuĹľel nÄ›kterĂ© manaĹľery vĹŻbec nevytvĂˇĹ™ejĂ­ soubor INFO.DAT. Proto se doporuÄŤuje, aby se UI nejdĹ™Ă­ve pokusila otevĹ™Ă­t soubor INFO.DAT, a jestliĹľe tento soubor neexistuje, tak teprve pak pouĹľĂ­vat soubor TIMEOUTS.DAT.</P>
 <P class=vetsi><EM>MSG.DAT:</EM></P>
-<P>UI během hry může posílat manažeru textové zprávy, které manažer loguje (např. pro ladění nebo pro 
-pobavení). Před každým spuštěním UI manažer vytvoří prázdný soubor MSG.DAT. Do tohoto souboru UI zapíše jednu nebo více řádek textu. Nedoporučuje se používat více řádek, protože některé manažery umějí načíst jen jednu řádku.
+<P>UI bÄ›hem hry mĹŻĹľe posĂ­lat manaĹľeru textovĂ© zprĂˇvy, kterĂ© manaĹľer loguje (napĹ™. pro ladÄ›nĂ­ nebo pro 
+pobavenĂ­). PĹ™ed kaĹľdĂ˝m spuĹˇtÄ›nĂ­m UI manaĹľer vytvoĹ™Ă­ prĂˇzdnĂ˝ soubor MSG.DAT. Do tohoto souboru UI zapĂ­Ĺˇe jednu nebo vĂ­ce Ĺ™Ăˇdek textu. NedoporuÄŤuje se pouĹľĂ­vat vĂ­ce Ĺ™Ăˇdek, protoĹľe nÄ›kterĂ© manaĹľery umÄ›jĂ­ naÄŤĂ­st jen jednu Ĺ™Ăˇdku.
 </P>
 <P class=vetsi><EM>INFO.DAT:</EM></P>
-<P>UI musí počítat s tím, že starší manažery tento soubor nevytvářejí a nebo v něm nejsou všechny zde popsané informace. Obsah tohoto souboru se může měnit i v průběhu hry. 
-Každý řádek je ve tvaru [klíč] [hodnota].<PRE>
-timeout_turn  - limit na tah (v milisekundách, 0=hraj co nejrychleji)
-timeout_match - limit na zápas (v milisekundách, 0=bez limitu)
-max_memory    - limit na maximální spotřebovanou paměť (v bajtech, 0=bez limitu)
-time_left     - zbývající čas do konce partie (v milisekundách)
-game_type     - 0=hra proti člověku, 1=hra proti UI, 2=turnaj, 3=síťový turnaj
-rule          - 0=pět nebo více v řadě vyhrává, 1=přesně pět v řadě vyhrává,
-                2=kontinuální hra, 3=kontinuální a přesně pět v řadě
-folder        - složka, kam si UI může zapisovat trvalé soubory
+<P>UI musĂ­ poÄŤĂ­tat s tĂ­m, Ĺľe starĹˇĂ­ manaĹľery tento soubor nevytvĂˇĹ™ejĂ­ a nebo v nÄ›m nejsou vĹˇechny zde popsanĂ© informace. Obsah tohoto souboru se mĹŻĹľe mÄ›nit i v prĹŻbÄ›hu hry. 
+KaĹľdĂ˝ Ĺ™Ăˇdek je ve tvaru [klĂ­ÄŤ] [hodnota].<PRE>
+timeout_turn  - limit na tah (v milisekundĂˇch, 0=hraj co nejrychleji)
+timeout_match - limit na zĂˇpas (v milisekundĂˇch, 0=bez limitu)
+max_memory    - limit na maximĂˇlnĂ­ spotĹ™ebovanou pamÄ›ĹĄ (v bajtech, 0=bez limitu)
+time_left     - zbĂ˝vajĂ­cĂ­ ÄŤas do konce partie (v milisekundĂˇch)
+game_type     - 0=hra proti ÄŤlovÄ›ku, 1=hra proti UI, 2=turnaj, 3=sĂ­ĹĄovĂ˝ turnaj
+rule          - bitovĂˇ maska neboli souÄŤet hodnot: 1=pĹ™esnÄ› pÄ›t v Ĺ™adÄ› vyhrĂˇvĂˇ, 2=kontinuĂˇlnĂ­ hra, 4=renju, 8=caro
+folder        - sloĹľka, kam si UI mĹŻĹľe zapisovat trvalĂ© soubory
 </PRE>
-Složka pro trvalé soubory je společná pro všechny UI, případně i pro jiné aplikace. Proto je UI povinna si v dané složce vytvořit svoji podsložku, jejíž název je stejný jako název UI. Do ní si může ukládat například znalosti a zkušenosti získané během hry.
-<BR><BR>Příklad souboru INFO.DAT:
+SloĹľka pro trvalĂ© soubory je spoleÄŤnĂˇ pro vĹˇechny UI, pĹ™Ă­padnÄ› i pro jinĂ© aplikace. Proto je UI povinna si v danĂ© sloĹľce vytvoĹ™it svoji podsloĹľku, jejĂ­Ĺľ nĂˇzev je stejnĂ˝ jako nĂˇzev UI. Do nĂ­ si mĹŻĹľe uklĂˇdat napĹ™Ă­klad znalosti a zkuĹˇenosti zĂ­skanĂ© bÄ›hem hry.
+<BR><BR>PĹ™Ă­klad souboru INFO.DAT:
 <PRE><CODE>max_memory 83886080
 timeout_match 180000
 timeout_turn 2500
 game_type 0
 rule 3
 time_left 148150
-folder C:\Documents and Settings\All Users\Data aplikací
+folder C:\Documents and Settings\All Users\Data aplikacĂ­
 </CODE></PRE></P>
 </BODY></HTML>

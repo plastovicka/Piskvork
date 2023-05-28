@@ -1,5 +1,5 @@
 /*
-	(C) 2004-2006  Petr Lastovicka
+	(C) Petr Lastovicka
 
 	This program is free software; you can redistribute it and/or
 	modify it under the terms of the GNU General Public License.
@@ -13,7 +13,7 @@
 #define MATCH_SPARE 7      //how much is time spared for the rest of game
 #define TIMEOUT_PREVENT 3  //how much is alfabeta slower when the depth is increased
 
-const char *infotext="author=\"Petr Lastovicka\", version=\"7.8\", country=\"Czech Republic\",  www=\"https://plastovicka.github.io\"";
+const char *infotext="author=\"Petr Lastovicka\", version=\"7.9\", country=\"Czech Republic\",  www=\"https://plastovicka.github.io\"";
 
 #define MAX_BOARD 127
 

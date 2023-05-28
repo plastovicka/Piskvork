@@ -170,39 +170,41 @@ BEGIN
                     WS_TABSTOP,7,23,148,10
     CONTROL         "&Openings are randomly rotated or moved",568,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,7,36,148,10
-    GROUPBOX        "Rules",672,4,51,148,49
+    GROUPBOX        "Rules",672,4,49,148,65
     CONTROL         "five or mo&re stones win",555,"Button",
-                    BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,11,61,137,10
+                    BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,11,60,137,10
     CONTROL         "e&xactly five stones win",556,"Button",
-                    BS_AUTORADIOBUTTON,11,73,137,10
-    CONTROL         "ren&ju rule",557,"Button",BS_AUTORADIOBUTTON,11,85,137,
+                    BS_AUTORADIOBUTTON,11,72,137,10
+    CONTROL         "ren&ju rule",557,"Button",BS_AUTORADIOBUTTON,11,84,137,
                     10
-    GROUPBOX        "",IDC_STATIC,4,100,148,34
+    CONTROL         "Caro rule",661,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,11,
+                    98,137,10
+    GROUPBOX        "",IDC_STATIC,4,115,148,35
     CONTROL         "singl&e game",559,"Button",BS_AUTORADIOBUTTON | 
-                    WS_GROUP | WS_TABSTOP,11,107,137,10
+                    WS_GROUP | WS_TABSTOP,11,123,137,10
     CONTROL         "&continuous game",560,"Button",BS_AUTORADIOBUTTON,11,
-                    119,137,10
-    GROUPBOX        "",IDC_STATIC,4,134,148,129,WS_GROUP
-    CTEXT           "Highlight durat&ion :",513,7,145,73,8
-    EDITTEXT        108,84,143,30,14,ES_NUMBER
-    LTEXT           "ms",536,119,145,22,8
+                    135,137,10
+    GROUPBOX        "",IDC_STATIC,4,150,148,115,WS_GROUP
+    CTEXT           "Highlight durat&ion :",513,7,162,73,8
+    EDITTEXT        108,84,160,30,14,ES_NUMBER
+    LTEXT           "ms",536,119,162,22,8
     CONTROL         "Sound &notifications",671,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,11,163,137,10
+                    WS_TABSTOP,11,180,137,10
     CONTROL         "&Show coordinates",510,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,11,183,137,12
+                    WS_TABSTOP,11,194,137,12
     CONTROL         "Coordinates start from &1",518,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,11,199,137,12
+                    WS_TABSTOP,11,208,137,12
     CONTROL         "Divide move number by two",516,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,11,215,137,12
+                    WS_TABSTOP,11,222,137,12
     CONTROL         "Move number starts &from 1",546,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,11,231,137,12
+                    BS_AUTOCHECKBOX | WS_TABSTOP,11,236,137,12
     CONTROL         "Save undo moves",670,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,11,247,137,10
+                    WS_TABSTOP,11,250,137,10
     GROUPBOX        "Timeouts",673,159,4,154,43
     CONTROL         "Chec&k timeout for computer",515,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,166,17,141,10
     CONTROL         "Check timeout for h&uman",517,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,166,33,141,10
+                    WS_TABSTOP,166,32,141,10
     GROUPBOX        "Artificial intelligence",674,159,53,154,126
     RTEXT           "&Tolerance:",514,163,66,52,8
     EDITTEXT        109,221,64,30,14,ES_AUTOHSCROLL | ES_NUMBER
@@ -214,14 +216,14 @@ BEGIN
                     BS_AUTOCHECKBOX | WS_TABSTOP,166,103,141,10
     CONTROL         "Debug pbrains",658,"Button",BS_AUTOCHECKBOX | 
                     WS_TABSTOP,166,116,141,10
-    CONTROL         "Ignore errors from AI",659,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,166,142,141,10
     CONTROL         "Send INFO evaluate x,y",548,"Button",BS_AUTOCHECKBOX | 
                     BS_LEFT | WS_TABSTOP,166,129,141,10
+    CONTROL         "Ignore errors from AI",659,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,166,142,141,10
     CTEXT           "Process priority:",547,164,163,72,8
     COMBOBOX        120,239,162,55,75,CBS_DROPDOWNLIST | WS_VSCROLL | 
                     WS_TABSTOP
-    GROUPBOX        "Logging",543,159,181,154,82
+    GROUPBOX        "Logging",543,159,181,154,84
     CONTROL         "messa&ge commands",540,"Button",BS_AUTOCHECKBOX | 
                     WS_TABSTOP,165,194,141,10
     CONTROL         "de&bug commands",541,"Button",BS_AUTOCHECKBOX | 
@@ -244,7 +246,7 @@ STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "About"
 FONT 10, "MS Shell Dlg"
 BEGIN
-    CTEXT           "(C) 2000-2017  Petr Lastovicka",501,4,50,104,10
+    CTEXT           "(C) 2000-2023  Petr Lastovicka",501,4,50,104,10
     CTEXT           "Version",503,30,24,28,9
     CTEXT           "Piskvorky",504,36,6,40,9
     ICON            1,-1,10,20,20,20
@@ -257,7 +259,7 @@ END
 PLAYERS DIALOG DISCARDABLE  0, 0, 222, 218
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Players"
-FONT 8, "MS Shell Dlg"
+FONT 9, "MS Shell Dlg"
 BEGIN
     GROUPBOX        "Player 1",520,7,5,208,74
     CONTROL         "Computer",522,"Button",BS_AUTORADIOBUTTON,19,17,84,10
@@ -290,7 +292,7 @@ END
 TOURNAMENT DIALOG DISCARDABLE  0, 0, 366, 328
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Tournament"
-FONT 8, "MS Shell Dlg"
+FONT 9, "MS Shell Dlg"
 BEGIN
     DEFPUSHBUTTON   "OK",IDOK,10,297,50,14
     PUSHBUTTON      "Cancel",IDCANCEL,75,297,50,14
@@ -312,49 +314,51 @@ BEGIN
                     WS_TABSTOP,114,205,78,10
     RTEXT           "&Repeat count:",561,205,7,85,8
     EDITTEXT        102,297,4,29,14,ES_NUMBER
-    RTEXT           "Games cou&nt:",562,205,24,85,8
-    EDITTEXT        115,297,21,29,14,ES_NUMBER
-    RTEXT           "Max. t&ie repeats:",577,205,41,85,8
-    EDITTEXT        112,297,38,29,14,ES_NUMBER
-    RTEXT           "Paus&e:",574,203,61,48,8
-    EDITTEXT        158,259,58,35,14,ES_AUTOHSCROLL
-    LTEXT           "s",534,299,61,19,8
-    GROUPBOX        "",IDC_STATIC,204,76,154,37
-    CONTROL         "To&urnament",570,"Button",BS_AUTORADIOBUTTON,215,85,138,
+    RTEXT           "Games cou&nt:",562,205,23,85,8
+    EDITTEXT        115,297,20,29,14,ES_NUMBER
+    RTEXT           "Max. t&ie repeats:",577,205,39,85,8
+    EDITTEXT        112,297,36,29,14,ES_NUMBER
+    RTEXT           "Paus&e:",574,203,58,48,8
+    EDITTEXT        158,259,55,35,14,ES_AUTOHSCROLL
+    LTEXT           "s",534,299,58,19,8
+    GROUPBOX        "",IDC_STATIC,204,70,154,37
+    CONTROL         "To&urnament",570,"Button",BS_AUTORADIOBUTTON,215,79,138,
                     10
     CONTROL         "The &first AI against others",571,"Button",
-                    BS_AUTORADIOBUTTON,215,98,138,10
-    RTEXT           "&Turn:",526,207,121,44,8
-    EDITTEXT        153,259,119,35,14,ES_AUTOHSCROLL
-    LTEXT           "s",533,299,122,19,8
-    RTEXT           "M&atch:",528,207,138,44,8
-    EDITTEXT        105,259,136,35,14,ES_AUTOHSCROLL | ES_NUMBER
-    LTEXT           "s",531,299,138,19,8
-    RTEXT           "Toleran&ce:",514,207,155,44,8
-    EDITTEXT        109,259,153,35,14,ES_AUTOHSCROLL | ES_NUMBER
-    LTEXT           "ms",535,299,157,22,8
-    RTEXT           "&Memory:",519,207,172,44,8
-    EDITTEXT        111,259,170,35,14,ES_NUMBER
-    LTEXT           "MB",IDC_STATIC,299,172,19,8
+                    BS_AUTORADIOBUTTON,215,92,138,10
+    RTEXT           "&Turn:",526,207,115,44,8
+    EDITTEXT        153,259,113,35,14,ES_AUTOHSCROLL
+    LTEXT           "s",533,299,116,19,8
+    RTEXT           "M&atch:",528,207,131,44,8
+    EDITTEXT        105,259,129,35,14,ES_AUTOHSCROLL | ES_NUMBER
+    LTEXT           "s",531,299,131,19,8
+    RTEXT           "Toleran&ce:",514,207,147,44,8
+    EDITTEXT        109,259,145,35,14,ES_AUTOHSCROLL | ES_NUMBER
+    LTEXT           "ms",535,299,149,22,8
+    RTEXT           "&Memory:",519,207,163,44,8
+    EDITTEXT        111,259,161,35,14,ES_NUMBER
+    LTEXT           "MB",IDC_STATIC,299,163,19,8
     CONTROL         "Automatic opening mo&ves",545,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,214,190,140,10
+                    WS_TABSTOP,214,180,140,10
     CONTROL         "&Openings are randomly rotated or moved",568,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,214,203,140,10
-    GROUPBOX        "",IDC_STATIC,207,213,151,51
+                    BS_AUTOCHECKBOX | WS_TABSTOP,214,193,140,10
+    GROUPBOX        "",IDC_STATIC,207,203,151,64
     CONTROL         "five or mo&re stones win",555,"Button",
-                    BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,214,223,138,
+                    BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,214,213,138,
                     10
     CONTROL         "e&xactly five stones win",556,"Button",
-                    BS_AUTORADIOBUTTON,214,236,138,10
-    CONTROL         "renju rule",557,"Button",BS_AUTORADIOBUTTON,214,249,138,
+                    BS_AUTORADIOBUTTON,214,226,138,10
+    CONTROL         "renju rule",557,"Button",BS_AUTORADIOBUTTON,214,239,138,
                     10
-    GROUPBOX        "",IDC_STATIC,207,266,151,35
+    CONTROL         "Caro rule",661,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
+                    214,252,137,10
+    GROUPBOX        "",IDC_STATIC,207,269,151,35
     CONTROL         "&Local computer",575,"Button",BS_AUTORADIOBUTTON | 
-                    WS_GROUP,214,274,114,10
-    CONTROL         "Networ&k",576,"Button",BS_AUTORADIOBUTTON,214,287,114,
+                    WS_GROUP,214,277,114,10
+    CONTROL         "Networ&k",576,"Button",BS_AUTORADIOBUTTON,214,290,114,
                     10
-    CTEXT           "TCP/IP  &port:",592,210,307,64,8
-    EDITTEXT        110,278,304,35,14,ES_AUTOHSCROLL | ES_NUMBER
+    CTEXT           "TCP/IP  &port:",592,210,309,64,8
+    EDITTEXT        110,278,306,35,14,ES_AUTOHSCROLL | ES_NUMBER
     LTEXT           "Command to e&xecute after each game:",578,7,231,183,8
     EDITTEXT        113,7,243,190,14,ES_AUTOHSCROLL
     LTEXT           "Command to execute &when a tournament finished:",579,7,
@@ -377,7 +381,7 @@ END
 GOTO DIALOG DISCARDABLE  0, 0, 159, 55
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Go to move"
-FONT 8, "MS Shell Dlg"
+FONT 9, "MS Shell Dlg"
 BEGIN
     CTEXT           "Move number:",580,7,10,85,8
     EDITTEXT        101,98,7,40,14,ES_AUTOHSCROLL | ES_NUMBER
@@ -388,7 +392,7 @@ END
 CLIENT DIALOG DISCARDABLE  0, 0, 189, 173
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Client"
-FONT 8, "MS Shell Dlg"
+FONT 9, "MS Shell Dlg"
 BEGIN
     GROUPBOX        "",IDC_STATIC,7,2,175,36,WS_GROUP
     CONTROL         "Connect to an AIs &tournament",597,"Button",
@@ -409,7 +413,7 @@ END
 DISCONNECT DIALOG DISCARDABLE  0, 0, 136, 71
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Disconnect"
-FONT 8, "MS Shell Dlg"
+FONT 9, "MS Shell Dlg"
 BEGIN
     DEFPUSHBUTTON   "OK",IDOK,7,50,50,14
     PUSHBUTTON      "Cancel",IDCANCEL,79,50,50,14
@@ -445,7 +449,7 @@ END
 KEYS DIALOG DISCARDABLE  0, 0, 234, 54
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Keyboard shortcuts"
-FONT 8, "MS Shell Dlg"
+FONT 9, "MS Shell Dlg"
 BEGIN
     LTEXT           "Command:",698,7,9,51,8
     EDITTEXT        172,61,7,144,14,ES_AUTOHSCROLL | ES_READONLY | NOT 
@@ -497,7 +501,7 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 8,9,2,1
+ FILEVERSION 9,0,0,0
  PRODUCTVERSION 0,0,0,0
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
@@ -516,9 +520,9 @@ BEGIN
             VALUE "Comments", "\0"
             VALUE "CompanyName", " \0"
             VALUE "FileDescription", "Piškvorky\0"
-            VALUE "FileVersion", "8, 9, 2, 1\0"
+            VALUE "FileVersion", "9, 0, 0, 0\0"
             VALUE "InternalName", "\0"
-            VALUE "LegalCopyright", "© 2000 - 2022  Petr Laštovièka, Tianyi Hao\0"
+            VALUE "LegalCopyright", "© 2000 - 2023  Petr Laštovièka, Tianyi Hao\0"
             VALUE "LegalTrademarks", "\0"
             VALUE "OriginalFilename", "piskvork.exe\0"
             VALUE "PrivateBuild", "\0"

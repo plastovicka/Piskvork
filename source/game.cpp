@@ -1,6 +1,5 @@
 /*
-	(C) 2000-2016  Petr Lastovicka
-	(C) 2015-2016  Tianyi Hao
+	(C) Petr Lastovicka, Tianyi Hao
 
 	This program is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
@@ -646,7 +645,11 @@ void turResultInner(TfileName& fn)
 	else{
 		strcpy(buf1, lng(611, "No"));
 	}
-	removeChar(ruleBuffer, ruleFive ==2 ? lng(557, "renju rule") :(ruleFive ? lng(556, "exactly five stones wins") : lng(555, "five or more stones wins")), '&');
+	removeChar(ruleBuffer, ruleFive==2 ? lng(557, "renju rule") :(ruleFive & 1 ? lng(556, "exactly five stones wins") : lng(555, "five or more stones wins")), '&');
+	if(ruleFive & 8) {
+		strcat(ruleBuffer, ", ");
+		strcat(ruleBuffer, lng(661, "Caro rule"));
+	}
 
 	s+=sprintf(s, lng(600, "Time for turn: %d %s,   Time for match: %s\r\nTolerance: %d %s,   Memory: %d MB\r\nOpenings: %s\r\nRule: %s\r\nOpening CRC: %x\r\nGames played: %d"),//
 		m%1000 ? m : m/1000, getLngSec(m%1000==0), buf,
@@ -1263,6 +1266,10 @@ bool doMove1(Psquare p, int action)
 			nxtP(p2, 1);
 			poc++;
 		} while(p2->z==p->z && !p2->blocked());
+
+		//Caro rule
+		if(poc==5 && (ruleFive&8) && p1->z==3-p->z && !p1->blocked() && p2->z==3-p->z && !p2->blocked()) 
+			poc=0; 
 
 		if((ruleFive%2 ? poc==5 : poc>=5) || f){
 			nxtP(p1, 1);

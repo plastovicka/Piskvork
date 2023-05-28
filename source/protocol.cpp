@@ -1,6 +1,5 @@
 /*
-	(C) 2004-2016  Petr Lastovicka
-	(C) 2015-2016  Tianyi Hao
+	(C) Petr Lastovicka, Tianyi Hao
 
 	This program is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
@@ -608,7 +607,7 @@ int Tplayer::sendInfo(int mask)
 		sendInfoCmd("game_type", i);
 	}
 	if((mask & INFO_RULE)){
-		sendInfoCmd("rule", (ruleFive < 2 ? ruleFive : 4) | (continuous<<1));
+		sendInfoCmd("rule", (ruleFive != 2 ? ruleFive : 4) | (continuous<<1));
 	}
 	if(mask & INFO_TIMELEFT) sendInfoCmd("time_left", timeLeft());
 	if((mask & INFO_DIR) && dataDir[0] && !isClient){

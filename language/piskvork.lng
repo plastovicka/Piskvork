@@ -239,7 +239,8 @@
 ; Network game
 655=Exactly five in a row win
 654=Five or more in a row win
-660=Rule renju
+660=Renju rule 
+661=Caro rule
 657=Continuous game
 656=Single game
 872=You begin

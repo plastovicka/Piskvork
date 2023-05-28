@@ -1,6 +1,5 @@
 /*
-	(C) 2000-2016  Petr Lastovicka
-	(C) 2015  Tianyi Hao
+	(C) Petr Lastovicka, Tianyi Hao
 
 	This program is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
@@ -109,7 +108,7 @@ width=20,  //number of squares horizontally (without borders)
  tolerance=1000, //how longer can AI think after timeout
  hardTimeOut=0,  //should we check timeout for AI
  humanTimeOut=0, //should we check timeout for human
- ruleFive=0,     //0=five or more stones win, 1=exactly 5 win, 2=renju
+ ruleFive=0,     //0=five or more stones win, 1=exactly 5 win, 2=renju, 8=Caro with overlines, 9=standard Caro
  continuous=0,   //0=until someone wins, 1=until board is full
  priority=2,     //AI process priority
  autoBegin=0,    //automatic openings
@@ -1474,7 +1473,8 @@ BOOL CALLBACK OptionsProc(HWND hWnd, UINT msg, WPARAM wP, LPARAM)
 					 CheckDlgButton(hWnd, id, *D[i].prom ? BST_CHECKED : BST_UNCHECKED);
 				 }
 			}
-			CheckRadioButton(hWnd, 555, 557, 555+ruleFive);
+			CheckRadioButton(hWnd, 555, 557, 555+(ruleFive & ~8));
+			CheckDlgButton(hWnd, 661, ruleFive&8 ? BST_CHECKED : BST_UNCHECKED);
 			CheckRadioButton(hWnd, 559, 560, 559+continuous);
 			for(i=0; i<sizeA(priorTab); i++){
 				SendDlgItemMessage(hWnd, 120, CB_ADDSTRING, 0, (LPARAM)lng(690+i, priorTab[i]));
@@ -1493,6 +1493,12 @@ BOOL CALLBACK OptionsProc(HWND hWnd, UINT msg, WPARAM wP, LPARAM)
 				case 544: //suspend pbrain
 					EnableWindow(GetDlgItem(hWnd, 658), IsDlgButtonChecked(hWnd, 544));
 					break;
+				case 557: //renju rule
+					CheckDlgButton(hWnd, 661, BST_UNCHECKED); //disable Caro rule
+					break;
+				case 661: //Caro rule
+					if(getRadioButton(hWnd, 555, 557)==2) CheckRadioButton(hWnd, 555, 557, 556); //disable Renju rule
+					break;
 				case IDOK:
 					for(i=0; i<sizeof(D)/sizeof(*D); i++){
 						id=D[i].id;
@@ -1505,6 +1511,7 @@ BOOL CALLBACK OptionsProc(HWND hWnd, UINT msg, WPARAM wP, LPARAM)
 						 }
 					}
 					ruleFive= getRadioButton(hWnd, 555, 557);
+					if(IsDlgButtonChecked(hWnd, 661)) ruleFive|=8;
 					continuous= getRadioButton(hWnd, 559, 560);
 					priority= (int)SendMessage(GetDlgItem(hWnd, 120), CB_GETCURSEL, 0, 0);
 					if(isWin9X){
@@ -1831,7 +1838,8 @@ BOOL CALLBACK TurProc(HWND hWnd, UINT msg, WPARAM wP, LPARAM)
 			SetDlgItemText(hWnd, 114, cmdTurEnd);
 			CheckRadioButton(hWnd, 570, 571, 570+turRule);
 			CheckRadioButton(hWnd, 575, 576, 575+turNet);
-			CheckRadioButton(hWnd, 555, 557, 555+ruleFive);
+			CheckRadioButton(hWnd, 555, 557, 555+(ruleFive & ~8));
+			CheckDlgButton(hWnd, 661, ruleFive&8 ? BST_CHECKED : BST_UNCHECKED);
 			CheckDlgButton(hWnd, 572, turFormat==2 ? BST_CHECKED : BST_UNCHECKED);
 			for(i=0; i<sizeof(D)/sizeof(*D); i++){
 				id=D[i].id;
@@ -1877,6 +1885,12 @@ BOOL CALLBACK TurProc(HWND hWnd, UINT msg, WPARAM wP, LPARAM)
 				case 107: //folder
 					browseFolder(fntur, hWnd, 106, lng(565, "Save games to folder:"));
 					break;
+				case 557: //renju rule
+					CheckDlgButton(hWnd, 661, BST_UNCHECKED); //disable Caro rule
+					break;
+				case 661: //Caro rule
+					if(getRadioButton(hWnd, 555, 557)==2) CheckRadioButton(hWnd, 555, 557, 556); //disable Renju rule
+					break;
 				case 569: //open
 					if(!checkDir(hWnd, 106)) break;
 					GetDlgItemText(hWnd, 106, fntur, sizeof(fntur));
@@ -1902,6 +1916,7 @@ BOOL CALLBACK TurProc(HWND hWnd, UINT msg, WPARAM wP, LPARAM)
 					turRule= getRadioButton(hWnd, 570, 571); //radio is not visible when starting tournament
 					turNet= getRadioButton(hWnd, 575, 576);
 					ruleFive= getRadioButton(hWnd, 555, 557);
+					if(IsDlgButtonChecked(hWnd, 661)) ruleFive|=8;
 					turFormat= 1+IsDlgButtonChecked(hWnd, 572);
 					for(i=0; i<sizeof(D)/sizeof(*D); i++){
 						id=D[i].id;
@@ -2041,8 +2056,8 @@ LRESULT CALLBACK KeysDlgProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM)
 
 	switch(message){
 		case WM_INITDIALOG:
-			editWndProc = (WNDPROC)SetWindowLong(GetDlgItem(hWnd, 131),
-				GWL_WNDPROC, (LONG)hotKeyClassProc);
+			editWndProc = (WNDPROC)SetWindowLongPtr(GetDlgItem(hWnd, 131),
+				GWLP_WNDPROC, (LONG_PTR)hotKeyClassProc);
 			setDlgTexts(hWnd, 25);
 			dlgKey.cmd=0;
 			return TRUE;
@@ -2232,7 +2247,7 @@ LRESULT CALLBACK MainWndProc(HWND hWnd, UINT mesg, WPARAM wP, LPARAM lP)
 					DialogBox(inst, "ABOUT", hWnd, (DLGPROC)AboutProc);
 					break;
 				case 122: //Download another AI	
-					ShellExecute(NULL, "open", "http://gomocup.org/download/", NULL, NULL, SW_SHOWNORMAL);
+					ShellExecute(NULL, "open", "https://gomocup.org/download/", NULL, NULL, SW_SHOWNORMAL);
 					break;
 				case 310:
 					SendMessage(toolbar, TB_CUSTOMIZE, 0, 0);
@@ -2765,7 +2780,7 @@ char* parseCommandLine(bool &openingEnabled)
 		else if(!strcmp(arg, "-rule") && __argc > i+1){ //rule
 			int ruleFiveTmp;
 			int ruleFiveParsed = sscanf(__argv[++i], "%d", &ruleFiveTmp);
-			if(!ruleFiveParsed || ruleFiveTmp > 2 || ruleFiveTmp < 0)
+			if(!ruleFiveParsed || ruleFiveTmp > 2 && ruleFiveTmp < 8 || ruleFiveTmp > 9 || ruleFiveTmp < 0)
 				msg("Unknown rule %s", __argv[i]);
 			else
 				ruleFive = ruleFiveTmp;

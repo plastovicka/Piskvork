@@ -1,3 +1,6 @@
+9.0 (28.5.2023)
+pravidlo Caro (Gomoku+) - pìtice blokovaná soupeøem z obou stran není výhra
+
 8.9.2 (16.5.2017)
 zahájení nejsou náhodnì posouvána, pokud jsou blízko okraje hrací plochy
 

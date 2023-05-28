@@ -24,7 +24,7 @@ Right-click on the player's name on the statusbar to switch between Human / Comp
 
 More artificial inteligences (AI)
 ---------------------------------
-Many AI from other authors can be downloaded from http://gomocup.org/. Most of them have some restrictions:
+Many AI from other authors can be downloaded from https://gomocup.org/. Most of them have some restrictions:
 1) Board width must be equal to board height. Some AI only support size 20x20.
 2) Thinking time precision is usually 1 second. Some AI cannot adjust the time at all. 
 3) Most AI don't support continuous game or exactly five in a row option or renju rule.
@@ -36,6 +36,7 @@ Options
 - Openings are randomly rotated: Opening moves coordinates are randomly shifted and rotated or mirrored.
 - five or more stones win / exactly five stones win: How many symbols in a line are required for a win.
 - renju rule: The first player must not make double-four, double-three or overline. More detailed rules are on http://www.renju.net
+- Caro rule: five in a row must not be blocked by oponent at both ends.
 - single game / continuous game: If single game is checked, a game over when one player wins. If continuous game is checked, you can play until the whole board is full and make many fives in a row. Continuous game is not supported during a tournament.
 - Hilight duration: how long is hilighted last move. You can set it to zero if it bothers you.
 - Sound notifications: the sound gomoku.wav is played after every AI move. You can replace this file by another wav file.

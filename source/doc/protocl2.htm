@@ -1,294 +1,342 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>
+ď»ż<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html lang="cs">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=windows-1250">
-<meta name="description" content="Specifikace nového protokolu pro piškvorkové algoritmy, které komunikují s manažerem piškvorkového turnaje přes rouru.">
-<meta name="author" content="Martin Petricek a Petr Lastovicka">
-<meta name="language" content="Czech">
-<title>Nový protokol</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="description" content="Specifikace novĂ©ho protokolu pro piĹˇkvorkovĂ© algoritmy, kterĂ© komunikujĂ­ s manaĹľerem piĹˇkvorkovĂ©ho turnaje pĹ™es rouru.">
+<meta name="author" content="Martin Petricek a Petr LaĹˇtoviÄŤka">
+<title>Gomoku protokol</title>
 <link rel="stylesheet" type="text/css" href="styl.css">
 </head>
 <body>
 
-<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
-</script>
-<script type="text/javascript">
-_uacct = "UA-391946-1";
-_udn="none"; 
-_ulink=1; 
-urchinTracker();
-</script>
+<h1>Gomoku protokol</h1>
+<p class="center">
+<a href="https://gomocup.org/detail-information/"><span class=bigbutton>ZpÄ›t na informace</span></a>
+</p><br>
 
-<h1>Nový protokol</h1>
-<p align="center">
-
-<script type="text/javascript"> 
-document.write('<a href="javascript:__utmLinker(\'http://gomocup.org/detail-information/\');"><SPAN class=bigbutton>Zpět na informace</SPAN></a>'); 
-</script> 
-<noscript> 
-<A href="http://gomocup.org/detail-information/"><SPAN class=bigbutton>Zpět na informace</SPAN></A>
-</noscript> 
-
-<br></p>
-<h2>Úvod</h2>
-Tento dokument popisuje, jak spolu komunikují piškvorkový brain (umělá inteligence) a piškvorkový manažer (program, který zprostředkovává zápas). Komunikace probíhá přes dvě roury, které vytváří manažer. Jednou rourou posílá manažer příkazy brainu a druhou rourou posílá brain odpovědi manažeru. Důležité je, že brain komunikuje přes standardní vstup a výstup. Nemusí tedy nic vědět o rourách a může si myslet, že příkazy čte z klávesnice a odpovědi vypisuje na obrazovku. Proto může být brain vytvořen prakticky v libovolném programovacím jazyce, který umožňuje vytvářet konzolové aplikace. V zásadě lze příkazy číst třeba obyčejným readln,scanf nebo něčím podobným a odpovídat pomocí writeln, printf nebo něčím podobným. Je třeba dát pozor na to, že za printf je nutné zavolat funkci fflush(stdout), jinak krátké řádky mohou zůstat v bufferu, aniž by byly poslány. Druhou možností je použít nízkoúrovňové funkce ReadFile a WriteFile. 
+<h2>Ăšvod</h2>
+Tento dokument popisuje, jak spolu komunikujĂ­ piĹˇkvorkovĂ˝ brain (umÄ›lĂˇ inteligence) a piĹˇkvorkovĂ˝ manaĹľer (program, kterĂ˝ zprostĹ™edkovĂˇvĂˇ zĂˇpas). Komunikace probĂ­hĂˇ pĹ™es dvÄ› roury, kterĂ© vytvĂˇĹ™Ă­ manaĹľer. Jednou rourou posĂ­lĂˇ manaĹľer pĹ™Ă­kazy brainu a druhou rourou posĂ­lĂˇ brain odpovÄ›di manaĹľeru. DĹŻleĹľitĂ© je, Ĺľe brain komunikuje pĹ™es standardnĂ­ vstup a vĂ˝stup. NemusĂ­ tedy nic vÄ›dÄ›t o rourĂˇch a mĹŻĹľe si myslet, Ĺľe pĹ™Ă­kazy ÄŤte z klĂˇvesnice a odpovÄ›di vypisuje na obrazovku. Proto mĹŻĹľe bĂ˝t brain vytvoĹ™en prakticky v libovolnĂ©m programovacĂ­m jazyce, kterĂ˝ umoĹľĹuje vytvĂˇĹ™et konzolovĂ© aplikace. V zĂˇsadÄ› lze pĹ™Ă­kazy ÄŤĂ­st tĹ™eba obyÄŤejnĂ˝m readln,scanf nebo nÄ›ÄŤĂ­m podobnĂ˝m a odpovĂ­dat pomocĂ­ writeln, printf nebo nÄ›ÄŤĂ­m podobnĂ˝m. Je tĹ™eba dĂˇt pozor na to, Ĺľe za printf je nutnĂ© zavolat funkci fflush(stdout), jinak krĂˇtkĂ© Ĺ™Ăˇdky mohou zĹŻstat v bufferu, aniĹľ by byly poslĂˇny. Druhou moĹľnostĂ­ je pouĹľĂ­t nĂ­zkoĂşrovĹovĂ© funkce ReadFile a WriteFile. 
 <p>
-Příkazy putují do roury vždy jeden příkaz na řádce, po příkazu manažer posílá sekvenci CR LF (0x0d, 0x0a) - neboli konec řádky. Manažer očekává odpovědi ukončené CR LF, nebo jenom LF nebo jenom CR. Prázdné řádky ignoruje. Kvůli jednoduchosti může mít manažer omezenu maximální délku řádku. Pokud brain pošle moc dlouhou řádku, tak ji manažer ořízne. V žádném případě manažer nesmí spadnout (ani kdyby mu brain poslal gigabytovou zprávu).
+PĹ™Ă­kazy putujĂ­ do roury vĹľdy jeden pĹ™Ă­kaz na Ĺ™Ăˇdce, po pĹ™Ă­kazu manaĹľer posĂ­lĂˇ sekvenci CR LF (0x0d, 0x0a) - neboli konec Ĺ™Ăˇdky. ManaĹľer oÄŤekĂˇvĂˇ odpovÄ›di ukonÄŤenĂ© CR LF, nebo jenom LF nebo jenom CR. PrĂˇzdnĂ© Ĺ™Ăˇdky ignoruje. KvĹŻli jednoduchosti mĹŻĹľe mĂ­t manaĹľer omezenu maximĂˇlnĂ­ dĂ©lku Ĺ™Ăˇdku. Pokud brain poĹˇle moc dlouhou Ĺ™Ăˇdku, tak ji manaĹľer oĹ™Ă­zne. V ĹľĂˇdnĂ©m pĹ™Ă­padÄ› manaĹľer nesmĂ­ spadnout (ani kdyby mu brain poslal gigabytovou zprĂˇvu).
 <p>
-Brain může a nebo také nemusí rozlišovat mezi velkými a malými písmeny. Naopak manažer vždy musí posílat příkazy napsané velkými písmeny a parametry za INFO pro změnu malými písmeny. Při zpracování odpovědi od brainu musí manažer rozpoznat příkazy napsané velkými i malými písmeny. 
+Brain mĹŻĹľe a nebo takĂ© nemusĂ­ rozliĹˇovat mezi velkĂ˝mi a malĂ˝mi pĂ­smeny. Naopak manaĹľer vĹľdy musĂ­ posĂ­lat pĹ™Ă­kazy napsanĂ© velkĂ˝mi pĂ­smeny a parametry za INFO pro zmÄ›nu malĂ˝mi pĂ­smeny. PĹ™i zpracovĂˇnĂ­ odpovÄ›di od brainu musĂ­ manaĹľer rozpoznat pĹ™Ă­kazy napsanĂ© velkĂ˝mi i malĂ˝mi pĂ­smeny. 
 <p>
-Pokud má brain jen jeden thread (vlákno výpočtu), pak je poměrně důležité, aby nečetl ze vstupu, když nemá, a nezapisoval na výstup, když nemá. Pokud se pokusí číst další příkaz ve chvíli, kdy se od něj očekává odpověď, pak dojde k zablokování (brain čeká na další příkaz, manažer čeká na odpověď - vzniká deadlock) a typicky to po timeoutu na tah skončí odstřelením a prohrou brainu. Jestliže se váš brain skládá ze dvou threadů, pak může první thread číst ze vstupu, zatímco druhý thread přemýšlí a zapisuje výsledek na výstup. V takovém případě je samozřejmě nutné oba thready navzájem synchronizovat pomocí událostí, semaforů nebo podobných objektů. Pro turnaj vůbec není důležité, kolik threadů brain obsahuje. Při turnaji si brain bohatě vystačí jen s jedním threadem. Pokud ale proti brainu hraje člověk, pak je výhodnější mít dva thready. Je pak například možné, aby člověk změnil časový limit ve chvíli, kdy už brain přemýšlí. Také pak člověk může přemýšlení brainu kdykoli přerušit, aniž by se musel ukončit brain.
+Pokud mĂˇ brain jen jeden thread (vlĂˇkno vĂ˝poÄŤtu), pak je pomÄ›rnÄ› dĹŻleĹľitĂ©, aby neÄŤetl ze vstupu, kdyĹľ nemĂˇ, a nezapisoval na vĂ˝stup, kdyĹľ nemĂˇ. Pokud se pokusĂ­ ÄŤĂ­st dalĹˇĂ­ pĹ™Ă­kaz ve chvĂ­li, kdy se od nÄ›j oÄŤekĂˇvĂˇ odpovÄ›ÄŹ, pak dojde k zablokovĂˇnĂ­ (brain ÄŤekĂˇ na dalĹˇĂ­ pĹ™Ă­kaz, manaĹľer ÄŤekĂˇ na odpovÄ›ÄŹ - vznikĂˇ deadlock) a typicky to po timeoutu na tah skonÄŤĂ­ odstĹ™elenĂ­m a prohrou brainu. JestliĹľe se vĂˇĹˇ brain sklĂˇdĂˇ ze dvou threadĹŻ, pak mĹŻĹľe prvnĂ­ thread ÄŤĂ­st ze vstupu, zatĂ­mco druhĂ˝ thread pĹ™emĂ˝ĹˇlĂ­ a zapisuje vĂ˝sledek na vĂ˝stup. V takovĂ©m pĹ™Ă­padÄ› je samozĹ™ejmÄ› nutnĂ© oba thready navzĂˇjem synchronizovat pomocĂ­ udĂˇlostĂ­, semaforĹŻ nebo podobnĂ˝ch objektĹŻ. Pro turnaj vĹŻbec nenĂ­ dĹŻleĹľitĂ©, kolik threadĹŻ brain obsahuje. PĹ™i turnaji si brain bohatÄ› vystaÄŤĂ­ jen s jednĂ­m threadem. Pokud ale proti brainu hraje ÄŤlovÄ›k, pak je vĂ˝hodnÄ›jĹˇĂ­ mĂ­t dva thready. Je pak napĹ™Ă­klad moĹľnĂ©, aby ÄŤlovÄ›k zmÄ›nil ÄŤasovĂ˝ limit ve chvĂ­li, kdy uĹľ brain pĹ™emĂ˝ĹˇlĂ­. TakĂ© pak ÄŤlovÄ›k mĹŻĹľe pĹ™emĂ˝ĹˇlenĂ­ brainu kdykoli pĹ™eruĹˇit, aniĹľ by se musel ukonÄŤit brain.
 <p>
-Brain nemusí umět úplně všechny příkazy popsané v této dokumentaci. Povinné jsou pouze příkazy START, BEGIN, INFO, BOARD, TURN, END. Tyto příkazy budou použity při turnaji a brain je musí umět, pokud se chce soutěže zúčastnit. U příkazu INFO nemusí brain znát všechny jeho možné parametry a může je ignorovat. Některé příkazy se používají jen při hře proti člověku nebo pro různé ladicí účely, analýzy tahů a podobně. 
+Brain nemusĂ­ umÄ›t ĂşplnÄ› vĹˇechny pĹ™Ă­kazy popsanĂ© v tĂ©to dokumentaci. PovinnĂ© jsou pouze pĹ™Ă­kazy START, BEGIN, INFO, BOARD, TURN, END. Tyto pĹ™Ă­kazy budou pouĹľity pĹ™i turnaji a brain je musĂ­ umÄ›t, pokud se chce soutÄ›Ĺľe zĂşÄŤastnit. U pĹ™Ă­kazu INFO nemusĂ­ brain znĂˇt vĹˇechny jeho moĹľnĂ© parametry a mĹŻĹľe je ignorovat. NÄ›kterĂ© pĹ™Ă­kazy se pouĹľĂ­vajĂ­ jen pĹ™i hĹ™e proti ÄŤlovÄ›ku nebo pro rĹŻznĂ© ladicĂ­ ĂşÄŤely, analĂ˝zy tahĹŻ a podobnÄ›. 
 <p>
 
-<h2>Název brainu a pomocné soubory </h2>
-V názvu brainu jsou povoleny pouze znaky A-Z, a-z, 0-9, pomlčka, podtržítko, tečka. Název brainu musí začínat na "pbrain-".
+<h2>NĂˇzev brainu a pomocnĂ© soubory </h2>
+V nĂˇzvu brainu jsou povoleny pouze znaky A-Z, a-z, 0-9, pomlÄŤka, podtrĹľĂ­tko, teÄŤka. NĂˇzev brainu musĂ­ zaÄŤĂ­nat na "pbrain-".
 <pre>
-Příklad:
+PĹ™Ă­klad:
  pbrain-svine.exe
  pbrain-pisq5.exe
 </pre>
-Pokud brain začíná na jiný prefix, tak to znamená, že komunikuje <a href="protocl1.htm" title="popis starého protokolu">starou metodou přes soubory</a>. Pokud se brain skládá z více souborů, pak je prefix pbrain- povinný jen u spustitelného souboru. Je-li brain zkomprimován do ZIP archivu, pak název ZIP souboru nemá prefix pbrain-. V ZIP souboru může být zároveň 32-bitový a 64-bitový exe soubor. Název 64-bitového exe souboru musí obsahovat 64. Například uvnitř MyPisq.ZIP může být zároveň pbrain-MyPisq.exe a pbrain-MyPisq64.exe. Manažer si automaticky zvolí správný exe soubor podle toho, jestli běží na 32-bitovém nebo 64-bitovém operačním systému.
+Pokud brain zaÄŤĂ­nĂˇ na jinĂ˝ prefix, tak to znamenĂˇ, Ĺľe komunikuje <a href="protocl1.htm" title="popis starĂ©ho protokolu">starou metodou pĹ™es soubory</a>. Pokud se brain sklĂˇdĂˇ z vĂ­ce souborĹŻ, pak je prefix pbrain- povinnĂ˝ jen u spustitelnĂ©ho souboru. Je-li brain zkomprimovĂˇn do ZIP archivu, pak nĂˇzev ZIP souboru nemĂˇ prefix pbrain-. V ZIP souboru mĹŻĹľe bĂ˝t zĂˇroveĹ 32-bitovĂ˝ a 64-bitovĂ˝ exe soubor. NĂˇzev 64-bitovĂ©ho exe souboru musĂ­ obsahovat 64. NapĹ™Ă­klad uvnitĹ™ MyPisq.ZIP mĹŻĹľe bĂ˝t zĂˇroveĹ pbrain-MyPisq.exe a pbrain-MyPisq64.exe. ManaĹľer si automaticky zvolĂ­ sprĂˇvnĂ˝ exe soubor podle toho, jestli bÄ›ĹľĂ­ na 32-bitovĂ©m nebo 64-bitovĂ©m operaÄŤnĂ­m systĂ©mu.
 <p>
-Pracovní adresář si volí manažer. Brain musí počítat s tím, že pracovní adresář je jiný než ten, ve kterém se nachází spustitelný soubor brainu. Jestliže tedy brain kromě EXE a DLL souborů obsahuje také ještě nějaké datové soubory, pak se na ně musí odkazovat celou cestou. Cestu může brain zjistit například pomocí funkce GetModuleFileName. Druhou možností je podívat se na nultý parametr na příkazové řádce. Manažer musí při spouštění brainu na příkazovou řádku dát název exe souboru v takovém tvaru, aby ho brain mohl otevřít, tedy včetně exe přípony a případně cesty, pokud brain neleží v pracovním adresáři.
+PracovnĂ­ adresĂˇĹ™ si volĂ­ manaĹľer. Brain musĂ­ poÄŤĂ­tat s tĂ­m, Ĺľe pracovnĂ­ adresĂˇĹ™ je jinĂ˝ neĹľ ten, ve kterĂ©m se nachĂˇzĂ­ spustitelnĂ˝ soubor brainu. JestliĹľe tedy brain kromÄ› EXE a DLL souborĹŻ obsahuje takĂ© jeĹˇtÄ› nÄ›jakĂ© datovĂ© soubory, pak se na nÄ› musĂ­ odkazovat celou cestou. Cestu mĹŻĹľe brain zjistit napĹ™Ă­klad pomocĂ­ funkce GetModuleFileName. Druhou moĹľnostĂ­ je podĂ­vat se na nultĂ˝ parametr na pĹ™Ă­kazovĂ© Ĺ™Ăˇdce. ManaĹľer musĂ­ pĹ™i spouĹˇtÄ›nĂ­ brainu na pĹ™Ă­kazovou Ĺ™Ăˇdku dĂˇt nĂˇzev exe souboru v takovĂ©m tvaru, aby ho brain mohl otevĹ™Ă­t, tedy vÄŤetnÄ› exe pĹ™Ă­pony a pĹ™Ă­padnÄ› cesty, pokud brain neleĹľĂ­ v pracovnĂ­m adresĂˇĹ™i.
 <p>
-Pokud brain potřebuje ukládat na disk nějaké soubory, pak si v pracovním adresáři vytvoří složku, jejíž název musí být stejný jako název brainu. V této složce si pak brain může dělat prakticky cokoli, pokud tím nepřekročí maximální povolenou velikost, která je zveřejněna na webových stránkách turnaje (nyní je 20MB). Během turnaje se soubory v této složce nemažou. Manažer může všechny dočasné soubory odstranit až po skončení turnaje nebo při ukončení manažeru. Pro trvalé ukládání souborů slouží složka, jejíž název manažer brainu sdělí příkazem INFO folder.
+Pokud brain potĹ™ebuje uklĂˇdat na disk nÄ›jakĂ© soubory, pak si v pracovnĂ­m adresĂˇĹ™i vytvoĹ™Ă­ sloĹľku, jejĂ­Ĺľ nĂˇzev musĂ­ bĂ˝t stejnĂ˝ jako nĂˇzev brainu. V tĂ©to sloĹľce si pak brain mĹŻĹľe dÄ›lat prakticky cokoli, pokud tĂ­m nepĹ™ekroÄŤĂ­ maximĂˇlnĂ­ povolenou velikost, kterĂˇ je zveĹ™ejnÄ›na na webovĂ˝ch strĂˇnkĂˇch turnaje (nynĂ­ je 20MB). BÄ›hem turnaje se soubory v tĂ©to sloĹľce nemaĹľou. ManaĹľer mĹŻĹľe vĹˇechny doÄŤasnĂ© soubory odstranit aĹľ po skonÄŤenĂ­ turnaje nebo pĹ™i ukonÄŤenĂ­ manaĹľeru. Pro trvalĂ© uklĂˇdĂˇnĂ­ souborĹŻ slouĹľĂ­ sloĹľka, jejĂ­Ĺľ nĂˇzev manaĹľer brainu sdÄ›lĂ­ pĹ™Ă­kazem INFO folder.
 <p>
 
 
-<h2>Povinné příkazy</h2>
+<h2>PovinnĂ© pĹ™Ă­kazy</h2>
 
 <h3>START [velikost]</h3>
- Instrukce pro brain k inicializaci dat. Tímto příkazem se pouze inicializuje brain, ještě ale nemá provést žádný tah. Parametrem je celé číslo určující velikost hrací plochy. Pokud brainu velikost vyhovuje, pak odpoví OK. Jinak odpoví ERROR, za kterým následuje chybová hláška. Brain by měl umět hrát alespoň na ploše o velikost 20, protože taková velikost je použita při turnaji. Manažer na příkaz ERROR může reagovat vypsáním chybové hlášky a nebo může zkusit změnit velikost hrací plochy a pak restartovat brainy.
+ Instrukce pro brain k inicializaci dat. TĂ­mto pĹ™Ă­kazem se pouze inicializuje brain, jeĹˇtÄ› ale nemĂˇ provĂ©st ĹľĂˇdnĂ˝ tah. Parametrem je celĂ© ÄŤĂ­slo urÄŤujĂ­cĂ­ velikost hracĂ­ plochy. Pokud brainu velikost vyhovuje, pak odpovĂ­ OK. Jinak odpovĂ­ ERROR, za kterĂ˝m nĂˇsleduje chybovĂˇ hlĂˇĹˇka. Brain by mÄ›l umÄ›t hrĂˇt alespoĹ na ploĹˇe o velikost 20, protoĹľe takovĂˇ velikost je pouĹľita pĹ™i turnaji. ManaĹľer na pĹ™Ă­kaz ERROR mĹŻĹľe reagovat vypsĂˇnĂ­m chybovĂ© hlĂˇĹˇky a nebo mĹŻĹľe zkusit zmÄ›nit velikost hracĂ­ plochy a pak restartovat brainy.
 <pre>
-Příklad:
- Manažer pošle:
+PĹ™Ă­klad:
+ ManaĹľer poĹˇle:
   START 20
- Brain odpoví:
+ Brain odpovĂ­:
   OK - parametr vyhovuje
-  ERROR chybová hláška - parametr nevyhovuje nebo došlo k jiné chybě
+  ERROR chybovĂˇ hlĂˇĹˇka - parametr nevyhovuje nebo doĹˇlo k jinĂ© chybÄ›
 </pre>
 <p>
 
 <h3>TURN [X],[Y]</h3>
-Říká brainu, na které souřadnice táhl soupeř. Souřadnice jsou číslovány od nuly. Brain odpoví souřadnicemi svého tahu. 
-<pre>Očekávaná odpověď:
- dvě čísla oddělená čárkou - kam táhne brain
+ĹĂ­kĂˇ brainu, na kterĂ© souĹ™adnice tĂˇhl soupeĹ™. SouĹ™adnice jsou ÄŤĂ­slovĂˇny od nuly. Brain odpovĂ­ souĹ™adnicemi svĂ©ho tahu. 
+<pre>OÄŤekĂˇvanĂˇ odpovÄ›ÄŹ:
+ dvÄ› ÄŤĂ­sla oddÄ›lenĂˇ ÄŤĂˇrkou - kam tĂˇhne brain
 
-Příklad:
- Manažer pošle:
+PĹ™Ă­klad:
+ ManaĹľer poĹˇle:
   TURN 10,10
- Brain odpoví:
+ Brain odpovĂ­:
   11,10
 </pre>
 <p>
 
 <h3>BEGIN</h3>
-Jednomu z brainů bude tento příkaz poslán po startu, což znamená, že brain má začít na prázdné ploše hrát. Druhý z brainů dostane po startu místo toho příkaz TURN s prvním tahem soupeře. Pokud si manažer sám vymýšlí zahájení, pak se příkaz BEGIN vůbec nepoužije a místo toho oba brainy na začátku dostanou příkaz BOARD.
+Jednomu z brainĹŻ bude tento pĹ™Ă­kaz poslĂˇn po startu, coĹľ znamenĂˇ, Ĺľe brain mĂˇ zaÄŤĂ­t na prĂˇzdnĂ© ploĹˇe hrĂˇt. DruhĂ˝ z brainĹŻ dostane po startu mĂ­sto toho pĹ™Ă­kaz TURN s prvnĂ­m tahem soupeĹ™e. Pokud si manaĹľer sĂˇm vymĂ˝ĹˇlĂ­ zahĂˇjenĂ­, pak se pĹ™Ă­kaz BEGIN vĹŻbec nepouĹľije a mĂ­sto toho oba brainy na zaÄŤĂˇtku dostanou pĹ™Ă­kaz BOARD.
 <pre>
-Očekávaná odpověď:
- dvě čísla oddělená čárkou - kam táhne brain
+OÄŤekĂˇvanĂˇ odpovÄ›ÄŹ:
+ dvÄ› ÄŤĂ­sla oddÄ›lenĂˇ ÄŤĂˇrkou - kam tĂˇhne brain
 
-Příklad:
- Manažer pošle:
+PĹ™Ă­klad:
+ ManaĹľer poĹˇle:
   BEGIN
- Brain odpoví:
+ Brain odpovĂ­:
   10,10
 </pre>
 <p>
 
 <h3>BOARD</h3>
-Tímto lze vnutit brainu úplně novou plochu. Vhodné např. pro pokračování nějaké rozehrané partie, pro funkce zpět/vpřed, pro automatická zahájení atd. Ve chvíli, kdy je poslán příkaz BOARD, je hrací plocha prázdná. Tento příkaz zpravidla bývá posílán po inicializaci (příkazy START, RECTSTART nebo RESTART). Nebude poslán brainu, ve kterém už je rozehrána nějaká hra. V takovém případě by brain nejdříve dostal příkaz RESTART a nebo by byl ukončen a spuštěn znovu.
+TĂ­mto lze vnutit brainu ĂşplnÄ› novou plochu. VhodnĂ© napĹ™. pro pokraÄŤovĂˇnĂ­ nÄ›jakĂ© rozehranĂ© partie, pro funkce zpÄ›t/vpĹ™ed, pro automatickĂˇ zahĂˇjenĂ­ atd. Ve chvĂ­li, kdy je poslĂˇn pĹ™Ă­kaz BOARD, je hracĂ­ plocha prĂˇzdnĂˇ. Tento pĹ™Ă­kaz zpravidla bĂ˝vĂˇ posĂ­lĂˇn po inicializaci (pĹ™Ă­kazy START, RECTSTART nebo RESTART). Nebude poslĂˇn brainu, ve kterĂ©m uĹľ je rozehrĂˇna nÄ›jakĂˇ hra. V takovĂ©m pĹ™Ă­padÄ› by brain nejdĹ™Ă­ve dostal pĹ™Ă­kaz RESTART a nebo by byl ukonÄŤen a spuĹˇtÄ›n znovu.
 <p>
-Po tomto příkazu jsou poslána data tvořící plochu. Je to vždy jeden záznam na jeden řádek ve formátu:
+Po tomto pĹ™Ă­kazu jsou poslĂˇna data tvoĹ™Ă­cĂ­ plochu. Je to vĹľdy jeden zĂˇznam na jeden Ĺ™Ăˇdek ve formĂˇtu:
 <pre>
  [X],[Y],[POLE]
 </pre>
- kde [X] a [Y] jsou souřadnice a [POLE] je buď číslo 1 (vlastní piškvorka), nebo 2 (piškvorka soupeře), nebo 3 (pouze při kontinuální hře, označuje výherní řadu nebo chybný tah při Renju).
+ kde [X] a [Y] jsou souĹ™adnice a [POLE] je buÄŹ ÄŤĂ­slo 1 (vlastnĂ­ piĹˇkvorka), nebo 2 (piĹˇkvorka soupeĹ™e), nebo 3 (pouze pĹ™i kontinuĂˇlnĂ­ hĹ™e, oznaÄŤuje vĂ˝hernĂ­ Ĺ™adu nebo chybnĂ˝ tah pĹ™i Renju).
 <p>
-Pokud se hraje podle pravidel Renju, pak musí manažer poslat tahy v takovém pořadí, v jakém byly provedeny. Při standardním Gomoku nebo Piškvorkách může manažer poslat tahy v libovolném pořadí a brain se s tím musí nějak vypořádat. Data jsou ukončena samostatným řádkem <b>DONE</b>.
+Pokud se hraje podle pravidel Renju, pak musĂ­ manaĹľer poslat tahy v takovĂ©m poĹ™adĂ­, v jakĂ©m byly provedeny. PĹ™i standardnĂ­m Gomoku nebo PiĹˇkvorkĂˇch mĹŻĹľe manaĹľer poslat tahy v libovolnĂ©m poĹ™adĂ­ a brain se s tĂ­m musĂ­ nÄ›jak vypoĹ™Ăˇdat. Data jsou ukonÄŤena samostatnĂ˝m Ĺ™Ăˇdkem <b>DONE</b>.
 <p>
-Tímto příkazem se od brainu očekává že bude z této pozice ihned táhnout, neboli čeká se odpověď jako u příkazu TURN nebo BEGIN.
+TĂ­mto pĹ™Ă­kazem se od brainu oÄŤekĂˇvĂˇ Ĺľe bude z tĂ©to pozice ihned tĂˇhnout, neboli ÄŤekĂˇ se odpovÄ›ÄŹ jako u pĹ™Ă­kazu TURN nebo BEGIN.
 
 <pre>
-Příklad:
- Manažer pošle:
+PĹ™Ă­klad:
+ ManaĹľer poĹˇle:
   BOARD
   10,10,1
   10,11,2
   11,11,1
   9,10,2
   DONE
- Brain odpoví:
+ Brain odpovĂ­:
   9,9
 </pre>
 <p>
 
-<h3>INFO [klíč] [hodnota]</h3>
-Manažer posílá brainu nějakou informaci. Brain může tuto informaci ignorovat. Pokud ale nechce prohrát, tak by se měl podle této informace řídit (například by neměl překračovat časové limity). Brain by neměl spoléhat na to, že mu manažer pošle všechny zde uvedené informace. Také by měl počítat s tím, že člověk může některé hodnoty v průběhu partie změnit. Proto se doporučuje, aby brain reagoval i na změny v průběhu partie. Během turnaje se časové a paměťové limity měnit nebudou.
+<h3>INFO [klĂ­ÄŤ] [hodnota]</h3>
+ManaĹľer posĂ­lĂˇ brainu nÄ›jakou informaci. Brain mĹŻĹľe tuto informaci ignorovat. Pokud ale nechce prohrĂˇt, tak by se mÄ›l podle tĂ©to informace Ĺ™Ă­dit (napĹ™Ă­klad by nemÄ›l pĹ™ekraÄŤovat ÄŤasovĂ© limity). Brain by nemÄ›l spolĂ©hat na to, Ĺľe mu manaĹľer poĹˇle vĹˇechny zde uvedenĂ© informace. TakĂ© by mÄ›l poÄŤĂ­tat s tĂ­m, Ĺľe ÄŤlovÄ›k mĹŻĹľe nÄ›kterĂ© hodnoty v prĹŻbÄ›hu partie zmÄ›nit. Proto se doporuÄŤuje, aby brain reagoval i na zmÄ›ny v prĹŻbÄ›hu partie. BÄ›hem turnaje se ÄŤasovĂ© a pamÄ›ĹĄovĂ© limity mÄ›nit nebudou.
 <pre>
  Parametry:
-timeout_turn  - limit na tah (v milisekundách, 0=hraj co nejrychleji)
-timeout_match - limit na zápas (v milisekundách, 0=bez limitu)
-max_memory    - limit na maximální spotřebovanou paměť (v bajtech, 0=bez limitu)
-time_left     - zbývající čas do konce partie (v milisekundách)
-game_type     - 0=hra proti člověku, 1=hra proti brainu, 2=turnaj, 3=síťový turnaj
-rule          - bitová maska neboli součet hodnot: 1=přesně pět v řadě vyhrává, 2=kontinuální hra, 4=renju
-evaluate      - souřadnice X,Y aktuální pozice ukazatele myši
-folder        - složka, kam si brain může zapisovat trvalé soubory
+timeout_turn  - limit na tah (v milisekundĂˇch, 0=hraj co nejrychleji)
+timeout_match - limit na zĂˇpas (v milisekundĂˇch, 0=bez limitu)
+max_memory    - limit na maximĂˇlnĂ­ spotĹ™ebovanou pamÄ›ĹĄ (v bajtech, 0=bez limitu)
+time_left     - zbĂ˝vajĂ­cĂ­ ÄŤas do konce partie (v milisekundĂˇch)
+game_type     - 0=hra proti ÄŤlovÄ›ku, 1=hra proti brainu, 2=turnaj, 3=sĂ­ĹĄovĂ˝ turnaj
+rule          - bitovĂˇ maska neboli souÄŤet hodnot: 1=pĹ™esnÄ› pÄ›t v Ĺ™adÄ› vyhrĂˇvĂˇ, 2=kontinuĂˇlnĂ­ hra, 4=renju, 8=caro
+evaluate      - souĹ™adnice X,Y aktuĂˇlnĂ­ pozice ukazatele myĹˇi
+folder        - sloĹľka, kam si brain mĹŻĹľe zapisovat trvalĂ© soubory
 </pre>
-Informace o časových a paměťových limitech manažer posílá na začátku partie, obvykle po obdržení odpovědi OK na příkaz START. Je ale také povoleno informace poslat už před příkazem START. Informaci o zbývajícím čase manažer posílá před každým tahem (příkaz TURN, BEGIN nebo BOARD). Pokud brain překročí časový limit, pak zbývající čas může být záporný. Pokud čas na partii není omezen, pak je zbývající čas roven 2147483647. Pokud čas na partii omezen je, pak je manažer povinen posílat informaci o zbývajícím čase. Proto brain může ignorovat timeout_match a spoléhat se jen na time_left. Nulová hodnota času na tah znamená, že brain má odpovědět pokud možno co nejdříve (měl by například jenom spočítat ohodnocovací funkci a už neprohledávat do hloubky všechny možné tahy). 
+Informace o ÄŤasovĂ˝ch a pamÄ›ĹĄovĂ˝ch limitech manaĹľer posĂ­lĂˇ na zaÄŤĂˇtku partie, obvykle po obdrĹľenĂ­ odpovÄ›di OK na pĹ™Ă­kaz START. Je ale takĂ© povoleno informace poslat uĹľ pĹ™ed pĹ™Ă­kazem START. Informaci o zbĂ˝vajĂ­cĂ­m ÄŤase manaĹľer posĂ­lĂˇ pĹ™ed kaĹľdĂ˝m tahem (pĹ™Ă­kaz TURN, BEGIN nebo BOARD). Pokud brain pĹ™ekroÄŤĂ­ ÄŤasovĂ˝ limit, pak zbĂ˝vajĂ­cĂ­ ÄŤas mĹŻĹľe bĂ˝t zĂˇpornĂ˝. Pokud ÄŤas na partii nenĂ­ omezen, pak je zbĂ˝vajĂ­cĂ­ ÄŤas roven 2147483647. Pokud ÄŤas na partii omezen je, pak je manaĹľer povinen posĂ­lat informaci o zbĂ˝vajĂ­cĂ­m ÄŤase. Proto brain mĹŻĹľe ignorovat timeout_match a spolĂ©hat se jen na time_left. NulovĂˇ hodnota ÄŤasu na tah znamenĂˇ, Ĺľe brain mĂˇ odpovÄ›dÄ›t pokud moĹľno co nejdĹ™Ă­ve (mÄ›l by napĹ™Ă­klad jenom spoÄŤĂ­tat ohodnocovacĂ­ funkci a uĹľ neprohledĂˇvat do hloubky vĹˇechny moĹľnĂ© tahy). 
 <p>
-Do času na tah se nezapočítává doba inicializace brainu (příkazy START, RECTSTART, RESTART), ale ostatní příkazy (například BOARD, INFO) se do času na tah počítají. Čas na partii se měří od spuštění procesu až do konce hry, ale ne když hráč není na tahu.
+Do ÄŤasu na tah se nezapoÄŤĂ­tĂˇvĂˇ doba inicializace brainu (pĹ™Ă­kazy START, RECTSTART, RESTART), ale ostatnĂ­ pĹ™Ă­kazy (napĹ™Ă­klad BOARD, INFO) se do ÄŤasu na tah poÄŤĂ­tajĂ­. ÄŚas na partii se mÄ›Ĺ™Ă­ od spuĹˇtÄ›nĂ­ procesu aĹľ do konce hry, ale ne kdyĹľ hrĂˇÄŤ nenĂ­ na tahu.
 <p>
-INFO folder určuje, do které složky si brain může ukládat své soubory, které na disku zůstanou i po skončení manažeru. Tato složka je společná pro všechny brainy, případně i pro jiné aplikace. Proto je brain povinen si v dané složce vytvořit svoji podsložku, jejíž název je stejný jako název brainu. Do ní si může ukládat například znalosti a zkušenosti získané během hry. Jestliže manažer nepošle INFO folder, pak je ukládání trvalých souborů zakázáno, a proto se brain na tuto možnost nesmí spoléhat. 
+INFO folder urÄŤuje, do kterĂ© sloĹľky si brain mĹŻĹľe uklĂˇdat svĂ© soubory, kterĂ© na disku zĹŻstanou i po skonÄŤenĂ­ manaĹľeru. Tato sloĹľka je spoleÄŤnĂˇ pro vĹˇechny brainy, pĹ™Ă­padnÄ› i pro jinĂ© aplikace. Proto je brain povinen si v danĂ© sloĹľce vytvoĹ™it svoji podsloĹľku, jejĂ­Ĺľ nĂˇzev je stejnĂ˝ jako nĂˇzev brainu. Do nĂ­ si mĹŻĹľe uklĂˇdat napĹ™Ă­klad znalosti a zkuĹˇenosti zĂ­skanĂ© bÄ›hem hry. JestliĹľe manaĹľer nepoĹˇle INFO folder, pak je uklĂˇdĂˇnĂ­ trvalĂ˝ch souborĹŻ zakĂˇzĂˇno, a proto se brain na tuto moĹľnost nesmĂ­ spolĂ©hat. 
 <p>
-Na INFO evaluate by měla reagovat jen Debug verze brainu například tak, že vypíše do nějakého okna ohodnocení daného políčka. Release verze brainu by měla tento příkaz ignorovat.
+Na INFO evaluate by mÄ›la reagovat jen Debug verze brainu napĹ™Ă­klad tak, Ĺľe vypĂ­Ĺˇe do nÄ›jakĂ©ho okna ohodnocenĂ­ danĂ©ho polĂ­ÄŤka. Release verze brainu by mÄ›la tento pĹ™Ă­kaz ignorovat.
 <p>
-Jak by se měl brain chovat když dostane INFO, kterému nerozumí:<br>
-- Ignorovat ho, pravděpodobně to není nic důležitého. Pokud by to bylo důležité,  dostal by příkaz, kterému nerozumí. 
+Jak by se mÄ›l brain chovat kdyĹľ dostane INFO, kterĂ©mu nerozumĂ­:<br>
+- Ignorovat ho, pravdÄ›podobnÄ› to nenĂ­ nic dĹŻleĹľitĂ©ho. Pokud by to bylo dĹŻleĹľitĂ©,  dostal by pĹ™Ă­kaz, kterĂ©mu nerozumĂ­. 
 <p>
-Jak by se měl brain chovat když dostane INFO, kterému rozumí, ale je nepřijatelné
- (např. příliš malý limit na paměť):<br>
-- Brain musí s vrácením chyby počkat, až dostane příkaz TURN, BOARD nebo BEGIN. Během posílání info příkazu manažer nečte vstup.
+Jak by se mÄ›l brain chovat kdyĹľ dostane INFO, kterĂ©mu rozumĂ­, ale je nepĹ™ijatelnĂ©
+ (napĹ™. pĹ™Ă­liĹˇ malĂ˝ limit na pamÄ›ĹĄ):<br>
+- Brain musĂ­ s vrĂˇcenĂ­m chyby poÄŤkat, aĹľ dostane pĹ™Ă­kaz TURN, BOARD nebo BEGIN. BÄ›hem posĂ­lĂˇnĂ­ info pĹ™Ă­kazu manaĹľer neÄŤte vstup.
 
 <pre>
-Příklad:
+PĹ™Ă­klad:
  INFO timeout_match 300000
  INFO timeout_turn 10000
  INFO max_memory 83886080
  
- Očekávaná odpověď: žádná
+ OÄŤekĂˇvanĂˇ odpovÄ›ÄŹ: ĹľĂˇdnĂˇ
 </pre>
 <p>
 
 <h3>END</h3>
-Příkaz k ukončení brainu. Brain by se měl co nejrychleji ukončit (pokud to neudělá, bude odstřelen). Manažer by měl po poslání příkazu END čekat, dokud brain neskončí. To ale neznamená, že se by při zatuhnutí brainu měl zablokovat také manažer. Pokud brain neskončí během určitého časového limitu (například 1 sekunda), pak manažer brain násilně ukončí. Manažer by neměl rouru, která vede směrem od brainu k manažeru, uzavírat dříve než brain skončí.
+PĹ™Ă­kaz k ukonÄŤenĂ­ brainu. Brain by se mÄ›l co nejrychleji ukonÄŤit (pokud to neudÄ›lĂˇ, bude odstĹ™elen). ManaĹľer by mÄ›l po poslĂˇnĂ­ pĹ™Ă­kazu END ÄŤekat, dokud brain neskonÄŤĂ­. To ale neznamenĂˇ, Ĺľe se by pĹ™i zatuhnutĂ­ brainu mÄ›l zablokovat takĂ© manaĹľer. Pokud brain neskonÄŤĂ­ bÄ›hem urÄŤitĂ©ho ÄŤasovĂ©ho limitu (napĹ™Ă­klad 1 sekunda), pak manaĹľer brain nĂˇsilnÄ› ukonÄŤĂ­. ManaĹľer by nemÄ›l rouru, kterĂˇ vede smÄ›rem od brainu k manaĹľeru, uzavĂ­rat dĹ™Ă­ve neĹľ brain skonÄŤĂ­.
 <pre>
- Očekávaná odpověď:
- Očekává se, že se brain co nejrychleji ukončí a nebude posílat žádnou odpověď.
- Před ukončením by měl po sobě smazat všechny dočasné soubory, pokud si někde nějaké vytvořil.
+ OÄŤekĂˇvanĂˇ odpovÄ›ÄŹ:
+ OÄŤekĂˇvĂˇ se, Ĺľe se brain co nejrychleji ukonÄŤĂ­ a nebude posĂ­lat ĹľĂˇdnou odpovÄ›ÄŹ.
+ PĹ™ed ukonÄŤenĂ­m by mÄ›l po sobÄ› smazat vĹˇechny doÄŤasnĂ© soubory, pokud si nÄ›kde nÄ›jakĂ© vytvoĹ™il.
 </pre>
 <p>
 
 <h3>ABOUT</h3>
-Od brainu se čeká, že na jedné řádce o sobě pošle stručné informace (jméno, autora, verzi,...). Každý údaj musí být uveden ve tvaru název, rovnítko, hodnota v uvozovkách, kde název je například name, version, author, country, www, email. Jednotlivé informace jsou odděleny čárkou, za kterou mohou následovat mezery. Manažer musí počítat s tím, že starší brainy odpovídaly na příkaz ABOUT libovolným textem čitelným pouze pro člověka. V žádném případě brain jako odpověď nesmí poslat více řádek textu.
+Od brainu se ÄŤekĂˇ, Ĺľe na jednĂ© Ĺ™Ăˇdce o sobÄ› poĹˇle struÄŤnĂ© informace (jmĂ©no, autora, verzi,...). KaĹľdĂ˝ Ăşdaj musĂ­ bĂ˝t uveden ve tvaru nĂˇzev, rovnĂ­tko, hodnota v uvozovkĂˇch, kde nĂˇzev je napĹ™Ă­klad name, version, author, country, www, email. JednotlivĂ© informace jsou oddÄ›leny ÄŤĂˇrkou, za kterou mohou nĂˇsledovat mezery. ManaĹľer musĂ­ poÄŤĂ­tat s tĂ­m, Ĺľe starĹˇĂ­ brainy odpovĂ­daly na pĹ™Ă­kaz ABOUT libovolnĂ˝m textem ÄŤitelnĂ˝m pouze pro ÄŤlovÄ›ka. V ĹľĂˇdnĂ©m pĹ™Ă­padÄ› brain jako odpovÄ›ÄŹ nesmĂ­ poslat vĂ­ce Ĺ™Ăˇdek textu.
 <pre>
-Příklad:
- Manažer pošle:
+PĹ™Ă­klad:
+ ManaĹľer poĹˇle:
   ABOUT
- Brain odpoví:
+ Brain odpovĂ­:
   name="SomeBrain", version="1.0", author="Nymand", country="USA"
 </pre>
 <p>
 
-<h2>Nepovinné příkazy</h2>
-Rozšíření zde uvedené nemusí být implementované pro účast v turnaji, nicméně
-autor se může rozhodnout je implementovat, neboť mu mohou být užitečné.
+<h2>NepovinnĂ© pĹ™Ă­kazy</h2>
+RozĹˇĂ­Ĺ™enĂ­ zde uvedenĂ© nemusĂ­ bĂ˝t implementovanĂ© pro ĂşÄŤast v turnaji, nicmĂ©nÄ›
+autor se mĹŻĹľe rozhodnout je implementovat, neboĹĄ mu mohou bĂ˝t uĹľiteÄŤnĂ©.
 <p>
 
-<h3>RECTSTART [šířka],[výška]</h3>
-Tento příkaz je podobný jako příkaz START až na to, že hrací plocha je obdélníková. Pokud je hrací plocha čtvercová, pak manažer musí použít příkaz START. Parametrem jsou dvě čísla oddělená čárkou. První rozměr náleží k souřadnici X, druhý rozměr souřadnici Y.
+<h3>RECTSTART [ĹˇĂ­Ĺ™ka],[vĂ˝Ĺˇka]</h3>
+Tento pĹ™Ă­kaz je podobnĂ˝ jako pĹ™Ă­kaz START aĹľ na to, Ĺľe hracĂ­ plocha je obdĂ©lnĂ­kovĂˇ. Pokud je hracĂ­ plocha ÄŤtvercovĂˇ, pak manaĹľer musĂ­ pouĹľĂ­t pĹ™Ă­kaz START. Parametrem jsou dvÄ› ÄŤĂ­sla oddÄ›lenĂˇ ÄŤĂˇrkou. PrvnĂ­ rozmÄ›r nĂˇleĹľĂ­ k souĹ™adnici X, druhĂ˝ rozmÄ›r souĹ™adnici Y.
 <pre>
-Příklad:
- Manažer pošle:
+PĹ™Ă­klad:
+ ManaĹľer poĹˇle:
   RECTSTART 30,20
- Brain odpoví:
-  OK - parametry vyhovují
-  ERROR chybová hláška - parametry nevyhovují
+ Brain odpovĂ­:
+  OK - parametry vyhovujĂ­
+  ERROR chybovĂˇ hlĂˇĹˇka - parametry nevyhovujĂ­
 </pre>
 <p>
 
 <h3>RESTART</h3>
-Tento příkaz se používá například tehdy, když je potřeba přerušit hru a začít novou hru. Příkaz nemá žádné parametry. Velikost hrací plochy zůstává beze změny. Brain na tento příkaz reaguje tak, že uvolní datové struktury předchozí hry a vytvoří si novou prázdnou hrací plochu. Pokud brain na tento příkaz odpoví OK, pak další komunikace pokračuje stejně jako po příkazu START. Pokud brain na tento příkaz odpoví UNKNOWN, pak manažer ukončí brain zasláním příkazu END a poté spustí brain znovu.
+Tento pĹ™Ă­kaz se pouĹľĂ­vĂˇ napĹ™Ă­klad tehdy, kdyĹľ je potĹ™eba pĹ™eruĹˇit hru a zaÄŤĂ­t novou hru. PĹ™Ă­kaz nemĂˇ ĹľĂˇdnĂ© parametry. Velikost hracĂ­ plochy zĹŻstĂˇvĂˇ beze zmÄ›ny. Brain na tento pĹ™Ă­kaz reaguje tak, Ĺľe uvolnĂ­ datovĂ© struktury pĹ™edchozĂ­ hry a vytvoĹ™Ă­ si novou prĂˇzdnou hracĂ­ plochu. Pokud brain na tento pĹ™Ă­kaz odpovĂ­ OK, pak dalĹˇĂ­ komunikace pokraÄŤuje stejnÄ› jako po pĹ™Ă­kazu START. Pokud brain na tento pĹ™Ă­kaz odpovĂ­ UNKNOWN, pak manaĹľer ukonÄŤĂ­ brain zaslĂˇnĂ­m pĹ™Ă­kazu END a potĂ© spustĂ­ brain znovu.
 <pre>
-Příklad:
- Manažer pošle:
+PĹ™Ă­klad:
+ ManaĹľer poĹˇle:
   RESTART
- Brain odpoví:
+ Brain odpovĂ­:
   OK
 </pre>
 <p>
 
 <h3>TAKEBACK [X],[Y]</h3>
-Tento příkaz se používá pro vrácení posledního tahu. Brain na tento příkaz reaguje tak, že z hrací plochy odstraní kámen z políčka [X,Y] a pak odpoví OK. 
+Tento pĹ™Ă­kaz se pouĹľĂ­vĂˇ pro vrĂˇcenĂ­ poslednĂ­ho tahu. Brain na tento pĹ™Ă­kaz reaguje tak, Ĺľe z hracĂ­ plochy odstranĂ­ kĂˇmen z polĂ­ÄŤka [X,Y] a pak odpovĂ­ OK. 
 
 <pre>
-Příklad:
- Manažer pošle:
+PĹ™Ă­klad:
+ ManaĹľer poĹˇle:
   TAKEBACK 9,10
- Brain odpoví:
+ Brain odpovĂ­:
   OK
 </pre>
 <p>
 
 <h3>PLAY [X],[Y]</h3>
-Vnucení tahu brainu - říká brainu, že svůj další tah má udělat na políčko dané souřadnicemi [X], [Y]. Používá se pouze jako odpověď na SUGGEST. V turnaji manažer brainu vždy vrátí tah, který brain poslal v SUGGEST. 
+VnucenĂ­ tahu brainu - Ĺ™Ă­kĂˇ brainu, Ĺľe svĹŻj dalĹˇĂ­ tah mĂˇ udÄ›lat na polĂ­ÄŤko danĂ© souĹ™adnicemi [X], [Y]. PouĹľĂ­vĂˇ se pouze jako odpovÄ›ÄŹ na SUGGEST. V turnaji manaĹľer brainu vĹľdy vrĂˇtĂ­ tah, kterĂ˝ brain poslal v SUGGEST. 
 <pre>
- Očekávaná odpověď:
- Stejně jako na příkaz TURN nebo BEGIN - dvě čísla oddělená čárkou, neboli
- kam brain táhl. Brain se může rozhodnout tohle vnucení tahu ignorovat a táhnout jinam,
- pro manažer je relevantní co brain vrátí, ale silně se nedoporučuje tento příkaz
+ OÄŤekĂˇvanĂˇ odpovÄ›ÄŹ:
+ StejnÄ› jako na pĹ™Ă­kaz TURN nebo BEGIN - dvÄ› ÄŤĂ­sla oddÄ›lenĂˇ ÄŤĂˇrkou, neboli
+ kam brain tĂˇhl. Brain se mĹŻĹľe rozhodnout tohle vnucenĂ­ tahu ignorovat a tĂˇhnout jinam,
+ pro manaĹľer je relevantnĂ­ co brain vrĂˇtĂ­, ale silnÄ› se nedoporuÄŤuje tento pĹ™Ă­kaz
  neposlechnout.
 
-Příklad:
- Brain odpověděl:
+PĹ™Ă­klad:
+ Brain odpovÄ›dÄ›l:
   SUGGEST 10,10
- Manažer pošle:
+ ManaĹľer poĹˇle:
   PLAY 12,10
- Brain udělá tah na 12,10 a odpoví:
+ Brain udÄ›lĂˇ tah na 12,10 a odpovĂ­:
   12,10
 </pre>
-<p>
 
-<h2>Příkazy, které posílá brain</h2>
-Následující příkazy může brain použít, pokud je potřebuje. Manažer všechny tyto příkazy musí znát. 
-<p>
-
-<h3>UNKNOWN [chybová zpráva]</h3>
-Takto brain musí reagovat na příkaz, který nezná. Obdržení neznámého příkazu tedy není důvodem ke skončení brainu. Parametrem příkazu je chybová zpráva. Manažer buď zobrazí chybovou zprávu, nebo se pokusí použít nějaké jiné příkazy. Například pokud brain takto odpoví na nepovinný příkaz, tak by měl manažer místo něj zkusit nějaký povinný příkaz. Pokud se s tím manažer neumí vypořádat, pak pošle příkaz END.
-<p>
-
-<h3>ERROR [chybová zpráva]</h3>
-Takto brain odpoví na příkaz, kterému rozumí, ale nemůže ho z jakéhokoli důvodu provést (např. předtím dostal nevyhovující info hodnotu). Parametrem může být chybová zpráva, kterou manažer zobrazí uživateli a nebo ji zapíše do logovacího souboru. Manažer se také může pokusit provést příkaz nějak jinak.
-<p>
-
-<h3>MESSAGE [zpráva]</h3>
-Zpráva, kterou manažer může logovat do souboru nebo ji vypisovat do nějakého okna. Brain by měl zprávu poslat ve chvíli, kdy je od něj očekávána odpověď na nějaký příkaz. Typicky tuto zprávu brain pošle těsně před tím, než vrátí souřadnice svého tahu. Uvnitř zprávy se nesmí vyskytovat znak konce řádku. Víceřádkový text lze poslat pomocí několika po sobě jdoucích MESSAGE příkazů. 
-<p>
-Pokud brain posílá zprávu v jiném jazyce než angličtině, pak by si nejdříve měl zjistit, jaké kódování je nastavené na daném počítači. Například může použít funkci GetACP. Pokud tato funkce vrátí něco jiného než 1250, pak by brain neměl posílat zprávu v češtině, protože by nebyla zobrazena správně.
-<p>
-
-<h3>DEBUG [zpráva]</h3>
-Používá se stejně jako MESSAGE, ale zpravidla obsahuje informace, kterým rozumí jen autor brainu nebo které nemusejí být užitečné pro lidského hráče. 
+	<h3>SWAP2BOARD</h3>
+Tento pĹ™Ă­kaz se pouĹľĂ­vĂˇ pro zahojovacĂ­ fĂˇzi pravidla <b>Swap2</b>. Je poslĂˇn jednou nebo dvakrĂˇt mezi pĹ™Ă­kazy START a BOARD.Â BÄ›hem Swap2 zahĂˇjenĂ­ mohou nastat tĹ™i rĹŻznĂ© situace.
+<ul>
+<li>PĹ™Ă­pad 1. ManaĹľer se zeptĂˇ na prvnĂ­ tĹ™i kameny.
 <pre>
-Příklad:
- Manažer pošle:
+ManaĹľer poĹˇle:
+ SWAP2BOARD
+ DONE
+Brain odpovĂ­:
+ 7,7 8,7 9,9
+</pre>
+ 
+<li>PĹ™Ă­pad 2. ManaĹľer poĹˇle souĹ™adnice prvnĂ­ch tĹ™Ă­ kamenĹŻ.
+<pre>
+ManaĹľer poĹˇle:
+ SWAP2BOARD
+ 7,7
+ 8,7
+ 9,9
+ DONE
+Brain odpovĂ­:
+ SWAP - <span>pokud se rozhodne pro vĂ˝mÄ›nu (moĹľnost 1)</span>
+ 8,8 - <span>souĹ™adnice ÄŤtvrtĂ©ho tahu, pokud se rozhodne ponechat si svoji barvu (moĹľnost 2)</span>
+ 8,8 8,6 - <span>souĹ™adnice ÄŤtvrtĂ©ho a pĂˇtĂ©ho tahu, pokud se rozhodne poloĹľit dva kameny a nechat soupeĹ™e vybrat barvu (moĹľnost 3)</span>
+</pre>
+ 
+<li>PĹ™Ă­pad 3. ManaĹľer poĹˇle souĹ™adnice prvnĂ­ch pÄ›ti kamenĹŻ.
+<pre>
+ManaĹľer poĹˇle:
+ SWAP2BOARD
+ 7,7
+ 8,7
+ 9,9
+ 8,8
+ 8,6
+ DONE
+Brain odpovĂ­:
+ SWAP - <span>pokud se rozhodne pro vĂ˝mÄ›nu (moĹľnost 1)</span>
+ 6,8 - <span>souĹ™adnice ĹˇestĂ©ho tahu, pokud se rozhodne ponechat si svoji barvu (moĹľnost 2)</span>
+</pre>
+
+<li>Po ĂşvodnĂ­ fĂˇzi budou kameny na ploĹˇe povaĹľovĂˇny za zahĂˇjenĂ­ pro standardnĂ­ zĂˇpas. NapĹ™Ă­klad podle vĂ˝Ĺˇe uvedenĂ©ho pĹ™Ă­kladu v pĹ™Ă­padu 3, za pĹ™edpokladu Ĺľe brain zvolĂ­ moĹľnost 2, manaĹľer odeĹˇle nĂˇsledujĂ­cĂ­ pĹ™Ă­kaz druhĂ©mu brainu:
+<pre>
+BOARD
+7,7,1
+8,7,2
+9,9,1
+8,8,2
+8,6,1
+6,8,2
+DONE
+</pre>
+
+<li>Pokud v pĹ™Ă­padu 2 zvolĂ­ brain moĹľnost 1, manaĹľer poĹˇle druhĂ©mu brainu nĂˇsledujĂ­cĂ­ pĹ™Ă­kaz:
+<pre>
+BOARD
+7,7,2
+8,7,1
+9,9,2
+DONE
+</pre>
+</ul>
+
+<h2>PĹ™Ă­kazy, kterĂ© posĂ­lĂˇ brain</h2>
+NĂˇsledujĂ­cĂ­ pĹ™Ă­kazy mĹŻĹľe brain pouĹľĂ­t, pokud je potĹ™ebuje. ManaĹľer vĹˇechny tyto pĹ™Ă­kazy musĂ­ znĂˇt. 
+<p>
+
+<h3>UNKNOWN [chybovĂˇ zprĂˇva]</h3>
+Takto brain musĂ­ reagovat na pĹ™Ă­kaz, kterĂ˝ neznĂˇ. ObdrĹľenĂ­ neznĂˇmĂ©ho pĹ™Ă­kazu tedy nenĂ­ dĹŻvodem ke skonÄŤenĂ­ brainu. Parametrem pĹ™Ă­kazu je chybovĂˇ zprĂˇva. ManaĹľer buÄŹ zobrazĂ­ chybovou zprĂˇvu, nebo se pokusĂ­ pouĹľĂ­t nÄ›jakĂ© jinĂ© pĹ™Ă­kazy. NapĹ™Ă­klad pokud brain takto odpovĂ­ na nepovinnĂ˝ pĹ™Ă­kaz, tak by mÄ›l manaĹľer mĂ­sto nÄ›j zkusit nÄ›jakĂ˝ povinnĂ˝ pĹ™Ă­kaz. Pokud se s tĂ­m manaĹľer neumĂ­ vypoĹ™Ăˇdat, pak poĹˇle pĹ™Ă­kaz END.
+<p>
+
+<h3>ERROR [chybovĂˇ zprĂˇva]</h3>
+Takto brain odpovĂ­ na pĹ™Ă­kaz, kterĂ©mu rozumĂ­, ale nemĹŻĹľe ho z jakĂ©hokoli dĹŻvodu provĂ©st (napĹ™. pĹ™edtĂ­m dostal nevyhovujĂ­cĂ­ info hodnotu). Parametrem mĹŻĹľe bĂ˝t chybovĂˇ zprĂˇva, kterou manaĹľer zobrazĂ­ uĹľivateli a nebo ji zapĂ­Ĺˇe do logovacĂ­ho souboru. ManaĹľer se takĂ© mĹŻĹľe pokusit provĂ©st pĹ™Ă­kaz nÄ›jak jinak.
+<p>
+
+<h3>MESSAGE [zprĂˇva]</h3>
+ZprĂˇva, kterou manaĹľer mĹŻĹľe logovat do souboru nebo ji vypisovat do nÄ›jakĂ©ho okna. Brain by mÄ›l zprĂˇvu poslat ve chvĂ­li, kdy je od nÄ›j oÄŤekĂˇvĂˇna odpovÄ›ÄŹ na nÄ›jakĂ˝ pĹ™Ă­kaz. Typicky tuto zprĂˇvu brain poĹˇle tÄ›snÄ› pĹ™ed tĂ­m, neĹľ vrĂˇtĂ­ souĹ™adnice svĂ©ho tahu. UvnitĹ™ zprĂˇvy se nesmĂ­ vyskytovat znak konce Ĺ™Ăˇdku. VĂ­ceĹ™ĂˇdkovĂ˝ text lze poslat pomocĂ­ nÄ›kolika po sobÄ› jdoucĂ­ch MESSAGE pĹ™Ă­kazĹŻ. 
+<p>
+Pokud brain posĂ­lĂˇ zprĂˇvu v jinĂ©m jazyce neĹľ angliÄŤtinÄ›, pak by si nejdĹ™Ă­ve mÄ›l zjistit, jakĂ© kĂłdovĂˇnĂ­ je nastavenĂ© na danĂ©m poÄŤĂ­taÄŤi. NapĹ™Ă­klad mĹŻĹľe pouĹľĂ­t funkci GetACP. Pokud tato funkce vrĂˇtĂ­ nÄ›co jinĂ©ho neĹľ 1250, pak by brain nemÄ›l posĂ­lat zprĂˇvu v ÄŤeĹˇtinÄ›, protoĹľe by nebyla zobrazena sprĂˇvnÄ›.
+<p>
+
+<h3>DEBUG [zprĂˇva]</h3>
+PouĹľĂ­vĂˇ se stejnÄ› jako MESSAGE, ale zpravidla obsahuje informace, kterĂ˝m rozumĂ­ jen autor brainu nebo kterĂ© nemusejĂ­ bĂ˝t uĹľiteÄŤnĂ© pro lidskĂ©ho hrĂˇÄŤe. 
+<pre>
+PĹ™Ă­klad:
+ ManaĹľer poĹˇle:
   TURN 10,15
- Brain odpoví:
-  DEBUG Zatím nejlepší tah [10,14] alfa=10025 beta=8641
-  DEBUG Zatím nejlepší tah [11,14] alfa=10125 beta=8641
-  MESSAGE Mám to vyhraný
+ Brain odpovĂ­:
+  DEBUG ZatĂ­m nejlepĹˇĂ­ tah [10,14] alfa=10025 beta=8641
+  DEBUG ZatĂ­m nejlepĹˇĂ­ tah [11,14] alfa=10125 beta=8641
+  MESSAGE MĂˇm to vyhranĂ˝
   10,16
 </pre>
 <p>
 
 <h3>SUGGEST [X],[Y]</h3>
-Tohle je rozšíření protokolu, které se může hodit pro debugování a porovnávání brainů.
-[X] a [Y] jsou souřadnice, kam chce brain táhnout. Normálně brain jako odpověď vrací řádku obsahující pouze tyto souřadnice. Pokud je před souřadnicemi navíc slovo SUGGEST, pak tím brain dává manažeru najevo, že toto rozšíření protokolu chce používat. Tímto má manažer možnost na druhé straně tah, který tento algoritmus vymyslel, změnit a vnutit mu jiný, který pak on ve svém vnitřním stavu provede. Brain tedy po odeslání SUGGEST nemění svůj vnitřní stav. Manažer na toto odpoví vždy buď příkazem PLAY, kterým mu vnutí tah, nebo END.
+Tohle je rozĹˇĂ­Ĺ™enĂ­ protokolu, kterĂ© se mĹŻĹľe hodit pro debugovĂˇnĂ­ a porovnĂˇvĂˇnĂ­ brainĹŻ.
+[X] a [Y] jsou souĹ™adnice, kam chce brain tĂˇhnout. NormĂˇlnÄ› brain jako odpovÄ›ÄŹ vracĂ­ Ĺ™Ăˇdku obsahujĂ­cĂ­ pouze tyto souĹ™adnice. Pokud je pĹ™ed souĹ™adnicemi navĂ­c slovo SUGGEST, pak tĂ­m brain dĂˇvĂˇ manaĹľeru najevo, Ĺľe toto rozĹˇĂ­Ĺ™enĂ­ protokolu chce pouĹľĂ­vat. TĂ­mto mĂˇ manaĹľer moĹľnost na druhĂ© stranÄ› tah, kterĂ˝ tento algoritmus vymyslel, zmÄ›nit a vnutit mu jinĂ˝, kterĂ˝ pak on ve svĂ©m vnitĹ™nĂ­m stavu provede. Brain tedy po odeslĂˇnĂ­ SUGGEST nemÄ›nĂ­ svĹŻj vnitĹ™nĂ­ stav. ManaĹľer na toto odpovĂ­ vĹľdy buÄŹ pĹ™Ă­kazem PLAY, kterĂ˝m mu vnutĂ­ tah, nebo END.
 <p>
 
-<h2>Historie změn</h2>
+<h2>Historie zmÄ›n</h2>
 <ul>
-<li>2016-02-07<br>při Renju musí být tahy v příkazu BOARD ve správném pořadí<br>ZIP může obsahovat zároveň 32-bitový a 64-bitový exe soubor
+<li>2023-03-20<br>INFO rule 8 - pravidlo Caro</li>
+<li>2022-12-20<br>SWAP2BOARD</li>
+<li>2016-02-07<br>pĹ™i Renju musĂ­ bĂ˝t tahy v pĹ™Ă­kazu BOARD ve sprĂˇvnĂ©m poĹ™adĂ­<br>ZIP mĹŻĹľe obsahovat zĂˇroveĹ 32-bitovĂ˝ a 64-bitovĂ˝ exe soubor
 <li>2016-02-02<br>INFO rule 4 - Renju
-<li>2006-03-11<br>INFO rule 2 - možnost kontinuální hry, do příkazu BOARD byla přidána hodnota 3
-<li>2005-12-19<br>INFO folder - pro trvalé soubory<br>ABOUT - formát změněn na název="hodnota"<br>INFO timeout_turn 0 znamená co nejrychleji
-<li>2005-06-26<br>TAKEBACK - použito pro Zpět
-<li>2005-06-03<br>INFO rule - možnost přesně pět v řadě vyhrává
-<li>2005-05-19<br>INFO game_type - protihráč je člověk / brain, turnaj na lokálním počítači / po síti
-<li>2005-04-21<br>RECTSTART - obdélníková plocha<br>RESTART - vymaže hrací plochu<br>BOARD - dříve byl nepovinný, teď je povinný
+<li>2006-03-11<br>INFO rule 2 - moĹľnost kontinuĂˇlnĂ­ hry, do pĹ™Ă­kazu BOARD byla pĹ™idĂˇna hodnota 3
+<li>2005-12-19<br>INFO folder - pro trvalĂ© soubory<br>ABOUT - formĂˇt zmÄ›nÄ›n na nĂˇzev="hodnota"<br>INFO timeout_turn 0 znamenĂˇ co nejrychleji
+<li>2005-06-26<br>TAKEBACK - pouĹľito pro ZpÄ›t
+<li>2005-06-03<br>INFO rule - moĹľnost pĹ™esnÄ› pÄ›t v Ĺ™adÄ› vyhrĂˇvĂˇ
+<li>2005-05-19<br>INFO game_type - protihrĂˇÄŤ je ÄŤlovÄ›k / brain, turnaj na lokĂˇlnĂ­m poÄŤĂ­taÄŤi / po sĂ­ti
+<li>2005-04-21<br>RECTSTART - obdĂ©lnĂ­kovĂˇ plocha<br>RESTART - vymaĹľe hracĂ­ plochu<br>BOARD - dĹ™Ă­ve byl nepovinnĂ˝, teÄŹ je povinnĂ˝
 </ul>
 </body>
 </html>

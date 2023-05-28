@@ -1,3 +1,6 @@
+9.0 (28 May 2023)
+Caro rule (Gomoku+) - five in a row must not be blocked by oponent at both ends
+
 8.9.2 (16 May 2017)
 openings near board edge are not randomly shifted
 

@@ -1,5 +1,5 @@
 /*
-	(C) 2000-2017  Petr Lastovicka
+	(C) Petr Lastovicka
 
 	This program is free software; you can redistribute it and/or
 	modify it under the terms of the GNU General Public License.
@@ -162,13 +162,13 @@ void gen2(int *pos)
 	int *pb, *pe;
 	int n[4], a1, a2;
 	int s;
-	bool six[2];
+	bool blocked[2];
 
 	if(pos==comb+9){
 		a1=a2=0;
 		if(comb[4]==0){ //the middle square must be empty
 			n[1]=genCount[1]; n[2]=genCount[2]; n[3]=genCount[3];
-			six[0]=six[1]=false;
+			blocked[0]=blocked[1]=false;
 			pb=comb;
 			pe=pb+4;
 			while(pe!=comb+9){
@@ -180,9 +180,11 @@ void gen2(int *pos)
 							s++;
 							if(!*pe && pe!=comb+4) s++;
 						}
-						if(info_exact5==1 && n[1]==4 &&
-							(pe<comb+8 && pe[1]==1 || pb>comb && pb[-1]==1)){
-							six[0]=true;
+						if(info_exact5==1 && n[1]==4 && 
+							(pe<comb+8 && pe[1]==1 || pb>comb && pb[-1]==1)
+							|| info_caro==1 && 
+							(pe<comb+8 && pe[1]==2 && pb>comb && pb[-1]==2)){
+							blocked[0]=true;
 						}
 						amin(a1, priority[n[1]][s]);
 					}
@@ -194,8 +196,10 @@ void gen2(int *pos)
 							if(!*pe && pe!=comb+4) s++;
 						}
 						if(info_exact5==1 && n[2]==4 &&
-							(pe<comb+8 && pe[1]==2 || pb>comb && pb[-1]==2)){
-							six[1]=true;
+							(pe<comb+8 && pe[1]==2 || pb>comb && pb[-1]==2)
+							|| info_caro==1 &&
+							(pe<comb+8 && pe[1]==1 && pb>comb && pb[-1]==1)){
+							blocked[1]=true;
 						}
 						amin(a2, priority[n[2]][s]);
 					}
@@ -205,8 +209,8 @@ void gen2(int *pos)
 			}
 		}
 		//store computed evaluation to the array
-		genOutput->h[0]= short(six[0] ? 0 : a1);
-		genOutput->h[1]= short(six[1] ? 0 : a2);
+		genOutput->h[0]= short(blocked[0] ? 0 : a1);
+		genOutput->h[1]= short(blocked[1] ? 0 : a2);
 		genOutput++;
 	}
 	else{
@@ -343,10 +347,11 @@ void evaluate(Psquare p0)
 	int *u;
 	int ind;
 	unsigned pattern;
-	static int last_exact5=-1;
+	static int last_exact5=-1, last_caro=-1;
 
-	if(info_exact5!=last_exact5){
+	if(info_exact5!=last_exact5 || info_caro!=last_caro){
 		last_exact5=info_exact5;
+		last_caro=info_caro;
 		gen();
 	}
 	//remove not empty square from list and set its evaluation to zero
@@ -392,11 +397,11 @@ void evaluate(Psquare p0)
 					//change evaluation in one direction
 					u= &pr->ps[i];
 					h= K[pattern].h[k];
-					if(info_exact5 && h>=H4){
-						if(prvQ(p, 5)->z==k+1 && nxtQ(p, 1)->z==0 ||
-							nxtQ(p, 5)->z==k+1 && prvQ(p, 1)->z==0){
-							h=0;
-						}
+					if(h>=H4 && info_exact5 &&
+						(prvQ(p, 5)->z==k+1 && nxtQ(p, 1)->z==0 || nxtQ(p, 5)->z==k+1 && prvQ(p, 1)->z==0)
+						|| info_caro &&
+						(prvQ(p, 5)->z==2-k && nxtQ(p, 1)->z==2-k || nxtQ(p, 5)->z==2-k && prvQ(p, 1)->z==2-k)) {
+						h=0;
 					}
 					m=h-*u;
 					if(m){

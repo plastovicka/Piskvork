@@ -73,7 +73,7 @@ public:
 
 class Win7TaskbarProgress
 {
-	//copy from http://stackoverflow.com/questions/15001638/windows-7-taskbar-state-with-minimal-code
+	//copy from https://stackoverflow.com/questions/15001638/windows-7-taskbar-state-with-minimal-code
 public:
 	Win7TaskbarProgress();
 	virtual ~Win7TaskbarProgress();

@@ -17,6 +17,7 @@ int info_max_memory=0; /* maximum memory in bytes, zero if unlimited */
 int info_game_type=1; /* 0:human opponent, 1:AI opponent, 2:tournament, 3:network tournament */
 int info_exact5=0; /* 0:five or more stones win, 1:exactly five stones win */
 int info_renju=0; /* 0:gomoku, 1:renju */
+int info_caro=0; /* 0:gomoku, 1:Caro */
 int info_continuous=0; /* 0:single game, 1:continuous */
 int terminateAI; /* return from brain_turn when terminateAI>0 */
 unsigned start_time; /* tick count at the beginning of turn */
@@ -146,7 +147,7 @@ static void do_command()
 		if((info=get_cmd_param("timeout_turn", param))!=0) info_timeout_turn=atoi(info);
 		if((info=get_cmd_param("time_left", param))!=0) info_time_left=atoi(info);
 		if((info=get_cmd_param("game_type", param))!=0) info_game_type=atoi(info);
-		if((info=get_cmd_param("rule", param))!=0){ e=atoi(info); info_exact5=e&1; info_continuous=(e>>1)&1; info_renju=(e>>2)&1; }
+		if((info=get_cmd_param("rule", param))!=0){ e=atoi(info); info_exact5=e&1; info_continuous=(e>>1)&1; info_renju=(e>>2)&1; info_caro=(e>>3)&1; }
 		if((info=get_cmd_param("folder", param))!=0) strncpy(dataFolder, info, sizeof(dataFolder)-1);
 #ifdef DEBUG_EVAL
 		if((info=get_cmd_param("evaluate", param))!=0){ if(parse_coord(info, &x, &y)) brain_eval(x, y); }
@@ -249,7 +250,7 @@ int main()
 {
 	DWORD mode;
 	if(GetConsoleMode(GetStdHandle(STD_INPUT_HANDLE), &mode))
-		puts("MESSAGE Gomoku AI should not be started directly. Please install gomoku manager (http://sourceforge.net/projects/piskvork). Then enter path to this exe file in players settings.");
+		puts("MESSAGE Gomoku AI should not be started directly. Please install gomoku manager (https://sourceforge.net/projects/piskvork). Then enter path to this exe file in players settings.");
 
 #ifdef DEBUG
 	SetErrorMode(0);

@@ -1,6 +1,5 @@
 /*
-	(C) 2000-2015  Petr Lastovicka
-	(C) 2015  Tianyi Hao
+	(C) Petr Lastovicka, Tianyi Hao
 
 	This program is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
@@ -19,7 +18,7 @@
 #pragma hdrstop
 #include "piskvork.h"
 
-#define NETGAME_VERSION 2
+#define NETGAME_VERSION 3
 
 enum{
 	C_INIT1=147, C_INIT2=132, C_INIT_DENY=226, C_BUSY=235,
@@ -47,7 +46,8 @@ void newNetGame(LPARAM lP)
 	newGame(b->begin ? 1-NET_PLAYER : NET_PLAYER, false);
 	if(ruleFive!=b->rule5){
 		ruleFive=b->rule5;
-		wrLog(b->rule5==2 ? lng(660, "rule renju") : (b->rule5 ? lng(655, "Exactly five in a row win") : lng(654, "Five or more in a row win")));
+		wrLog(b->rule5==2 ? lng(660, "Renju rule") : (b->rule5 & 1 ? lng(655, "Exactly five in a row win") : lng(654, "Five or more in a row win")));
+		if(b->rule5 & 8) wrLog(lng(661, "Caro rule"));
 	}
 	if(continuous!=b->cont){
 		continuous=b->cont;
@@ -118,6 +118,7 @@ DWORD WINAPI netGameLoop(void *param)
 		b->rule5=(char)ruleFive;
 		b->cont=(char)continuous;
 		if(netGameVersion<2) b->rule5=b->cont=0;
+		else if(netGameVersion==2) b->rule5&=~8;
 		wr(buf, 2+sizeof(TnetGameSettings));
 		if(rd1()!=C_INFO_OK) goto le;
 		b->begin= !b->begin;
