@@ -2911,7 +2911,7 @@ int pascal WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR, int cmdShow)
 	//read settings
 	players[0].isComp=1;
 	players[0].timeGame= 180;
-	players[0].timeMove= 5000;
+	players[0].timeMove= 1000;
 	players[1].timeGame= 600;
 	players[1].timeMove= 60000;
 	readini();
