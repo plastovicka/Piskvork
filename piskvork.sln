@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.40629.0
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.33711.374
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pisktur", "source\pbrain\pisktur.vcxproj", "{DEC4304F-F313-44A5-AB45-27888FBC3ACD}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "piskvork", "source\piskvork.vcxproj", "{591B7687-710B-4AFE-B733-5A61A5E2E293}"
+EndProject
+Project("{C7167F0D-BC9F-4E6E-AFE1-012C56B48DB5}") = "WapProjTemplate1", "WapProjTemplate1\WapProjTemplate1.wapproj", "{086EF31D-D267-4829-8EE0-BF5482F5090C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,6 +33,18 @@ Global
 		{591B7687-710B-4AFE-B733-5A61A5E2E293}.Release|Win32.Build.0 = Release|Win32
 		{591B7687-710B-4AFE-B733-5A61A5E2E293}.Release|x64.ActiveCfg = Release|x64
 		{591B7687-710B-4AFE-B733-5A61A5E2E293}.Release|x64.Build.0 = Release|x64
+		{086EF31D-D267-4829-8EE0-BF5482F5090C}.Debug|Win32.ActiveCfg = Debug|x86
+		{086EF31D-D267-4829-8EE0-BF5482F5090C}.Debug|Win32.Build.0 = Debug|x86
+		{086EF31D-D267-4829-8EE0-BF5482F5090C}.Debug|Win32.Deploy.0 = Debug|x86
+		{086EF31D-D267-4829-8EE0-BF5482F5090C}.Debug|x64.ActiveCfg = Debug|x64
+		{086EF31D-D267-4829-8EE0-BF5482F5090C}.Debug|x64.Build.0 = Debug|x64
+		{086EF31D-D267-4829-8EE0-BF5482F5090C}.Debug|x64.Deploy.0 = Debug|x64
+		{086EF31D-D267-4829-8EE0-BF5482F5090C}.Release|Win32.ActiveCfg = Release|x86
+		{086EF31D-D267-4829-8EE0-BF5482F5090C}.Release|Win32.Build.0 = Release|x86
+		{086EF31D-D267-4829-8EE0-BF5482F5090C}.Release|Win32.Deploy.0 = Release|x86
+		{086EF31D-D267-4829-8EE0-BF5482F5090C}.Release|x64.ActiveCfg = Release|x64
+		{086EF31D-D267-4829-8EE0-BF5482F5090C}.Release|x64.Build.0 = Release|x64
+		{086EF31D-D267-4829-8EE0-BF5482F5090C}.Release|x64.Deploy.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

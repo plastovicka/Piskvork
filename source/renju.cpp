@@ -18,6 +18,8 @@
 #pragma hdrstop
 #include "piskvork.h"
 
+#pragma warning(disable: 4458) //declaration of 'x' hides class member
+
 #define COMB(X) (0x100 | (X))
 #define COMC(X, Y) (0x10000 | ((X)<<8) | (Y))
 
