@@ -168,7 +168,7 @@ void Tplayer::getMem()
 	}
 	PROCESS_MEMORY_COUNTERS p;
 	if(getMemInfo(process, &p, sizeof(PROCESS_MEMORY_COUNTERS))){
-		amin(memory, p.PeakWorkingSetSize);
+		aminU(memory,p.PeakWorkingSetSize);
 	}
 }
 
@@ -1050,7 +1050,7 @@ void turAddTime()
 		p->time+= players[k].time;
 		p->Nmoves+= players[k].Nmoves;
 		p->Ngames++;
-		amin(p->memory, players[k].memory);
+		aminU(p->memory, players[k].memory);
 	}
 }
 

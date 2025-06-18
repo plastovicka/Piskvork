@@ -104,7 +104,7 @@ width=20,  //number of squares horizontally (without borders)
  coordH,    //height of coorninates at the top side
  mtop,      //toolBarH or 0
  toolBarVisible=1,//1=show toolbar
- maxMemory=80,   //maximum memory for AI (MB)
+ maxMemory=1000, //maximum memory for AI (MB)
  tolerance=1000, //how longer can AI think after timeout
  hardTimeOut=0,  //should we check timeout for AI
  humanTimeOut=0, //should we check timeout for human
@@ -1510,6 +1510,7 @@ BOOL CALLBACK OptionsProc(HWND hWnd, UINT msg, WPARAM wP, LPARAM)
 							 *D[i].prom= IsDlgButtonChecked(hWnd, id);
 						 }
 					}
+					aminmax(maxMemory, 1, 4095);
 					ruleFive= getRadioButton(hWnd, 555, 557);
 					if(IsDlgButtonChecked(hWnd, 661)) ruleFive|=8;
 					continuous= getRadioButton(hWnd, 559, 560);
@@ -1928,6 +1929,7 @@ BOOL CALLBACK TurProc(HWND hWnd, UINT msg, WPARAM wP, LPARAM)
 							 *D[i].prom= IsDlgButtonChecked(hWnd, id);
 						 }
 					}
+					aminmax(maxMemory, 1, 4095);
 				case IDCANCEL:
 					EndDialog(hWnd, wP);
 					break;
@@ -2881,6 +2883,7 @@ int pascal WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR, int cmdShow)
 		is64bit = sysInfo.wProcessorArchitecture == PROCESSOR_ARCHITECTURE_AMD64;
 	}
 
+	#pragma warning(disable: 4996) //disable deprecation warnings
 	v.dwOSVersionInfoSize= sizeof(OSVERSIONINFO);
 	GetVersionEx(&v);
 	isWin9X= v.dwPlatformId==VER_PLATFORM_WIN32_WINDOWS;

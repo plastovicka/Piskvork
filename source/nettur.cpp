@@ -816,7 +816,7 @@ DWORD WINAPI serverLoop(void *param)
 			t->wins+=r->wins;
 			t->wins1+=r->wins1;
 			t->winsE+=r->winsE;
-			amin(t->memory, r->memory);
+			aminU(t->memory, r->memory);
 			amin(t->maxTurnTime, r->maxTurnTime);
 			ce= getCell(client->player[1-i], client->player[i]);
 			if(r->wins) if(i==0) ce->start++; else ce->notStart++;

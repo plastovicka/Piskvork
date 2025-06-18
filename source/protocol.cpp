@@ -595,7 +595,7 @@ int Tplayer::sendInfo(int mask)
 		if(!infoDatFile){ result=7; goto lend; }
 		mask=INFO_ALL;
 	}
-	if(mask & INFO_MEMORY) sendInfoCmd("max_memory", maxMemory<<20);
+	if(mask & INFO_MEMORY) sendInfoCmd("max_memory", maxMemory > 2047 ? 0x7FFFFFFF : maxMemory<<20);
 	if(mask & INFO_TIMEGAME) sendInfoCmd("timeout_match", timeGame*1000);
 	if(mask & INFO_TIMEMOVE){
 		sendInfoCmd("timeout_turn", timeMove);
@@ -845,7 +845,7 @@ int Tplayer::move()
 	if(finished){
 		err=15; //timeout
 	}
-	else if(memory>(maxMemory<<20) && turNplayers){
+	else if(memory > (DWORD(maxMemory)<<20) && turNplayers){
 		err=16;
 	}
 	else{

@@ -75,7 +75,7 @@ struct Tplayer
  int score;    //number of wins
  int time;     //total time (ms)
  int timeInit; //time of initialization, -1 during initialization, 0 after the first move
- int memory;   //used memory (bytes)
+ DWORD memory;   //used memory (bytes)
  int turPlayerId;  //number of player in tournament
  int Nmoves;       //moves counter
  HANDLE process;   //process handle
@@ -122,7 +122,8 @@ struct Tplayer
 struct TturPlayer
 {
   int wins,losses,timeouts,errors,wins1,winsE,losses1;
-  int time,memory,maxTurnTime;
+  int time,maxTurnTime;
+  DWORD memory;
   int Nmoves,Ngames;
   DWORD crc;
   int points;
@@ -301,6 +302,7 @@ bool checkforbid();
 #define nxtS(p,s) ((Psquare)(((char*)p)+diroff[s]))
 
 template <class T> inline void amin(T &x,int m){ if(x<m) x=m; }
+inline void aminU(DWORD &x,DWORD m){ if(x<m) x=m; }
 template <class T> inline void amax(T &x,int m){ if(x>m) x=m; }
 template <class T> inline void aminmax(T &x,int l,int h){
  if(x<l) x=l;
