@@ -5,7 +5,7 @@ extern int width,height; /* the board size */
 extern int info_timeout_turn;  /* time for one turn in milliseconds */
 extern int info_timeout_match; /* total time for a game */
 extern int info_time_left;  /* remaining time for a game */
-extern int info_max_memory; /* maximum memory in bytes, zero if unlimited */
+extern DWORD64 info_max_memory; /* maximum memory in bytes, zero if unlimited */
 extern int info_game_type;  /* 0:human opponent, 1:AI opponent, 2:tournament, 3:network tournament */
 extern int info_exact5;     /* 0:five or more stones win, 1:exactly five stones win */
 extern int info_renju;      /* 0:gomoku, 1:renju */

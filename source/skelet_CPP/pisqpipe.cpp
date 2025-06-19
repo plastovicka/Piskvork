@@ -13,7 +13,7 @@ int width, height; /* the board size */
 int info_timeout_turn=30000; /* time for one turn in milliseconds */
 int info_timeout_match=1000000000; /* total time for a game */
 int info_time_left=1000000000; /* left time for a game */
-int info_max_memory=0; /* maximum memory in bytes, zero if unlimited */
+DWORD64 info_max_memory=0; /* maximum memory in bytes, zero if unlimited */
 int info_game_type=1; /* 0:human opponent, 1:AI opponent, 2:tournament, 3:network tournament */
 int info_exact5=0; /* 0:five or more stones win, 1:exactly five stones win */
 int info_renju=0; /* 0:gomoku, 1:renju */
@@ -142,7 +142,7 @@ static void do_command()
 	int x, y, who, e;
 
 	if((param=get_cmd_param("info", cmd))!=0) {
-		if((info=get_cmd_param("max_memory", param))!=0) info_max_memory=atoi(info);
+		if((info=get_cmd_param("max_memory", param))!=0) info_max_memory=_atoi64(info);
 		if((info=get_cmd_param("timeout_match", param))!=0) info_timeout_match=atoi(info);
 		if((info=get_cmd_param("timeout_turn", param))!=0) info_timeout_turn=atoi(info);
 		if((info=get_cmd_param("time_left", param))!=0) info_time_left=atoi(info);
